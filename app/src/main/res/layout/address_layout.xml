@@ -29,13 +29,11 @@
         <TextView
             android:id="@+id/bt_add_new_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:background="@drawable/btn_blue_style"
+            android:background="@color/colorBlueNormal"
+            android:textSize="@dimen/text_big"
             android:gravity="center"
-            android:paddingBottom="@dimen/margin_small"
-            android:paddingTop="@dimen/margin_small"
             android:text="添加新地址"
             android:textColor="@color/white" />
     </RelativeLayout>
