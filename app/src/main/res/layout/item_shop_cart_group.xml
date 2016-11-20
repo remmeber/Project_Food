@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="contentDescription">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_vertical_margin"
+        android:background="@color/colorPageBackground" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/ivCheckGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_uncheck_green" />
+
+        <ImageView
+
+            android:id="@+id/imageShopLogoGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/ivCheckGroup"
+            android:layout_toRightOf="@+id/ivCheckGroup"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_shop_green" />
+
+        <TextView
+            android:id="@+id/tvShopNameGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/imageShopLogoGroup"
+            android:layout_toRightOf="@+id/imageShopLogoGroup"
+            android:text="商家名称"
+            android:textColor="#003333"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/imaShopForwardGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_chevron_right_blue" />
+    </RelativeLayout>
+</LinearLayout>

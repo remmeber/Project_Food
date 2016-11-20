@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userprofile"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white"
+    android:elevation="@dimen/margin_little"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_weight="4">
+
+
+        <TextView
+            android:id="@+id/profileInfo"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@color/colorBlueNormal"
+            android:gravity="center"
+            android:minHeight="0dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_big"
+            tools:text="dddd" />
+
+        <ImageView
+            android:id="@+id/profileForward"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignEnd="@+id/headerline"
+            android:layout_alignRight="@+id/headerline"
+            android:background="@drawable/btn_gray_light_style"
+            android:paddingLeft="@dimen/margin_big"
+            android:paddingRight="@dimen/margin_big"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_chevron_right_blue" />
+
+        <View
+            android:id="@+id/headerline"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/virtual_line"
+            android:layerType="software" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/profileDealcenter"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/btn_blue_white_style"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_little"
+            android:paddingTop="@dimen/margin_little"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text=" center " />
+
+        <TextView
+            android:id="@+id/profileDealright"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/btn_blue_white_style"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_little"
+            android:paddingTop="@dimen/margin_little"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text=" right " />
+
+        <TextView
+            android:id="@+id/profileDealleft"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/btn_blue_white_style"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_little"
+            android:paddingTop="@dimen/margin_little"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text=" left "
+            android:layout_alignBaseline="@+id/profileDealcenter"
+            android:layout_alignBottom="@+id/profileDealcenter"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</LinearLayout>

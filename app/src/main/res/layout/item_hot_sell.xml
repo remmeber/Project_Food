@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hot_sell_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_gray_light_style"
+    android:orientation="vertical"
+    tools:ignore="contentDescription">
+
+    <!--<RelativeLayout
+        android:id="@+id/item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="109dp">-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:id="@+id/hot_sell_sellerIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_shop_green" />
+
+        <TextView
+            android:id="@+id/hot_sell_merchant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@id/hot_sell_sellerIcon"
+            android:layout_toRightOf="@id/hot_sell_sellerIcon"
+            android:gravity="center_vertical"
+            android:minHeight="0dp"
+            android:textSize="@dimen/text_medium"
+            tools:text="ddddd" />
+
+        <ImageView
+            android:id="@+id/hot_sell_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_chevron_right_blue" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/virtual_line"
+            android:layerType="software" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small">
+
+        <ImageView
+            android:id="@+id/hot_sell_food_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_pic_failed" />
+
+        <TextView
+            android:id="@+id/hot_sell_food_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/hot_sell_food_image"
+            android:layout_toRightOf="@+id/hot_sell_food_image"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_medium"
+            tools:text="黄焖鸡" />
+
+        <TextView
+            android:id="@+id/hot_sell_deliver_require"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hot_sell_food_name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/hot_sell_food_image"
+            android:layout_toRightOf="@+id/hot_sell_food_image"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text="配送满20元起" />
+
+        <TextView
+            android:id="@+id/hot_sell_deliver_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/hot_sell_food_image"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/hot_sell_food_image"
+            android:layout_toRightOf="@+id/hot_sell_food_image"
+            android:gravity="center"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text="配送费2元" />
+
+        <com.rhg.qf.widget.MyRatingBar
+            android:id="@+id/hot_sell_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignBottom="@id/hot_sell_food_name"
+            android:layout_alignEnd="@+id/hot_sell_deliver_distance"
+            android:layout_alignRight="@+id/hot_sell_deliver_distance"
+            app:space_width="2dp"
+            app:star_height="@dimen/material_size_medium"
+            app:star_hollow="@drawable/ic_star_gray"
+            app:star_max="5"
+            app:star_rating="0"
+            app:star_solid="@drawable/ic_star_green"
+            app:star_width="@dimen/material_size_medium" />
+
+        <TextView
+            android:id="@+id/hot_sell_deliver_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/hot_sell_rating_bar"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text="bbbbbbb" />
+
+        <TextView
+            android:id="@+id/hot_sell_total_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/hot_sell_deliver_distance"
+            android:layout_alignRight="@+id/hot_sell_deliver_distance"
+            android:layout_alignTop="@+id/hot_sell_deliver_money"
+            android:gravity="center"
+            android:text="@string/countMoney"
+            android:textColor="@color/colorRecommend_Red" />
+
+    </RelativeLayout>
+
+
+    <!--</RelativeLayout>-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_small" />
+
+</LinearLayout>

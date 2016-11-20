@@ -1,0 +1,144 @@
+<resources>
+    <string name="app_name">家家美食</string>
+    <string name="searchHint">搜索</string>
+    <string name="Home">首页</string>
+    <string name="Merchant">商家</string>
+    <string name="User">我的</string>
+    <string name="shoppingCart">购物车</string>
+    <string name="allStore">所有店铺</string>
+
+    <!--Home-->
+    <string name="footerText">没有啦~~\n每天5家哦~</string>
+    <!--Home-->
+
+    <!-- profile -->
+    <string name="myOrder">我的订单</string>
+    <string name="orderUnPaid">待付款</string>
+    <string name="cancel">取消</string>
+    <string name="orderComplete">已完成</string>
+    <string name="workerInfo">我是跑腿员</string>
+    <string name="workerSignIn">登录</string>
+    <string name="wokerSignUp">注册</string>
+    <string name="wokerAndAddrModify">修改</string>
+    <string name="addrInfo">我的地址</string>
+    <string name="custome">常用</string>
+    <string name="add">添加</string>
+    <string name="modifyHeader">修改头像</string>
+    <string name="userSignIn">请点击登录</string>
+    <!--- profile-->
+    <!--shoppingcart-->
+    <string name="needPay">应付金额:</string>
+    <string name="countMoney">￥%s</string>
+    <string name="countGoods">去结算</string>
+    <string name="deliverFee">含跑腿费:￥%.5s</string>
+    <string name="delete">删除</string>
+    <string name="enptyShoppingCart">购物车为空</string>
+    <!--shoppingcart-->
+
+    <!--Merchant-->
+    <string name="tvMerchantAddress">地址:%s</string>
+    <string name="tvMerchantNote">商家备注:%s</string>
+    <!--Merchant-->
+
+    <!--商品详情-->
+    <string name="goodsDetail">商品详情</string>
+    <string name="sellNumber">销量:%s</string>
+    <string name="buy">去结账</string>
+    <!--商品详情-->
+
+    <!--支付-->
+    <string name="tvPayAffirmance">确认支付</string>
+    <string name="tvPayTitle">确认订单</string>
+    <string name="tvSubmitOrder">提交订单</string>
+    <!--支付-->
+
+    <!--订单相关-->
+    <string name="tvReceiver">收货人:%s</string>
+    <string name="tvContactPhone">联系方式:%s</string>
+    <string name="tvReceiveAddress">收货地址:%s</string>
+    <string name="tvNote">备注:%s</string>
+    <string name="tvDistance">距离%skm</string>
+    <string name="tvDeliverRequire">满%s起送</string>
+    <string name="tvDeliverFee">配送费%s元</string>
+    <string name="tvOrderNumber">订单号: %s</string>
+    <string name="goPay">去付款</string>
+    <string name="tvDrawback">申请退款</string>
+    <string name="tvSummation">合计</string>
+    <!--
+    /*跑腿员订单配送*/
+    public static final String DELIVER_ORDER_UNPAID = "待付款";
+    public static final String DELIVER_ORDER_UNACCEPT = "待接单";
+    public static final String DELIVER_ORDER_ACCEPT = "已接单";
+    public static final String DELIVER_ORDER_DELIVERING = "配送中";
+    public static final String DELIVER_ORDER_COMPLETE = "已完成";
+    public static final String DELIVER_ORDER_OTHER = "其他";-->
+    <string name="deliverOrderUnpaid">等待付款</string>
+    <string name="deliverOrderUnAccept">等待接单</string>
+    <string name="deliverOrderAccept">已经接单</string>
+    <string name="deliverOrderDelivering">开始配送</string>
+    <string name="deliverOrderDeliverComplete">确认送达</string>
+    <string name="deliverOrderFinish">订单完成</string>
+    <string name="deliverOrderOther">其他</string>
+    <!--订单相关-->
+
+    <!--我的页面-->
+    <string name="tvCamera">相机</string>
+    <string name="tvGallery">图库</string>
+    <!--我的页面-->
+
+    <!--收货地址-->
+    <string name="address">收货地址</string>
+    <string name="newAddress">添加新地址</string>
+    <string name="modifyAddress">修改地址</string>
+    <string name="contactUser">联系人&#160;&#160;&#160;&#160;</string>
+    <string name="contactUser_Null">联系人为空</string>
+    <string name="contacts">联系方式</string>
+    <string name="contacts_Null">联系方式为空</string>
+    <string name="contactAddress">收货地址</string>
+    <string name="contactErrorFormat">手机号码格式错误</string>
+    <string name="contactAddress_Null">收货地址为空</string>
+    <string name="contactAddressDetail">补充详细地址(如门牌号、楼层号)</string>
+    <string name="sure2Modify">确定修改选中地址？</string>
+    <string name="tvSave">保存</string>
+    <string name="tvEdit">编辑</string>
+    <!--收货地址-->
+
+    <!--收货-->
+    <string name="conformReceive">确认收货</string>
+    <string name="rate">评分</string>
+    <string name="goEvaluate">去评价</string>
+    <string name="mouthFeel">口感</string>
+    <string name="deliverService">配送服务</string>
+    <string name="finish">完成</string>
+    <!--收货-->
+
+    <!--搜索-->
+    <string name="etSearchHint">输入搜索名称</string>
+    <string name="searchHistory">历史搜索</string>
+    <string name="searchResult">搜索结果</string>
+    <!--搜索-->
+
+    <!--自主点餐-->
+    <string name="information">请写下所有您想吃的\n\n 给我们单身狗跑腿员一个体会恋爱的机会\n\n 我们会找遍全城，只为你</string>
+    <string name="recommendation">推荐理由:\n%s</string>
+    <string name="iWantEat">我想吃&#8230;</string>
+    <string name="submit">提交</string>
+    <string name="personalOrder">自主点餐</string>
+    <string name="startOrder">开始点餐</string>
+    <string name="goOrder">GO!</string>
+    <!--自主点餐-->
+
+    <!--register-->
+    <string name="register">注册</string>
+    <string name="phoneNumber">手机号码</string>
+    <string name="checkNumber">验证码&#160;&#160;&#160;&#160;</string>
+    <string name="getCheckNumber">获取验证码</string>
+    <string name="haveRead">我已经阅读同意了本地美食服务协议</string>
+    <string name="completeRegister">完成注册</string>
+    <string name="agreement">协议</string>
+    <!--register-->
+
+    <!--test-->
+
+    <!--test-->
+</resources>

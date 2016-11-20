@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_common_layout" />
+
+    <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tvPersonalOrderPay"
+        android:layout_marginTop="56dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/background"
+        tools:ignore="contentDescription" />
+
+    <TextView
+        android:id="@+id/ivPersonalBackground"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:background="@drawable/bg_white"
+        android:scaleType="fitXY"
+        tools:ignore="contentDescription" />
+
+    <ImageView
+        android:id="@+id/ivPersonalOrderCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btPersonalOrderPay"
+        android:layout_alignRight="@+id/btPersonalOrderPay"
+        android:layout_alignTop="@+id/ivPersonalBackground"
+        android:layout_margin="@dimen/margin_medium"
+        android:src="@drawable/personal_order_circle" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ivPersonalBackground"
+        android:layout_alignStart="@+id/ivPersonalBackground"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_big"
+        android:layout_marginStart="@dimen/margin_big"
+        android:src="@drawable/personal_order_book" />
+
+    <TextView
+        android:id="@+id/tvPersonalOrderStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPersonalOrderCircle"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_toLeftOf="@+id/ivPersonalOrderCircle"
+        android:layout_toStartOf="@+id/ivPersonalOrderCircle"
+        android:text="@string/startOrder"
+        android:textSize="@dimen/text_large" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvPersonalOrderStart"
+        android:layout_alignLeft="@id/tvPersonalOrderStart"
+        android:layout_alignRight="@+id/tvPersonalOrderStart"
+        android:layout_alignStart="@id/tvPersonalOrderStart"
+        android:layout_below="@+id/tvPersonalOrderStart"
+        android:gravity="center"
+        android:text="@string/goOrder"
+        android:textColor="#F76E12"
+        android:textSize="32dp" />
+
+
+    <TextView
+        android:id="@+id/tvPersonalOrderPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:gravity="center"
+        android:padding="@dimen/margin_little"
+        android:text="@string/needPay"
+        android:textSize="@dimen/text_large" />
+
+    <include
+        layout="@layout/add_or_reduce_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tvPersonalOrderPay"
+        android:layout_marginBottom="@dimen/margin_little"
+        android:layout_toEndOf="@id/tvPersonalOrderPay"
+        android:layout_toRightOf="@id/tvPersonalOrderPay" />
+
+    <TextView
+        android:id="@+id/btPersonalOrderPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/btn_blue_style"
+        android:padding="@dimen/margin_little"
+        android:text="@string/buy"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_medium" />
+
+
+</RelativeLayout>

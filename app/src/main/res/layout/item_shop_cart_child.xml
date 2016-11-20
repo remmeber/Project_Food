@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.rhg.qf.widget.SwipeDeleteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rl_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        tools:ignore="contentDescription">
+
+
+        <ImageView
+            android:id="@+id/ivCheckGood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_uncheck_green" />
+
+        <ImageView
+            android:id="@+id/ivGoodsLogo"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/ivCheckGood"
+            android:layout_toRightOf="@+id/ivCheckGood"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_pic_failed" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/ivGoodsLogo"
+            android:layout_toRightOf="@+id/ivGoodsLogo"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tvItemChild"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="商品名称"
+                android:textColor="#003333"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tvPriceNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="当前价格"
+                    android:textColor="#ff3a00"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvPriceOld"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/tvPriceNew"
+                    android:layout_toRightOf="@+id/tvPriceNew"
+                    android:text="原先价格"
+                    android:textColor="#8e8e8e"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <include
+                    layout="@layout/add_or_reduce_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lldelete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="?colorAccent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/delete"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</com.rhg.qf.widget.SwipeDeleteLayout>
+
+

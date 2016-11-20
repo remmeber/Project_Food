@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_common_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bt_add_new_address"
+            android:layout_marginTop="@dimen/margin_little">
+
+            <com.rhg.qf.widget.SwipeDeleteRecycleView
+                android:id="@+id/rcy_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/bt_add_new_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/btn_blue_style"
+            android:gravity="center"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            android:text="添加新地址"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</LinearLayout>

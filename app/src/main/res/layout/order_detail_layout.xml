@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btPayOrRateOrConform"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_common_layout" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@color/colorInActive" />
+
+        <include layout="@layout/item_receiver_info" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="@color/colorInActive" />
+
+        <TextView
+            android:id="@+id/tvOrderNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_little"
+            android:paddingBottom="@dimen/margin_little"
+            android:paddingTop="@dimen/margin_little"
+            android:text="@string/tvNote"
+            android:textSize="@dimen/text_medium" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@color/colorInActive" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@color/colorInActive" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_little">
+
+            <TextView
+                android:id="@+id/tvMerchantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toLeftOf="@+id/btDrawback"
+                android:layout_toStartOf="@+id/btDrawback"
+                android:drawableLeft="@drawable/ic_shop_green"
+                android:drawablePadding="@dimen/margin_little"
+                android:drawableStart="@drawable/ic_shop_green"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/margin_little"
+                android:paddingTop="@dimen/margin_little"
+                android:textSize="@dimen/text_big"
+                tools:text="黄焖鸡米饭" />
+
+            <Button
+                android:id="@+id/btDrawback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tvMerchantName"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tvMerchantName"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_little"
+                android:layout_marginRight="@dimen/margin_little"
+                android:background="@drawable/ease_btn_blue_selector"
+                android:minHeight="0dp"
+                android:text="@string/tvDrawback"
+                android:textSize="@dimen/text_big" />
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@drawable/virtual_line"
+            android:layerType="software" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcyPayItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_little" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@drawable/virtual_line"
+            android:layerType="software" />
+
+        <include
+            layout="@layout/item_total_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_little" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@color/colorInActive" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btPayOrRateOrConform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_little"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_little"
+        android:background="@drawable/ease_btn_blue_selector"
+        android:gravity="center"
+        android:padding="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:textSize="@dimen/text_large"
+        tools:text="@string/goPay" />
+</RelativeLayout>

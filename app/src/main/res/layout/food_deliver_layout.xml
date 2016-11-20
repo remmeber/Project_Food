@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_common_layout" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:src="@mipmap/deliver" />
+
+    <com.rhg.qf.widget.LineProgress
+        android:id="@+id/food_receive_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_small"
+        app:lineProgressBackground="@color/colorInActive"
+        app:lineProgressColor="@color/colorBlueNormal"
+        app:lineProgressHeight="10dp"
+        app:lineProgressTextColor="@color/colorBlueNormal"
+        app:lineProgressTextDefaultColor="@color/colorInActive"
+        app:lineProgressTextSize="@dimen/text_medium"
+        app:marginBetweenTextAndBar="@dimen/margin_little" />
+
+    <TextView
+        android:id="@+id/bt_conform_receive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:background="@drawable/tv_search_bg"
+        android:gravity="center"
+        android:padding="@dimen/margin_small"
+        android:text="@string/conformReceive"
+        android:textSize="@dimen/text_medium" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <View
+            android:id="@+id/line_1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@drawable/virtual_line" />
+
+        <View
+            android:id="@+id/line_2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/line_1"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/virtual_line" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@color/white"
+            android:paddingEnd="@dimen/margin_little"
+            android:paddingLeft="@dimen/margin_little"
+            android:paddingRight="@dimen/margin_little"
+            android:paddingStart="@dimen/margin_little"
+            android:text="@string/rate"
+            android:textSize="@dimen/text_medium" />
+
+        <TextView
+            android:id="@+id/tv_mouth_feel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="45dp"
+            android:text="@string/mouthFeel"
+            android:textSize="@dimen/text_medium" />
+
+        <com.rhg.qf.widget.MyRatingBar
+            android:id="@+id/rb_mouth_feel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_mouth_feel"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:space_width="2dp"
+            app:star_height="@dimen/material_size_standard"
+            app:star_hollow="@drawable/star_gray"
+            app:star_max="5"
+            app:star_rating="0"
+            app:star_solid="@drawable/star_blue"
+            app:star_width="@dimen/material_size_standard" />
+
+        <TextView
+            android:id="@+id/tv_deliver_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="90dp"
+            android:text="@string/deliverService"
+            android:textSize="@dimen/text_medium" />
+
+        <com.rhg.qf.widget.MyRatingBar
+            android:id="@+id/rb_deliver_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_deliver_service"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:space_width="2dp"
+            app:star_height="@dimen/material_size_standard"
+            app:star_hollow="@drawable/star_gray"
+            app:star_max="5"
+            app:star_rating="0"
+            app:star_solid="@drawable/star_blue"
+            app:star_width="@dimen/material_size_standard" />
+
+        <TextView
+            android:id="@+id/bt_finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rb_deliver_service"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/btn_blue_bg_normal"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="@string/finish"
+            android:textSize="@dimen/text_medium" />
+    </RelativeLayout>
+</LinearLayout>

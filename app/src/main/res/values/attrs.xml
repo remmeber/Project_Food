@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="border_overlay" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="ShoppingCartWithNumber">
+        <attr name="tint_color" format="color" />
+        <attr name="text_size" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="VerticalTabLayout">
+        <!--一个条目的高度-->
+        <attr name="item_height" format="dimension" />
+        <!--一个条目的宽度-->
+        <attr name="item_width" format="dimension" />
+        <!--一个条目的字体大小-->
+        <attr name="item_text_size" format="dimension" />
+        <!--一个条目的未选择的字体颜色-->
+        <attr name="item_unclick_text_color" format="color" />
+        <!--一个条目的选择的字体颜色-->
+        <attr name="item_click_text_color" format="color" />
+        <!--一个条目的未选择的背景颜色-->
+        <attr name="item_unclick_bg_color" format="color" />
+        <!--一个条目的选择的背景颜色-->
+        <attr name="item_click_bg_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="MyRatingBar">
+        <attr name="space_width" format="dimension" />
+        <attr name="star_width" format="dimension" />
+        <attr name="star_height" format="dimension" />
+        <attr name="star_max" format="integer" />
+        <attr name="star_rating" format="float" />
+        <attr name="star_hollow" format="reference" />
+        <attr name="star_solid" format="reference" />
+        <attr name="star_isIndicator" format="boolean" />
+        <attr name="star_orientation" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="ProgressWheel">
+        <attr name="pwText" format="string" />
+        <attr name="pwTextColor" format="color" />
+        <attr name="pwTextSize" format="dimension" />
+        <attr name="pwBarColor" format="color" />
+        <attr name="pwRimColor" format="color" />
+        <attr name="pwRimWidth" format="dimension" />
+        <attr name="pwSpinSpeed" format="dimension" />
+        <attr name="pwDelayMillis" format="integer" />
+        <attr name="pwCircleColor" format="color" />
+        <attr name="pwRadius" format="dimension" />
+        <attr name="pwBarWidth" format="dimension" />
+        <attr name="pwBarLength" format="dimension" />
+        <attr name="pwContourColor" format="color" />
+        <attr name="pwContourSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="LineProgress">
+        <attr name="marginBetweenTextAndBar" format="dimension|reference" />
+        <attr name="lineProgressBackground" format="color|reference" />
+        <attr name="lineProgressColor" format="color|reference" />
+        <attr name="lineProgressHeight" format="dimension|reference" />
+        <attr name="lineProgressTextSize" format="dimension|reference" />
+        <attr name="lineProgressTextDefaultColor" format="color|reference" />
+        <attr name="lineProgressTextColor" format="color|reference" />
+    </declare-styleable>
+</resources>

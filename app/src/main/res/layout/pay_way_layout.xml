@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cv_goods_bg"
+    android:orientation="vertical"
+    tools:ignore="contentDescription">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_little"
+        android:background="@drawable/tv_search_bg"
+        android:padding="@dimen/margin_little"
+        android:text="支付方式" />
+
+    <LinearLayout
+        android:id="@+id/wechat_pay_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_little"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_wxpay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="微信支付" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_wxpay"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_wepay_check"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_check_green" />
+
+                <ImageView
+                    android:id="@+id/iv_wepay"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_wechat_pay_green_128dp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/alipay_ll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_alipay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="支付宝支付" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_alipay"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_alipay_check"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_uncheck_green" />
+
+                <ImageView
+                    android:id="@+id/iv_alipay"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_alipay_green_128dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

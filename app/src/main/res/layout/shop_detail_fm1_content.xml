@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.rhg.qf.widget.VerticalTabLayout
+        android:id="@+id/vt_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:item_click_bg_color="@color/colorBlueNormal"
+        app:item_click_text_color="@color/white"
+        app:item_height="40dp"
+        app:item_text_size="18sp"
+        app:item_unclick_bg_color="@color/colorBlueLight"
+        app:item_unclick_text_color="@color/black"
+        app:item_width="100dp"
+        tools:background="@color/colorRecommend_Red" />
+
+    <FrameLayout
+        android:id="@+id/fl_shop_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

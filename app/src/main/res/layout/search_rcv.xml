@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorInActive" />
+
+    <TextView
+        android:id="@+id/home_search"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/tv_search_bg"
+        android:drawableLeft="@drawable/ic_search_green"
+        android:drawablePadding="@dimen/margin_small"
+        android:drawableStart="@drawable/ic_search_green"
+        android:gravity="center_vertical"
+        android:hint="@string/searchHint"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_small"
+        android:textColor="@color/colorSearchHint"
+        android:textSize="@dimen/text_medium" />
+
+    <TextView
+        android:id="@+id/VipText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/colorBlueNormal"
+        android:drawableLeft="@drawable/ic_speaker"
+        android:drawablePadding="@dimen/margin_small"
+        android:drawableStart="@drawable/ic_speaker"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_small"
+        tools:text="dddddd" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorInActive" />
+
+</LinearLayout>

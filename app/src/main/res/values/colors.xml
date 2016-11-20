@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPageBackground">#F2F2F2</color>
+    <color name="dark">#FF222222</color>
+    <color name="colorGreenFocus">#64A600</color>
+    <color name="colorBlueLight">#5542B4D9</color>
+    <color name="colorBlueMedium">#AA42B4D9</color>
+    <color name="colorBlueNormal">#FF42B4D9</color>
+    <color name="colorYellowNormal">#FFC602</color>
+    <color name="colorYellowLight">#55FFC602</color>
+    <color name="colorToolbarGreen">#8DC73F</color>
+    <color name="colorState">#BACC64</color>
+    <color name="colorShop">#A0BAE967</color>
+    <color name="colorSign">#BEE767</color>
+    <color name="colorInActive">#BFBFBF</color>
+    <color name="colorGrayLight">#55BFBFBF</color>
+    <color name="colorTab">#F7F8DD</color>
+    <color name="colorSearchHint">#CFCFCD</color>
+    <color name="colorProfile">#F1F0F8</color>
+    <color name="colorOrderTab">#EEEEEE</color>
+    <color name="colorTextOrder">#797979</color>
+    <color name="colorBackground">#ECECEC</color>
+    <color name="colorRecommend_Red">#ED4C14</color>
+    <color name="colorPay_Red">#FD3F3F</color>
+    <color name="colorDel_Red">#EE514A</color>
+    <color name="light">#FFEEEEEE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_light">#00FFFFFF</color>
+    <color name="tabUnSelectColor">#797979</color>
+    <color name="black">#AA000000</color>
+    <color name="searchShadow">#80000000</color>
+
+</resources>

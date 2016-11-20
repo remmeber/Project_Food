@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_shopping_cart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_common_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_shopping_cart_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rl_shopping_cart_pay"
+            android:background="#FCFCFC"
+            android:visibility="gone">
+
+
+            <ImageView
+                android:id="@+id/iv_shopping_cart_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@mipmap/ic_shopping_cart_empty"
+                tools:ignore="contentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_shopping_cart_empty"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/enptyShoppingCart" />
+        </RelativeLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_shopping_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rl_shopping_cart_pay">
+
+            <com.rhg.qf.widget.SwipeDeleteExpandListView
+                android:id="@+id/list_shopping_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPageBackground" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_shopping_cart_pay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/white"
+            android:clipToPadding="true"
+            android:fitsSystemWindows="true">
+
+            <TextView
+                android:id="@+id/tv_need_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="@string/needPay"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:id="@+id/tv_count_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/tv_need_pay"
+                android:layout_toRightOf="@id/tv_need_pay"
+                android:text="@string/countMoney"
+                android:textColor="@color/colorPay_Red"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="110dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@drawable/btn_blue_style"
+                android:gravity="center"
+                android:text="@string/countGoods"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_big" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

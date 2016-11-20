@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llGoodLeft"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivReduce"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_reduce_green"
+        tools:ignore="contentDescription" />
+
+    <EditText
+        android:id="@+id/etNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@id/ivReduce"
+        android:layout_toRightOf="@id/ivReduce"
+        android:background="@null"
+        android:gravity="center"
+        android:paddingLeft="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_medium"
+        android:text="1"
+        android:textSize="@dimen/text_big" />
+
+    <ImageView
+        android:id="@+id/ivAdd"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/etNum"
+        android:layout_toRightOf="@id/etNum"
+        android:src="@drawable/ic_add_green"
+        tools:ignore="contentDescription" />
+
+</RelativeLayout>

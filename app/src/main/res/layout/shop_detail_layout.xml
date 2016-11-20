@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="contentDescription">
+
+    <include layout="@layout/toolbar_common_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_shop_detail_logo"
+            android:layout_width="match_parent"
+            android:layout_height="135dp"
+            android:scaleType="fitXY"
+            tools:src="@drawable/ic_pic_failed" />
+
+
+        <TextView
+            android:id="@+id/tv_shop_detail_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_shop_detail_logo"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorShop"
+            android:drawableLeft="@drawable/ic_shop_green"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableStart="@drawable/ic_shop_green"
+            android:padding="@dimen/margin_little"
+            android:textSize="@dimen/text_large"
+            tools:text="哈哈" />
+
+        <com.flyco.tablayout.SlidingTabLayout
+            android:id="@+id/stl_shop_detail"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/iv_shop_detail_logo"
+            app:tl_indicator_color="@color/colorBlueNormal"
+            app:tl_indicator_height="6dp"
+            app:tl_indicator_width="80dp"
+            app:tl_tab_space_equal="true"
+            app:tl_textSelectColor="@color/colorBlueNormal"
+            app:tl_textUnselectColor="@color/black"
+            app:tl_textsize="@dimen/text_medium"
+            tools:background="@color/black" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_shop_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

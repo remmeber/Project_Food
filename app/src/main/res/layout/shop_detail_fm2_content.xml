@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cv_goods_bg"
+        android:paddingTop="@dimen/margin_little">
+
+        <ImageView
+            android:id="@+id/iv_shop_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_shop" />
+
+
+        <TextView
+            android:id="@+id/tv_shop_phone_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_shop_logo"
+            android:layout_marginLeft="@dimen/margin_little"
+            android:layout_marginStart="@dimen/margin_little"
+            android:layout_toEndOf="@id/iv_shop_logo"
+            android:layout_toRightOf="@id/iv_shop_logo"
+            android:textSize="@dimen/text_medium"
+            tools:text="0123456789:" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/iv_shop_logo"
+            android:layout_alignStart="@+id/iv_shop_logo"
+            android:layout_below="@+id/iv_shop_logo"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@color/colorInActive" />
+
+        <TextView
+            android:id="@+id/tv_shop_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_shop_phone_num"
+            android:layout_alignStart="@id/tv_shop_phone_num"
+            android:layout_below="@+id/iv_shop_logo"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:maxLines="3"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            android:textSize="@dimen/text_medium"
+            tools:text="地址:ddddddddddddddd" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_seller_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:paddingBottom="@dimen/margin_little"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/margin_little"
+        android:textSize="@dimen/text_medium"
+        tools:text="商家备注:" />
+
+</LinearLayout>

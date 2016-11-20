@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_common_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="@string/phoneNumber"
+            android:textSize="@dimen/text_medium" />
+
+        <EditText
+            android:id="@+id/et_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:background="@null"
+            android:inputType="phone"
+            android:textColorHint="@color/colorTextOrder" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_check_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="@string/checkNumber"
+            android:textSize="@dimen/text_medium" />
+
+        <EditText
+            android:id="@+id/et_check_number"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_toEndOf="@id/tv_check_number"
+            android:layout_toLeftOf="@id/et_check_number"
+            android:layout_toRightOf="@id/tv_check_number"
+            android:layout_toStartOf="@id/et_check_number"
+            android:background="@null"
+            android:inputType="number"
+            android:textColorHint="@color/colorTextOrder" />
+
+        <TextView
+            android:id="@+id/bt_check_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tv_search_bg"
+            android:gravity="center"
+            android:minHeight="0dp"
+            android:padding="@dimen/margin_little"
+            android:text="@string/getCheckNumber"
+            android:layout_alignBottom="@+id/tv_check_number"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_agreement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/tv_search_bg"
+        android:isScrollContainer="true"
+        android:maxLines="10"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingEnd="@dimen/margin_little"
+        android:paddingLeft="@dimen/margin_little"
+        android:paddingRight="@dimen/margin_little"
+        android:paddingStart="@dimen/margin_little"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:scrollbarFadeDuration="1000"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
+        android:text="@string/agreement" />
+
+    <TextView
+        android:id="@+id/tv_after_read_agreement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:drawableLeft="@drawable/ic_uncheck_green"
+        android:drawablePadding="@dimen/margin_little"
+        android:drawableStart="@drawable/ic_uncheck_green"
+        android:gravity="center"
+        android:text="@string/haveRead" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/complete_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:background="@color/colorBlueNormal"
+            android:gravity="center"
+            android:text="@string/completeRegister"
+            android:textSize="@dimen/text_big" />
+    </RelativeLayout>
+</LinearLayout>

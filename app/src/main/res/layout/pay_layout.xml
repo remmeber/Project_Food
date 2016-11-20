@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorProfile"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar_common_layout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_little"
+        android:background="@color/colorInActive" />
+
+    <include layout="@layout/item_receiver_info" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorInActive" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_little">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_item_pay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/pay_content_include" />
+
+
+        <Button
+            android:id="@+id/bt_pay_affirmance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_little"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/margin_little"
+            android:background="@drawable/btn_blue_style"
+            android:gravity="center"
+            android:text="@string/tvPayAffirmance"
+            android:textSize="@dimen/text_large" />
+
+        <include
+            android:id="@+id/pay_content_include"
+            layout="@layout/pay_way_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bt_pay_affirmance"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_order_info"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/tv_order_ind"
+        android:layout_toStartOf="@+id/tv_order_ind">
+
+        <TextView
+            android:id="@+id/tv_order_merchant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small"
+            android:textSize="@dimen/text_big"
+            tools:text="米其林餐厅" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small"
+            android:layout_toLeftOf="@+id/tv_order_money"
+            android:layout_toStartOf="@+id/tv_order_money"
+            android:textSize="@dimen/text_big"
+            tools:text="配送费" />
+
+        <TextView
+            android:id="@+id/tv_order_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textColor="@color/colorRecommend_Red"
+            android:textSize="@dimen/text_big"
+            tools:text="@string/countMoney" />
+
+        <TextView
+            android:id="@+id/tv_order_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:textSize="@dimen/text_medium"
+            tools:text="@string/tvOrderNumber" />
+
+        <TextView
+            android:id="@+id/tv_order_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:textSize="@dimen/text_medium"
+            tools:text="@string/tvDistance" />
+
+
+        <View
+            android:id="@+id/view_order_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            tools:background="@color/colorGreenNormal" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_order_ind"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:paddingEnd="@dimen/margin_little"
+        android:paddingLeft="@dimen/margin_little"
+        android:paddingRight="@dimen/margin_little"
+        android:paddingStart="@dimen/margin_little"
+        android:textSize="@dimen/text_big"
+        tools:text="确认收货" />
+
+</RelativeLayout>

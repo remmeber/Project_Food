@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ly_totalCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="36dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/tv_state_bg"
+        android:gravity="center"
+        android:text="@string/tvSummation"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_medium" />
+
+    <TextView
+        android:id="@+id/tv_totalMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
+        android:gravity="center"
+        android:text="@string/countMoney"
+        android:textColor="@color/colorRecommend_Red" />
+</LinearLayout>
