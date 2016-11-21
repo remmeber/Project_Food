@@ -37,7 +37,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     private MyLocationListener mLocationListener;
     protected View view;
     protected Activity mActivity;
-//    private Unbinder bind;
 
     public BaseFragment() {
     }
@@ -178,15 +177,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         }
         locationService.setLocationOption(locationService.getDefaultLocationClientOption());
         locationService.registerListener(mLocationListener);
-//        getLocation(locationService, mLocationListener);
         mLocationListener.getLocation(locationService);
     }
 
     public MyLocationListener getLocationListener() {
         return null;
-    }
-
-    public void getLocation(LocationService locationService, MyLocationListener mLocationListener) {
     }
 
     /*默认不定位，如果需要定位，子类需要重写该方法*/

@@ -26,6 +26,7 @@
         android:id="@+id/ll_header_seller_name"
         android:layout_width="match_parent"
         android:layout_height="22dp"
+        android:layout_marginTop="@dimen/margin_little"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp">
 
@@ -63,17 +64,6 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_chevron_right_blue"
             tools:ignore="contentDescription" />
-
-        <!--<View
-            android:id="@+id/headerline"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/virtual_line"
-            android:visibility="gone"
-            android:layerType="software" />-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -89,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:textSize="@dimen/text_small"
             tools:text="bbbbbb" />
 
@@ -98,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_big"
             android:layout_marginStart="@dimen/margin_big"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@id/headerdemandmoney"
             android:layout_toRightOf="@id/headerdemandmoney"
             android:textSize="@dimen/text_small"
@@ -107,6 +99,7 @@
             android:id="@+id/headerdistanceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
@@ -115,14 +108,5 @@
             tools:text="aaaaaa" />
 
     </RelativeLayout>
-
-
-    <!--</RelativeLayout>-->
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/colorInActive" />-->
 
 </LinearLayout>

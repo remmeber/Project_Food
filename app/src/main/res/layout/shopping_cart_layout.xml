@@ -27,16 +27,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@mipmap/ic_shopping_cart_empty"
+                android:background="@mipmap/ic_shopping_cart_empty_9"
                 tools:ignore="contentDescription" />
 
             <TextView
+                android:id="@+id/tv_shopping_cart_ind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/iv_shopping_cart_empty"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="@string/enptyShoppingCart" />
+                android:layout_marginTop="10dp" />
         </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout

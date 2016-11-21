@@ -2,11 +2,8 @@ package com.rhg.qf.widget;
 
 import android.content.Context;
 import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 /**
@@ -18,43 +15,45 @@ import android.widget.ExpandableListView;
 public class SwipeDeleteExpandListView extends ExpandableListView implements NestedScrollingChild {
 
     SwipeDeleteLayout mExpandedLayout;
-    private NestedScrollingChildHelper mScrollingChildHelper;
 
     public SwipeDeleteExpandListView(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
 
     public SwipeDeleteExpandListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public SwipeDeleteExpandListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
+    private void init() {
         ViewCompat.setNestedScrollingEnabled(this, true);
 
     }
 
     @Override
-    public boolean canScrollVertically(int direction) {
+    final public boolean canScrollVertically(int direction) {
         if (hasExpandState()) {
             if (mExpandedLayout.getState() == SwipeDeleteLayout.EXPAND)
-                mExpandedLayout.shrink();
+                close();
             return false;
         }
-        Log.i("RHG", "CHECK SCROLL");
         return false;
     }
 
 
-    boolean hasExpandState() {
+    public boolean hasExpandState() {
         return mExpandedLayout != null;
+    }
+
+    public void close(){
+        mExpandedLayout.shrink();
     }
 
 
@@ -95,13 +94,13 @@ public class SwipeDeleteExpandListView extends ExpandableListView implements Nes
     }
 
 
-    /**
+   /* *//**
      * 获取点击的item position
      *
      * @param adapter
      * @param clickPosition
      * @return
-     */
+     *//*
     private Position getPosition(ExpandableListAdapter adapter, int clickPosition) {
         Position position = new Position();
         int totalCount = 0;
@@ -146,6 +145,6 @@ public class SwipeDeleteExpandListView extends ExpandableListView implements Nes
         public String toString() {
             return "Group: " + group + " Child: " + child;
         }
-    }
+    }*/
 
 }

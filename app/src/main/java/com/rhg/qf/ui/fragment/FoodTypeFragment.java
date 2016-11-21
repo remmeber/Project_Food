@@ -32,7 +32,6 @@ import butterknife.Bind;
  * email：1013773046@qq.com
  */
 public class FoodTypeFragment extends BaseFragment implements RcvItemClickListener<ShopDetailUrlBean.ShopDetailBean> {
-    //    private int tag;
     List<ShopDetailUrlBean.ShopDetailBean> shopDetailBeanList;
     GoodsListAdapter goodsListAdapter;
     ShopDetailPresenter shopDetailPresenter;
@@ -80,7 +79,6 @@ public class FoodTypeFragment extends BaseFragment implements RcvItemClickListen
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                /*shopDetailPresenter.getShopDetail(AppConstants.TABLE_FOOD, merchantId);*/
                 if (refreshListener != null)
                     refreshListener.load();
                 else
@@ -111,27 +109,14 @@ public class FoodTypeFragment extends BaseFragment implements RcvItemClickListen
 
     @Override
     public void showSuccess(Object o) {
-       /* shopDetailBeanList = (List<ShopDetailUrlBean.ShopDetailBean>) o;
-        if (goodsListAdapter != null) {
-            goodsListAdapter.setShopDetailBeanList(shopDetailBeanList);
-            goodsListAdapter.notifyDataSetChanged();
-        }
-        if (commonSwipe.isRefreshing())
-            commonSwipe.setRefreshing(false);
-        if (commonRefresh.getVisibility() == View.VISIBLE)
-            commonRefresh.setVisibility(View.GONE);*/
     }
 
     @Override
     public void onItemClickListener(View view,int position, ShopDetailUrlBean.ShopDetailBean item) {
         Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-        /*intent.putExtra(AppConstants.KEY_FOOD_ID, "20160518");
-        intent.putExtra(AppConstants.KEY_PRODUCT_NAME, "土豆丝");
-        intent.putExtra(AppConstants.KEY_PRODUCT_PRICE, "90");*/
         intent.putExtra(AppConstants.KEY_MERCHANT_ID, merchantId);
         intent.putExtra(AppConstants.KEY_MERCHANT_NAME, merchantName);
         intent.putExtra(AppConstants.KEY_PRODUCT_ID, item.getID());
-//        intent.putExtra() //todo 传递参数
         startActivityForResult(intent, 1, ActivityOptionsCompat.makeScaleUpAnimation(view,(int)view.getX(),(int)view.getY(),view.getWidth(),view.getHeight()).toBundle());
     }
 

@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 public class FoodsDetailAdapter extends RecyclerView.Adapter<FoodsDetailAdapter.FoodListViewHolder> {
 
     Context context;
-    OrderDetailUrlBean.OrderDetailBean foodsBeanList;
+    private OrderDetailUrlBean.OrderDetailBean foodsBeanList;
 
     public FoodsDetailAdapter(Context context, OrderDetailUrlBean.OrderDetailBean foodsBeanList) {
         this.context = context;
@@ -63,7 +63,7 @@ public class FoodsDetailAdapter extends RecyclerView.Adapter<FoodsDetailAdapter.
                 foodsBeanList.getFoods() == null ? 0 : foodsBeanList.getFoods().size() + 1;
     }
 
-    public class FoodListViewHolder extends RecyclerView.ViewHolder {
+    class FoodListViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_food_name)
         TextView tvFoodName;
         @Bind(R.id.tv_food_price)
@@ -71,7 +71,7 @@ public class FoodsDetailAdapter extends RecyclerView.Adapter<FoodsDetailAdapter.
         @Bind(R.id.tv_food_num)
         TextView tvFoodNum;
 
-        public FoodListViewHolder(View itemView) {
+        FoodListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

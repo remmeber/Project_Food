@@ -104,22 +104,17 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
     @Override
     protected void initData() {
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbCenterTv.setText(getResources().getString(R.string.myOrder));
+        tbCenterTv.setText(getResources().getString(R.string.orderDetail));
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         ivEditRight.setVisibility(View.GONE);
         tvEdit.setVisibility(View.GONE);
-        /*if (orderTag != AppConstants.USER_ORDER_DELIVERING)
-            btDrawback.setVisibility(View.GONE);*/
-        /*recycleview*/
         rcyPayItem.setLayoutManager(new LinearLayoutManager(this));
         rcyPayItem.setHasFixedSize(true);
         foodsDetailAdapter = new FoodsDetailAdapter(this, foodBean);
         rcyPayItem.setAdapter(foodsDetailAdapter);
-        /*recycleview*/
         tvMerchantName.setText(merchantName);
         lyTotalCount.setVisibility(View.VISIBLE);
-        tvTotalMoney.setText(String.format(Locale.ENGLISH, "%s", ""
-               /* String.valueOf((Float.valueOf(orderPrice) + AppConstants.DELIVER_FEE))*/));
+        tvTotalMoney.setText(String.format(Locale.ENGLISH, "%s", ""));
         setText(btPayOrRateOrConform);
     }
 
@@ -158,12 +153,10 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
                 orderDetail.getPhone()));
         tvReceiverAddress.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvReceiveAddress),
                 orderDetail.getAddress()));
-        tvOrderNote.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvNote),
-                /*TODO 缺少note*/"无"));
-        tvMerchantName.setText("");/*接口中订单名字*/
+        tvOrderNote.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvNote),"无"));
+        tvMerchantName.setText(merchantName);
         tvTotalMoney.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.countMoney),
                 DecimalUtil.addWithScale(orderDetail.getFee(), orderDetail.getPrice(), 2)));
-
         foodsDetailAdapter.setFoodsBeanList(orderDetail);
     }
 

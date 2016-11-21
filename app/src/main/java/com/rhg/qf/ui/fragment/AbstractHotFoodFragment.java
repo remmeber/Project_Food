@@ -80,7 +80,7 @@ public abstract class AbstractHotFoodFragment extends BaseFragment implements Rc
         commonRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
         commonRecycle.addItemDecoration(new RecycleViewDivider(getContext(),
                 LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(5),
-                ContextCompat.getColor(getContext(), R.color.colorGrayLight)));
+                ContextCompat.getColor(getContext(), R.color.white_light)));
         hotFoodAdapter = new HotFoodAdapter(getContext(), hotFoodBeanList);
         hotFoodAdapter.setOnRcvItemClickListener(this);
         commonRecycle.setAdapter(hotFoodAdapter);

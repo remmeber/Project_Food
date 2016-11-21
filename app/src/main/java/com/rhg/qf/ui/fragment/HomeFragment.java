@@ -178,9 +178,6 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         return InitApplication.getInstance().locationService;
     }
 
-    @Override
-    public void getLocation(LocationService locationService, MyLocationListener mLocationListener) {
-    }
 
     @Override
     public MyLocationListener getLocationListener() {

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -270,13 +269,13 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
         void removeData(String merchantId, String foodId);
     }
 
-    class GroupViewHolder {
+    private class GroupViewHolder {
         ImageView btGroupCheck;
         TextView tvShopName;
         ImageView btForwardShop;
     }
 
-    class ChildViewHolder {
+    private class ChildViewHolder {
         RelativeLayout rlChild;
         /*商品选中*/
         ImageView btGoodsCheck;
@@ -293,7 +292,7 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
         /*商品数量*/
         TextView goodsCount;
         /*删除*/
-        LinearLayout delete;
+        RelativeLayout delete;
 
         ChildViewHolder(View view) {
             rlChild = (RelativeLayout) view.findViewById(R.id.rl_child);
@@ -304,7 +303,7 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
             btReduceNum = (ImageView) view.findViewById(R.id.ivReduce);
             btAddNum = (ImageView) view.findViewById(R.id.ivAdd);
             goodsCount = (TextView) view.findViewById(R.id.etNum);
-            delete = (LinearLayout) view.findViewById(R.id.lldelete);
+            delete = (RelativeLayout) view.findViewById(R.id.lldelete);
             goodsCount.setFocusable(false);
         }
     }

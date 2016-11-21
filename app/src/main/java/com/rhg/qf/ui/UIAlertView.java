@@ -12,7 +12,7 @@ import com.rhg.qf.R;
  *time 2016/10/20 12:57
  *email 1013773046@qq.com
  */
-public class UIAlertView extends BaseDiaglogView {
+public class UIAlertView extends BaseDialogView {
 
     private String title;
     private String message;

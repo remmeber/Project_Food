@@ -94,32 +94,75 @@
 
 
 # 友盟
+-dontusemixedcaseclassnames
 -dontshrink
 -dontoptimize
 -dontwarn com.google.android.maps.**
--dontwarn android.webkit.WebViewClient
--dontwarn android.net.http.SslCertificate
+-dontwarn android.webkit.WebView
 -dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
 -keep public class javax.**
--keep public class android.webkit.WebViewClient
--keep public class android.net.http.SslCertificate
+-keep public class android.webkit.**
 -dontwarn android.support.v4.**
 -keepattributes Exceptions,InnerClasses,Signature
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 
--keep class com.tencent.connect.** {*;}
--dontwarn com.tencent.connect.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
 
+-keep public class com.umeng.socialize.* {*;}
+
+
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.umeng.socialize.handler.**
+-keep class com.umeng.socialize.handler.*
+-keep class com.umeng.weixin.handler.**
+-keep class com.umeng.weixin.handler.*
+-keep class com.umeng.qq.handler.**
+-keep class com.umeng.qq.handler.*
+-keep class UMMoreHandler{*;}
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements   com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+-keep class com.tencent.mm.sdk.** {
+ *;
+}
+
+-keep class com.tencent.** {*;}
+-dontwarn com.tencent.**
+-keep public class com.umeng.com.umeng.soexample.R$*{
+public static final int *;
+}
 -keepclassmembers enum * {
 public static **[] values();
 public static ** valueOf(java.lang.String);
 }
+
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}
+
+
 -keepnames class * implements android.os.Parcelable {
 public static final ** CREATOR;
 }
 
 -keepattributes Signature
+
+
+-dontwarn android.webkit.WebViewClient
+-dontwarn android.net.http.SslCertificate
+-keep public class android.webkit.WebViewClient
+-keep public class android.net.http.SslCertificate
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface

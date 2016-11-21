@@ -19,20 +19,20 @@ import com.rhg.qf.R;
  *email 1013773046@qq.com
  */
 
-public abstract class BaseDiaglogView extends Dialog {
+public abstract class BaseDialogView extends Dialog {
 
     private Context context;
     private boolean cancelable;
     private int resId;
     private UIAlertView.ClickListenerInterface clickListenerInterface;
 
-    public BaseDiaglogView(Context context, int resId) {
+    BaseDialogView(Context context, int resId) {
         super(context, R.style.MyDialogStyle);
         this.cancelable = false;
         this.context = context;
         this.resId = resId;
     }
-    public BaseDiaglogView(Context context,int resId,boolean cancelable){
+    BaseDialogView(Context context, int resId, boolean cancelable){
         super(context,R.style.MyDialogStyle);
         this.context = context;
         this.cancelable = cancelable;
