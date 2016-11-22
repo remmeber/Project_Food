@@ -225,9 +225,9 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
             case R.id.iv_wepay:
                 if (PayType.WeixinPay.equals(payType))
                     return;
-                ivWxpayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_green));
+                ivWxpayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_blue));
                 if (PayType.AliPay.equals(payType)) {
-                    ivAlipayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_green));
+                    ivAlipayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_blue));
                     payType = PayType.WeixinPay;
                     break;
                 }
@@ -240,10 +240,10 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
             case R.id.iv_alipay:
                 if (PayType.AliPay.equals(payType))
                     return;
-                ivAlipayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_green));
+                ivAlipayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_blue));
 
                 if (PayType.WeixinPay.equals(payType)) {
-                    ivWxpayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_green));
+                    ivWxpayCheck.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_blue));
                     payType = PayType.AliPay;
                     break;
                 }

@@ -60,11 +60,11 @@ public class WXPayEntryActivity extends BaseAppcompactActivity implements IWXAPI
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (resp.errCode == BaseResp.ErrCode.ERR_OK) {
 
-                ivPayResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_right_blue));
+                ivPayResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_success_blue));
                 tvPayResult.setText("支付成功");
             } else {
                 Log.i("RHG", "微信支付错误码:" + resp.errCode);
-                ivPayResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_wrong_blue));
+                ivPayResult.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_fail_blue));
                 tvPayResult.setText("支付失败");
             }
 

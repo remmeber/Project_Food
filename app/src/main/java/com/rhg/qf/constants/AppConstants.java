@@ -14,8 +14,8 @@ public class AppConstants {
     public static boolean DEBUG = false;
     public static final String f_Path = Environment.getExternalStorageDirectory() + "/QFood";
 
-    public static final int[] IMAGE_INDICTORS = new int[]{R.drawable.ic_page_indicator,
-            R.drawable.ic_page_indicator_focused};
+    public static final int[] IMAGE_INDICTORS = new int[]{R.drawable.ic_page_indicator_9,
+            R.drawable.ic_page_indicator_focused_9};
     public static final String[] SHOP_DETAIL_TITLES = new String[]{"菜品", "店铺详情"};
     public static final String[] SELL_TITLES = new String[]{"按销量", "按距离", "按评分"};
     public static final String[] ORDER_TITLES = new String[]{"待付款", "进行中", "已完成", "已退款"};

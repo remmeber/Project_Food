@@ -133,7 +133,7 @@
             app:star_hollow="@drawable/ic_star_gray"
             app:star_max="5"
             app:star_rating="0"
-            app:star_solid="@drawable/ic_star_green"
+            app:star_solid="@drawable/ic_star_blue"
             app:star_width="@dimen/material_size_medium" />
 
         <TextView

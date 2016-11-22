@@ -98,9 +98,9 @@ public class AddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void setImage(String isChecked, ImageView ivCheck) {
         if ("1".equals(isChecked)) {
-            ivCheck.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_check_green));
+            ivCheck.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_check_blue));
         } else
-            ivCheck.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_uncheck_green));
+            ivCheck.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_uncheck_blue));
 
     }
 

@@ -54,9 +54,9 @@ public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.PayItemV
             holder.tvPayTitle.setText(payList.get(position).getMerchantName());
         else holder.tvPayTitle.setText(payList.get(position).getProductName());
         if (payList.get(position).isChecked())
-            holder.ivItemPay.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_check_green));
+            holder.ivItemPay.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_check_blue));
         else
-            holder.ivItemPay.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_uncheck_green));
+            holder.ivItemPay.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_uncheck_blue));
         holder.ivItemPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

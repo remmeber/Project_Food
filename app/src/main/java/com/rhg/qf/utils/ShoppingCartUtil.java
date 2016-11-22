@@ -106,9 +106,9 @@ public class ShoppingCartUtil {
      */
     public static boolean checkItem(boolean isSelect, ImageView ivCheck) {
         if (isSelect) {
-            ivCheck.setImageResource(R.drawable.ic_check_green);
+            ivCheck.setImageResource(R.drawable.ic_check_blue);
         } else {
-            ivCheck.setImageResource(R.drawable.ic_uncheck_green);
+            ivCheck.setImageResource(R.drawable.ic_uncheck_blue);
         }
         return isSelect;
     }

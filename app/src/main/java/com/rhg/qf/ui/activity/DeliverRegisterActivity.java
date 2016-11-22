@@ -120,11 +120,11 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
             case R.id.tv_after_read_agreement:
                 if (!isChecked) {
                     isChecked = true;
-                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_check_green),
+                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_check_blue),
                             null, null, null);
                 } else {
                     isChecked = false;
-                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_green),
+                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_blue),
                             null, null, null);
                 }
                 break;

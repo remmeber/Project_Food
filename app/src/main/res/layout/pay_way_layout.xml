@@ -49,13 +49,13 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_check_green" />
+                    android:src="@drawable/ic_check_blue" />
 
                 <ImageView
                     android:id="@+id/iv_wepay"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_wechat_pay_green_128dp" />
+                    android:src="@drawable/ic_wechat_pay_blue_128dp" />
             </LinearLayout>
 
 
@@ -86,13 +86,13 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_uncheck_green" />
+                    android:src="@drawable/ic_uncheck_blue" />
 
                 <ImageView
                     android:id="@+id/iv_alipay"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_alipay_green_128dp" />
+                    android:src="@drawable/ic_alipay_blue_128dp" />
             </LinearLayout>
 
         </RelativeLayout>

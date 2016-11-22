@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/margin_little"
             android:background="@android:color/transparent"
             tools:ignore="contentDescription"
-            tools:src="@drawable/ic_uncheck_green" />
+            tools:src="@drawable/ic_uncheck_blue" />
 
         <TextView
             android:id="@+id/tv_address_receiver"
