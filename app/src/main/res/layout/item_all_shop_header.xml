@@ -51,7 +51,7 @@
             android:layout_toRightOf="@id/headersellerIcon"
             android:gravity="center_vertical"
             android:minHeight="0dp"
-            android:textSize="@dimen/text_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="dddd" />
 
         <ImageView

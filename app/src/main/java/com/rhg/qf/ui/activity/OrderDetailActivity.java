@@ -134,7 +134,7 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof OrderDetailUrlBean.OrderDetailBean) {
             foodBean = (OrderDetailUrlBean.OrderDetailBean) s;
             setData(foodBean);
@@ -161,7 +161,7 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

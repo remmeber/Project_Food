@@ -71,7 +71,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof String) {
 //            ToastHelper.getInstance()._toast(s.toString());
             if ("40".equals(s)) {
@@ -98,7 +98,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

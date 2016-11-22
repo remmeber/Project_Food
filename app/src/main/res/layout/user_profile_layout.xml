@@ -5,14 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPageBackground"
     android:orientation="vertical">
-
-    <!--<include layout="@layout/toolbar_common_layout" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/status_bar_height"
         android:background="@color/colorBlueNormal"
         android:orientation="vertical">
 

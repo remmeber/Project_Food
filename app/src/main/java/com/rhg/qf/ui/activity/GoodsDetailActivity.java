@@ -235,7 +235,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     }
 
     @Override
-    protected void showSuccess(Object o) {
+    public void showSuccess(Object o) {
         if (o instanceof GoodsDetailUrlBean.GoodsDetailBean) {
             GoodsDetailUrlBean.GoodsDetailBean _bean = (GoodsDetailUrlBean.GoodsDetailBean) o;
             bindData(_bean);
@@ -278,7 +278,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

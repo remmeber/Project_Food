@@ -52,9 +52,8 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/imageShopLogoGroup"
             android:layout_toRightOf="@+id/imageShopLogoGroup"
-            android:text="商家名称"
-            android:textColor="#003333"
-            android:textSize="12sp" />
+            tools:text="商家名称"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         <ImageView
             android:id="@+id/imaShopForwardGroup"

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">家家美食</string>
-    <string name="searchHint">搜索</string>
+    <string name="searchHint">请输入商家或商品名字</string>
     <string name="Home">首页</string>
     <string name="Merchant">商家</string>
     <string name="User">我的</string>
@@ -9,6 +9,7 @@
 
     <!--Home-->
     <string name="footerText">没有啦~~\n每天5家哦~</string>
+    <string name="todayRec">今日推荐</string>
     <!--Home-->
 
     <!-- profile -->

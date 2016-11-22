@@ -13,6 +13,7 @@ import android.transition.Explode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.rhg.qf.locationservice.LocationService;
@@ -50,6 +51,7 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         Explode explode = new Explode();
         explode.setDuration(1000);
         getWindow().setExitTransition(explode);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
         decorView = getWindow().getDecorView();
@@ -239,8 +241,8 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     public void showLocFailed(String s) {
     }
 
-    protected abstract void showSuccess(Object s);
+    public void showSuccess(Object s){}
 
-    protected abstract void showError(Object s);
+    public void showError(Object s){}
 
 }

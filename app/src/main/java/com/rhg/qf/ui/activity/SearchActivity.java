@@ -269,7 +269,7 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof MerchantUrlBean) {
             merchantBeanList = ((MerchantUrlBean) s).getRows();
             searchMerchantAdapter.setmData(merchantBeanList);
@@ -284,7 +284,7 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
     }
 
     @OnClick({R.id.tb_left_iv, R.id.tb_right_iv})

@@ -1,7 +1,6 @@
 package com.rhg.qf.pay;
 
 
-import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -16,10 +15,11 @@ import com.rhg.qf.pay.pays.IPayable;
 import com.rhg.qf.pay.pays.PaysFactory;
 import com.rhg.qf.pay.pays.ali.AliPay;
 import com.rhg.qf.pay.pays.wx.WxPay;
+import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 
 import java.lang.ref.WeakReference;
 
-public abstract class BasePayActivity extends Activity {
+public abstract class BasePayActivity extends BaseAppcompactActivity {
 
     private static final int PAY_FLAG = 1;
     private static final int PAY_ALI = 2;
@@ -40,11 +40,11 @@ public abstract class BasePayActivity extends Activity {
     /**
      * 警告（比如：还没有确定支付结果，在等待支付结果确认）回调方法。开发者可根据各自业务override该方法
      */
-    protected abstract void Warning(String s);
+    protected abstract void showPayWarning(String s);
 
-    protected abstract void showSuccess(String string);
+    protected abstract void showPaySuccess(String string);
 
-    protected abstract void showError(String string);
+    protected abstract void showPayError(String string);
 
     /**
      * 确认支付
@@ -197,16 +197,16 @@ public abstract class BasePayActivity extends Activity {
 
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // ----------调用重写方法
-                        activity.showSuccess("支付成功");
+                        activity.showPaySuccess("支付成功");
                     } else {
                         // 判断resultStatus 为非“9000”则代表可能支付失败
                         // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认。
                         if (TextUtils.equals(resultStatus, "8000")) {
                             // ---------调用重写方法
-                            activity.Warning("支付结果确认中");
+                            activity.showPayWarning("支付结果确认中");
                         } else {
                             // -------调用重写方法
-                            activity.showError("支付失败");
+                            activity.showPayError("支付失败");
                         }
                     }
                     break;

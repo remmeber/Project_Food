@@ -42,15 +42,6 @@ public class WXPayEntryActivity extends BaseAppcompactActivity implements IWXAPI
         return R.layout.pay_result_success_layout;
     }
 
-    @Override
-    protected void showSuccess(Object s) {
-
-    }
-
-    @Override
-    protected void showError(Object s) {
-
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {

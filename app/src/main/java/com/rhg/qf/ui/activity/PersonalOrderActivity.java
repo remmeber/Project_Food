@@ -73,7 +73,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object o) {
+    public void showSuccess(Object o) {
         if (o == null) {/*没有登录成功*/
             if (userSignUpPresenter == null)
                 userSignUpPresenter = new UserSignUpPresenter(this);
@@ -106,7 +106,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
     }
 
 

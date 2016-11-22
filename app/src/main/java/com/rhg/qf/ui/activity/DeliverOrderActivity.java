@@ -20,7 +20,6 @@ import com.rhg.qf.mvp.presenter.ModifyOrderPresenter;
 import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.SizeUtil;
-import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -128,7 +127,7 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof String) {
 //            ToastHelper.getInstance()._toast((String) s);
             return;
@@ -142,7 +141,7 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

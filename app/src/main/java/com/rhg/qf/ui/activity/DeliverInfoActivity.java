@@ -126,7 +126,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof String) {
             if (((String) s).contains("/"))
                 ImageLoader.getInstance().displayImage((String) s, headView);
@@ -141,7 +141,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

@@ -20,14 +20,11 @@ import com.rhg.qf.bean.BannerTypeUrlBean;
 import com.rhg.qf.bean.FavorableFoodUrlBean;
 import com.rhg.qf.bean.FavorableTypeModel;
 import com.rhg.qf.bean.FooterTypeModel;
-import com.rhg.qf.bean.HeaderTypeModel;
 import com.rhg.qf.bean.HomeBean;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.bean.RecommendListTypeModel;
-import com.rhg.qf.bean.RecommendTextTypeModel;
 import com.rhg.qf.bean.TextTypeBean;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.RcvItemClickListener;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.HomePresenter;
@@ -35,10 +32,13 @@ import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.runtimepermissions.PermissionsResultAction;
 import com.rhg.qf.ui.activity.HotFoodActivity;
 import com.rhg.qf.ui.activity.PersonalOrderActivity;
+import com.rhg.qf.ui.activity.RecommendActivity;
 import com.rhg.qf.ui.activity.SearchActivity;
 import com.rhg.qf.ui.activity.ShopDetailActivity;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
+import com.rhg.qf.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +52,7 @@ import butterknife.OnClick;
  * time：2016/5/28 16:44
  * email：1013773046@qq.com
  */
-public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapter.OnBannerClickListener,
-        RecycleMultiTypeAdapter.OnGridItemClickListener,
-        RecycleMultiTypeAdapter.OnSearch,
-        RcvItemClickListener<MerchantUrlBean.MerchantBean>,
-        View.OnClickListener {
+public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapter.OnTypeClick {
 
     FavorableTypeModel favorableTypeModel;
     BannerTypeBean bannerTypeBean;
@@ -149,14 +145,14 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
     protected void initData() {
         mData = new ArrayList<>();
         recycleMultiTypeAdapter = new RecycleMultiTypeAdapter(getContext(), mData);
-        recycleMultiTypeAdapter.setBannerClickListener(this);
-        recycleMultiTypeAdapter.setOnGridItemClickListener(this);
-        recycleMultiTypeAdapter.setOnItemClickListener(this);
-        recycleMultiTypeAdapter.setOnSearch(this);
+        recycleMultiTypeAdapter.setOnTypeClick(this);
         initList();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         home_rcv.setLayoutManager(linearLayoutManager);
         home_rcv.setHasFixedSize(false);
+        home_rcv.addItemDecoration(new RecycleViewDivider(getContext(),
+                LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(2),
+                ContextCompat.getColor(getContext(), R.color.colorBackground)));
         home_rcv.setAdapter(recycleMultiTypeAdapter);
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -233,42 +229,15 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
     }
 
     private void initList() {
-        mData.add(new HeaderTypeModel("Header", R.color.cardview_shadow_start_color));
+//        mData.add(new HeaderTypeModel("Header", R.color.cardview_shadow_start_color));
         mData.add(bannerTypeBean);
         mData.add(textTypeBean);
         favorableTypeModel.setDpGridViewAdapter(new QFoodGridViewAdapter(getContext(),
                 R.layout.item_grid_rcv));
         mData.add(favorableTypeModel);
-        mData.add(new RecommendTextTypeModel());
         mData.add(recommendListTypeModel);
         mData.add(new FooterTypeModel("FooterType", R.color.colorPrimaryDark));
         recycleMultiTypeAdapter.notifyDataSetChanged();
-    }
-
-    @OnClick({R.id.iv_left, R.id.iv_right, R.id.tv_center})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_left:
-                /*if (NetUtil.isConnected(getContext()))
-                    reStartLocation();
-                else ToastHelper.getInstance()._toast("请检查网络");*/
-                break;
-            case R.id.tv_center:
-               /* if (!AccountUtil.getInstance().hasAccount()) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
-                    break;
-                }*/
-                startActivity(new Intent(getContext(), PersonalOrderActivity.class));
-//                doSearch();
-                break;
-            case R.id.iv_right:
-             /*   if (!AccountUtil.getInstance().hasAccount()) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
-                    break;
-                }
-                startActivity(new Intent(getContext(), ChatActivity.class).putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));*/
-                break;
-        }
     }
 
     private void doSearch() {
@@ -278,12 +247,13 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         startActivity(_intent);
     }
 
+
     @Override
     public void bannerClick(View view, int position, BannerTypeUrlBean.BannerEntity bannerEntity) {
         Intent intent = new Intent(getContext(), ShopDetailActivity.class);
         intent.putExtra(AppConstants.KEY_MERCHANT_ID, bannerEntity.getID());
         intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, bannerEntity.getSrc());
-        startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
+        startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
     }
 
     @Override
@@ -302,9 +272,19 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
     }
 
+    @Override
+    public void toPersonOrder() {
+        startActivity(new Intent(getContext(), PersonalOrderActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
+    }
 
     @Override
-    public void search() {
+    public void toRecommend() {
+        startActivity(new Intent(getContext(), RecommendActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
+    }
+
+    @OnClick(R.id.tv_home_search)
+    public void onClick() {
         doSearch();
     }
+
 }

@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.rhg.qf.application.InitApplication;
@@ -45,11 +46,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
         android.transition.Fade fade = new android.transition.Fade();
         fade.setDuration(500);
         getWindow().setEnterTransition(fade);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
 
         decorView = getWindow().getDecorView();
+//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {

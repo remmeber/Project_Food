@@ -50,7 +50,7 @@ public class DeliverOrderItemAdapter extends RecyclerView.Adapter<DeliverOrderIt
 
     @Override
     public DeliverOrderItemAdapter.DeliverOrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new DeliverOrderViewHolder(View.inflate(context, R.layout.order_manage_item, null));
+        return new DeliverOrderViewHolder(View.inflate(context, R.layout.item_order_manage, null));
     }
 
     @Override

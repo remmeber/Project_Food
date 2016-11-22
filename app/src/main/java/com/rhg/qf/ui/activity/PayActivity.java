@@ -2,7 +2,6 @@ package com.rhg.qf.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,6 @@ import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.mvp.presenter.NewOrderPresenter;
-import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.pay.BasePayActivity;
 import com.rhg.qf.pay.model.OrderInfo;
 import com.rhg.qf.pay.model.PayType;
@@ -37,7 +35,6 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -47,11 +44,10 @@ import butterknife.OnClick;
  * time：2016/5/28 16:14
  * email：1013773046@qq.com
  */
-public class PayActivity extends BasePayActivity implements PayItemAdapter.PayItemClickListener,
-        BaseView {
+public class PayActivity extends BasePayActivity implements PayItemAdapter.PayItemClickListener{
     private final static String WX_MERCHANT_ID = "1374528702";
     private final static String WX_PRIVATE_KEY = //"shengzhoujiaze123456jiajiameishi"
-                                                 "fXRDOhhdr7rM0XWpKzFQry6pBjo0dllb";
+            "fXRDOhhdr7rM0XWpKzFQry6pBjo0dllb";
     private final static String ALI_PARTNER = "2088422291942751";
     private final static String ALI_SELLER_ID = "18858558505";
     private final static String ALI_PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMIwLMEyitvEEctRirBarCnmtDqcIYxl2slRz6cTAFh0a4MqpUDTl505iiasFmLHJtNdMJohCkz+KjjKG7fTU4ZHy5Sy2andeULbyD+31cT+ZQOgNR2F5aAHU3CYvfx0qFw9ph5PA1AWqz+FoClPolsOOZKwrkObanbQplJebavhAgMBAAECgYAreHtcWIMrRU4ydLOWXQXzb1jjUfZUpqx+qtjQbvmB07YJq+9IftWO9cWOeLGeNTTk1hS+PC1BJRiwk9X2pdEpdqlCbri8mKPlu+Z37ZB+sNRiyl+2p4sDx9WTvw8dJHIsWFlDNnbHzS0oDexlOxX68fL4NcsZu5VLQLZV0W5YAQJBAPyIvCj9gw0OT1LPcj4Yks5V+5pjr4g7NqFxKEfxtPJErE8Zjz6Zm8x0/k2E8XCd63lVk8Dh13TJSqfYwh/+ZkECQQDE2nHL/X3qN4EEqsWfbB8piAO7/5Ux956fCrhUYKXiIPJsHyiojePAw4nXlf1Nd+Fnu6rjG35xgSNmUbu7Wh2hAkBEKzj3q69jp9g712nUX1fJwSYhAAXTNYDCxcQE37djqqwE0jZ7xIVtBKvdCyUNrGNzJmmzKIO7r9aqRnXoowjBAkBi3Rqdyne8c5e2UlXiFRkpcIf/mQLDD4t4cJfWuJtXEBjwOE3hKTGjFBFcVpXanER2JohSevJr6uFud8oC8+VBAkEAgNXtGYF9xdffvrpsjmq5H54W2TWq1GPDm7oF0Ct9jduElxZx11cdtcWYAzdU+bYjr+jrbut4X3IqDFhUMCOYfw==";
@@ -81,7 +77,6 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     String ipv4;
     String tradeNumber;
     int style = 0;//用来表示是否需要生成订单
-    String orderId;
     String receiver;
     String phone;
     String address;
@@ -122,27 +117,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.pay_layout);
-        ButterKnife.bind(this);
-        initData(getIntent());
-        createOrder();
-    }
-
-    private void createOrder() {
-        if (style == 0) {
-            newOrderBean = generateOrder();
-            if (createOrderPresenter == null)
-                createOrderPresenter = new NewOrderPresenter(this);
-            createOrderPresenter.createNewOrder(newOrderBean);
-        }
-    }
-
-    protected void initData(Intent intent) {
-        tbCenterTv.setText(getResources().getString(R.string.tvPayTitle));
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
+    public void dataReceive(Intent intent) {
         PayModel payModel = intent.getParcelableExtra(AppConstants.KEY_PARCELABLE);
         style = intent.getIntExtra(AppConstants.ORDER_STYLE, 0);
         if (payModel != null) {
@@ -152,7 +127,13 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
             setAddress(receiver, phone, address);
             payList.addAll(payModel.getPayBeanList());
         }
+    }
 
+    @Override
+    protected void initData() {
+        tbCenterTv.setText(getResources().getString(R.string.tvPayTitle));
+        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
+        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         rcvItemPay.setLayoutManager(new LinearLayoutManager(this));
         rcvItemPay.setHasFixedSize(true);
         rcvItemPay.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
@@ -163,7 +144,21 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
 
         RegisterBasePay(ALI_PARTNER, ALI_SELLER_ID, ALI_PRIVATE_KEY,
                 InitApplication.WXID, WX_MERCHANT_ID, WX_PRIVATE_KEY);
-//        BuildOrderInfo()
+        createOrder();
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.pay_layout;
+    }
+
+    private void createOrder() {
+        if (style == 0) {
+            newOrderBean = generateOrder();
+            if (createOrderPresenter == null)
+                createOrderPresenter = new NewOrderPresenter(this);
+            createOrderPresenter.createNewOrder(newOrderBean);
+        }
     }
 
     private void setAddress(String receiver, String phone, String address) {
@@ -177,7 +172,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
 
     /*支付成功的回调*/
     @Override
-    protected void showSuccess(String s) {
+    protected void showPaySuccess(String s) {
         showPayResult(true);
     }
 
@@ -197,12 +192,12 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     }
 
     @Override
-    protected void Warning(String s) {
+    protected void showPayWarning(String s) {
         ToastHelper.getInstance()._toast(s);
     }
 
     @Override
-    protected void showError(String s) {
+    protected void showPayError(String s) {
         ToastHelper.getInstance()._toast(s);
     }
 
@@ -285,7 +280,6 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         }
     }
 
-
     @Override
     public void onPayItemClick(int position) {
         if (payList.get(position).isChecked()) {
@@ -317,22 +311,13 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         return _bean;
     }
 
-    private List<String> getProductIdList(List<PayModel.PayBean> payList) {
-        List<String> _bean = new ArrayList<>();
-        for (PayModel.PayBean _payBean : payList) {
-            if (_payBean.isChecked())
-                _bean.add(_payBean.getProductId());
-        }
-        return _bean;
-    }
-
     private String getCheckItemTotalMoney(List<PayModel.PayBean> payList) {
-        float count = 0;
+        String count = "0";
         for (PayModel.PayBean _payBean : payList) {
             if (_payBean.isChecked())
-                count += Float.valueOf(_payBean.getProductPrice());
+                count = DecimalUtil.addWithScale(count, _payBean.getProductPrice(), 2);
         }
-        return String.valueOf(count);
+        return count;
     }
 
     private String getItemsName(List<PayModel.PayBean> payList) {
@@ -347,7 +332,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     public void showData(Object o) {
         if (o instanceof NewOrderBackBean) {
             tradeNumber = ((NewOrderBackBean) o).getMsg();
-            ToastHelper.getInstance().displayToastWithQuickClose("订单生成成功");
+            ToastHelper.getInstance().displayToastWithQuickClose("正在支付中....");
             fee = ((NewOrderBackBean) o).getFee();
             price = ((NewOrderBackBean) o).getPrice();
 //            Log.i("RHG", "Fee: " + fee + " price: " + price);
@@ -372,11 +357,5 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         key = key.substring(0, 15);
         return key;*/
         return style == 0 ? tradeNumber : payList.get(0).getProductId();//style=0时，productId为商品的ID；style=1时，productId为订单的ID。
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
     }
 }

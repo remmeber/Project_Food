@@ -144,7 +144,7 @@ public class AddressActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof String) {
             getAddressPresenter.getAddress(AppConstants.ADDRESS_TABLE);
             return;
@@ -156,7 +156,7 @@ public class AddressActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

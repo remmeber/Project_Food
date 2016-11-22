@@ -39,7 +39,8 @@
                 android:layout_toRightOf="@id/sellerIcon"
                 android:gravity="center_vertical"
                 android:minHeight="0dp"
-                android:textSize="@dimen/text_medium" />
+                tools:text="dddddddd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             <TextView
                 android:id="@+id/tv_state"
@@ -217,22 +218,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/colorInActive" />
+            android:background="@color/white" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:background="?colorAccent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:text="@string/delete"
-            android:textColor="@color/black" />
     </LinearLayout>
 
 </LinearLayout>

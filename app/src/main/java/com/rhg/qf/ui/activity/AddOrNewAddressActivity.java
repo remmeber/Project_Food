@@ -121,7 +121,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
 //        setResult(resultCode, new Intent().putExtra(AppConstants.KEY_ADDRESS, addressBean));
         Intent intent = new Intent();
         intent.putExtra("return", new AddressUrlBean.AddressBean(
@@ -134,7 +134,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
     }
 
     @Override

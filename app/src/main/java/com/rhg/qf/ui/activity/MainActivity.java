@@ -21,37 +21,9 @@ import com.rhg.qf.utils.ToastHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/*http://www.biaonimeia.com/sharelink/privateproject/u1hy06pJRJkvjBQ*/
 public class MainActivity extends BaseFragmentActivity implements BaseView
-//        implements NavigationView.OnNavigationItemSelectedListener  //TODO slideNavigationView
 {
     FragmentController fragmentController;
-    //----------------------for rebound 弹簧效果---------------------------------------------------
-    /*private final BaseSpringSystem mSpringSystem = SpringSystem.create();
-    private final ExampleSpringListener exampleSpringListener = new ExampleSpringListener();
-    private Spring mScaleSpring;
-    //设置弹跳参数，默认为40，7
-    private final double TENSION = 100;
-    private final double FICTION = 4;*/
-    //---------------------------------------------------------------------------------------------
-    //for refresh 用来刷新整个页面，可以动态添加HeadView和FooterView
-//    private MaterialRefreshLayout materialRefreshLayout;
-    /*//TODO-------------------------for toolbar setting----------------------------------------------
-    private RelativeLayout toolbar;
-    ImageButton toolLeftButton;
-    ImageButton toolCenterButton;
-    LinearLayout toolRightLayout;
-    TextView toolLeftText;
-    TextView toolCenterText;
-    TextView toolSwipeText;
-    ImageButton toolRightButton;*/
-    //---------------------------------------------------------------------------------------------
-
-    //for searchView
-   /* private SearchView searchView;
-    private SearchHistoryTable mSearchHistory;
-    private List<SearchItem> mSuggestionsList;*/
-    //BottomNavigationBar
     BottomNavigationBar bottomNavigation;
     long first = 0L;
 
@@ -124,6 +96,10 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
     protected void showError(Object s) {
     }
 
+    @Override
+    public void hideNavigationBar(View decorView) {
+//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

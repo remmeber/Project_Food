@@ -9,7 +9,7 @@
     <item name="ic_shopping_cart_green" type="drawable">@drawable/shopping_cart</item>
     <item name="ic_shopping_cart_black" type="drawable">@drawable/shopping_cart_black</item>
     <item name="ic_search_black" type="drawable">@drawable/search_black</item>
-    <item name="ic_search_green" type="drawable">@drawable/search_green</item>
+    <item name="ic_search_green" type="drawable">@drawable/search_blue</item>
     <item name="ic_share_green" type="drawable">@drawable/share_green_128dp</item>
     <item name="ic_share_black" type="drawable">@drawable/share_black_128dp</item>
     <item name="ic_search_history_black" type="drawable">@drawable/ic_search_history</item>
