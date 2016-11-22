@@ -92,12 +92,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_chatting_biaoqing_btn_normal.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_17.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_17.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_chatting_setmode_keyboard_btn_pressed.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_chatting_setmode_keyboard_btn_pressed.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_17.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_17.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_chatto_bg_normal.9.png",
