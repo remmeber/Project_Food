@@ -332,7 +332,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     public void showData(Object o) {
         if (o instanceof NewOrderBackBean) {
             tradeNumber = ((NewOrderBackBean) o).getMsg();
-            ToastHelper.getInstance().displayToastWithQuickClose("正在支付中....");
+//            ToastHelper.getInstance().displayToastWithQuickClose("正在支付中....");
             fee = ((NewOrderBackBean) o).getFee();
             price = ((NewOrderBackBean) o).getPrice();
 //            Log.i("RHG", "Fee: " + fee + " price: " + price);

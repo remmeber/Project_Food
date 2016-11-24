@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/sellernamelayout"
             android:layout_width="match_parent"
-            android:layout_height="22dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="6dp">
@@ -45,15 +45,15 @@
             <TextView
                 android:id="@+id/tv_state"
                 android:layout_width="60dp"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/imageshowInsellerItem"
                 android:layout_toStartOf="@+id/imageshowInsellerItem"
                 android:background="@drawable/tv_state_bg"
                 android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_medium"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/white"/>
 
             <ImageView
                 android:id="@+id/imageshowInsellerItem"
@@ -210,9 +210,6 @@
                 tools:text="总计20元" />
 
         </RelativeLayout>
-
-
-        <!--</RelativeLayout>-->
 
         <View
             android:layout_width="match_parent"
