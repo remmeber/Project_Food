@@ -3,6 +3,7 @@ package com.rhg.qf.ui.fragment;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -83,12 +84,6 @@ public class ShoppingCartFragment extends BaseFragment {
         if (AccountUtil.getInstance().hasAccount()) {
             isLogin = true;
             List<FoodInfoBean> foodInfoBeanList = ShoppingCartUtil.getAllProductID();
-            Collections.sort(foodInfoBeanList, new Comparator<FoodInfoBean>() {
-                @Override
-                public int compare(FoodInfoBean o1, FoodInfoBean o2) {
-                    return o1.getMerchantId().compareTo(o2.getMerchantId());
-                }
-            });
 
             setData(foodInfoBeanList);
         } else {
@@ -102,12 +97,19 @@ public class ShoppingCartFragment extends BaseFragment {
     private void setData(List<FoodInfoBean> foodInfoBeanList) {
         if (listShoppingCart.hasExpandState())
             listShoppingCart.close();
+        Collections.sort(foodInfoBeanList, new Comparator<FoodInfoBean>() {
+            @Override
+            public int compare(FoodInfoBean o1, FoodInfoBean o2) {
+                return o1.getMerchantId().compareTo(o2.getMerchantId());
+            }
+        });
         shoppingCartBeanList.clear();
         String lastMerchantId = "-1";
         String newMerchantId;
         ShoppingCartBean shoppingCartBean = null;
         List<ShoppingCartBean.Goods> goodsList = null;
         for (FoodInfoBean foodInfoBean : foodInfoBeanList) {
+            Log.i("RHG", foodInfoBean.toString());
             newMerchantId = foodInfoBean.getMerchantId();
 
             if (!newMerchantId.equals(lastMerchantId)) {
