@@ -4,6 +4,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.rhg.qf.mvp.presenter.ModifyOrderPresenter;
 import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.SizeUtil;
+import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -61,8 +63,13 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     @Override
     public void loadingData() {
         commonRefresh.setVisibility(View.VISIBLE);
-        getDeliverOrder = new DeliverOrderPresenter(this);
-        getDeliverOrder.getDeliverOrder(AppConstants.DELIVER_ORDER, AccountUtil.getInstance().getUserID());
+        if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
+            ToastHelper.getInstance().displayToastWithQuickClose("请登录跑腿员");
+            return;
+        }
+        if (getDeliverOrder == null)
+            getDeliverOrder = new DeliverOrderPresenter(this);
+        getDeliverOrder.getDeliverOrder(AppConstants.DELIVER_ORDER, AccountUtil.getInstance().getDeliverID());
     }
 
     @Override
@@ -84,42 +91,16 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getDeliverOrder.getDeliverOrder(AppConstants.DELIVER_ORDER, AccountUtil.getInstance().getUserID());
+                if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
+                    ToastHelper.getInstance().displayToastWithQuickClose("请登录跑腿员");
+                    return;
+                }
+                if (getDeliverOrder == null)
+                    getDeliverOrder = new DeliverOrderPresenter(DeliverOrderActivity.this);
+                getDeliverOrder.getDeliverOrder(AppConstants.DELIVER_ORDER, AccountUtil.getInstance().getDeliverID());
             }
         });
-
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HttpClient androidHttpClient = new DefaultHttpClient();
-                    HttpResponse httpResponse = androidHttpClient.execute(new HttpGet("http://www.baidu.com"));
-                    byte[] bytes = EntityUtils.toByteArray(httpResponse.getEntity());
-                    Message message = Message.obtain();
-                    message.what = 1;
-                    message.obj = bytes;
-                    handler.sendMessage(message);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();*/
     }
-
-/*    private static android.os.Handler handler = new android.os.Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-
-                    Log.i("RHG", " length is :" + ((byte[]) msg.obj).length);
-                    break;
-                default:
-                    break;
-            }
-
-        }
-    };*/
 
     @Override
     protected int getLayoutResId() {
@@ -193,7 +174,7 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     }
 
     @Override
-    public void onItemClickListener(View view,int position, DeliverOrderUrlBean.DeliverOrderBean item) {
+    public void onItemClickListener(View view, int position, DeliverOrderUrlBean.DeliverOrderBean item) {
 
     }
 

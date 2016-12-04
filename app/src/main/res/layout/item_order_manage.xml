@@ -18,8 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_small"
-            android:textSize="@dimen/text_big"
-            tools:text="米其林餐厅" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:ellipsize="end"
+            android:maxLength="7"
+            tools:text="米其林餐厅的的的" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,7 +42,7 @@
             android:layout_marginRight="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:textColor="@color/colorRecommend_Red"
-            android:textSize="@dimen/text_big"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             tools:text="@string/countMoney" />
 
         <TextView
@@ -51,7 +53,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
-            android:textSize="@dimen/text_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             tools:text="@string/tvOrderNumber" />
 
         <TextView
@@ -64,7 +66,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginRight="@dimen/margin_small"
-            android:textSize="@dimen/text_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             tools:text="@string/tvDistance" />
 
 
@@ -73,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_centerVertical="true"
-            tools:background="@color/colorGreenNormal" />
+            tools:background="@color/colorBlueNormal" />
 
     </RelativeLayout>
 
@@ -88,7 +90,7 @@
         android:paddingLeft="@dimen/margin_little"
         android:paddingRight="@dimen/margin_little"
         android:paddingStart="@dimen/margin_little"
-        android:textSize="@dimen/text_big"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:text="确认收货" />
 
 </RelativeLayout>

@@ -162,6 +162,8 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
                     reStartLocation();
                     return;
                 }
+                if (homePresenter == null)
+                    homePresenter = new HomePresenter(HomeFragment.this);
                 homePresenter.getHomeData(AppConstants.HOME_RESTAURANTS);
             }
         });

@@ -1,7 +1,6 @@
 package com.rhg.qf.widget;
 
 import android.content.Context;
-import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ExpandableListView;
@@ -12,7 +11,7 @@ import android.widget.ExpandableListView;
  * time：2016/6/7 15:58
  * email：1013773046@qq.com
  */
-public class SwipeDeleteExpandListView extends ExpandableListView implements NestedScrollingChild {
+public class SwipeDeleteExpandListView extends ExpandableListView{
 
     SwipeDeleteLayout mExpandedLayout;
 
@@ -33,6 +32,7 @@ public class SwipeDeleteExpandListView extends ExpandableListView implements Nes
     }
 
     private void init() {
+
         ViewCompat.setNestedScrollingEnabled(this, true);
 
     }

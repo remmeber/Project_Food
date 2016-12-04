@@ -56,9 +56,6 @@ public class DeliverOrderItemAdapter extends RecyclerView.Adapter<DeliverOrderIt
     @Override
     public void onBindViewHolder(final DeliverOrderItemAdapter.DeliverOrderViewHolder holder, int position) {
         final String _style = deliverOrderBeanList.get(position).getStyle();
-        /*if (position % 2 == 0)
-            _style = "60";
-        else _style = "80";*/
         setStyleAndBackground(holder, _style);
         fillContent(holder, deliverOrderBeanList.get(position));
         holder.rlOrderInfo.setOnClickListener(new View.OnClickListener() {

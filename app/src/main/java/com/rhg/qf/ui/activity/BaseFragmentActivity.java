@@ -1,6 +1,5 @@
 package com.rhg.qf.ui.activity;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -38,14 +37,15 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
     private MyLocationListener mLocationListener;
     View decorView = null;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        android.transition.Fade fade = new android.transition.Fade();
-        fade.setDuration(500);
-        getWindow().setEnterTransition(fade);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+            android.transition.Fade fade = new android.transition.Fade();
+            fade.setDuration(500);
+            getWindow().setEnterTransition(fade);
+        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         super.onCreate(savedInstanceState);

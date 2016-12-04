@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Explode;
 import android.view.MotionEvent;
@@ -44,13 +43,15 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     protected View decorView;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        Explode explode = new Explode();
-        explode.setDuration(1000);
-        getWindow().setExitTransition(explode);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Explode explode = new Explode();
+            explode.setDuration(1000);
+            getWindow().setExitTransition(explode);
+        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
@@ -241,8 +242,10 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     public void showLocFailed(String s) {
     }
 
-    public void showSuccess(Object s){}
+    public void showSuccess(Object s) {
+    }
 
-    public void showError(Object s){}
+    public void showError(Object s) {
+    }
 
 }

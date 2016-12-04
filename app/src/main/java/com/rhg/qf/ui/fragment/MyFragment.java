@@ -288,18 +288,17 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
                 break;
             case 3://TODO 登录
-//                doLogin();
-                break;
-            case 4://TODO 注册
-//                startActivity(new Intent(getContext(), DeliverRegisterActivity.class));
-                break;
-            case 5://TODO 修改
                 if (!isSignIn) {
                     ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignIn));
                     break;
                 }
                 intent.setClass(getContext(), DeliverInfoActivity.class);
                 startActivity(intent);
+                break;
+            case 4://TODO 注册
+//                startActivity(new Intent(getContext(), DeliverRegisterActivity.class));
+                break;
+            case 5://TODO 修改
                 break;
             case R.id.profileAddress://TODO 我的地址右箭头
             case 6://TODO 常用

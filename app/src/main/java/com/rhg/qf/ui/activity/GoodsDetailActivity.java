@@ -190,6 +190,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         } else
             tbRightTv.setText(location);
         tbCenterTv.setText(getResources().getString(R.string.goodsDetail));
+        etNum.setFocusable(false);
         // 获取本地数据库的购物车数量
         AccountDao accountDao = AccountDao.getInstance();
         if (accountDao.isExist(ShoppingCartBean.KEY_MERCHANT_ID, merchantId) &&
@@ -348,7 +349,6 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
                 String foodNum = DecimalUtil.add(etNum.getText().toString(), "1");
                 etNum.setText(foodNum);
                 ivAddToShoppingCart.setNum(foodNum);
-                //TODO 需要更新购物车数据库的数据
                 if (isExitInDB) {
                     ShoppingCartUtil.updateGoodsNumber(merchantId, foodId, foodNum);
                 } else {
@@ -374,7 +374,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             case R.id.ivShare:
                 UmengUtil umengUtil = new UmengUtil(this);
                 UMImage imageMedia = new UMImage(this, image);
-                ShareModel shareModel = new ShareModel("黄焖鸡米饭", "好吃", imageMedia);
+                ShareModel shareModel = new ShareModel(tvGoodsName.getText().toString(), tvDescriptionContent.getText().toString(), imageMedia);
                 umengUtil.Share(shareModel, new ShareListener() {
                     @Override
                     public void shareSuccess(String message) {
@@ -431,8 +431,6 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         );
     }
 
-
-    /*TODO 登录*/
     private void doLogin() {
         if (signUtil == null)
             signUtil = new UmengUtil(this);
@@ -504,19 +502,4 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             commonRefresh.setVisibility(View.GONE);
     }
 
-
-    /* @Override
-    public void showGoodsDetail(GoodsDetailUrlBean.GoodsDetailBean goodsDetail) {
-
-    }
-
-    @Override
-    public void setPresenter(GoodsDetailContact.Presenter presenter) {
-
-    }
-
-    @Override
-    public void showError(String error) {
-
-    }*/
 }

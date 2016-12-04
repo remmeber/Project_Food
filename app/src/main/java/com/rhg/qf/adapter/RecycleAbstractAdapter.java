@@ -2,7 +2,7 @@ package com.rhg.qf.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.rhg.qf.adapter.viewHolder.BodyViewHolder;
@@ -85,8 +85,8 @@ public abstract class RecycleAbstractAdapter<T> extends RecyclerView.Adapter<Rec
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == AppConstants.TypeHeader)
-            return new HeaderViewHolder(View.inflate(context, getLayoutResId(viewType), null), type);
-        return new BodyViewHolder(View.inflate(context, getLayoutResId(viewType), null), type);
+            return new HeaderViewHolder(LayoutInflater.from(context).inflate(getLayoutResId(viewType),parent,false), type);
+        return new BodyViewHolder(LayoutInflater.from(context).inflate(getLayoutResId(viewType),parent,false), type);
     }
 
     protected abstract int getLayoutResId(int viewType);

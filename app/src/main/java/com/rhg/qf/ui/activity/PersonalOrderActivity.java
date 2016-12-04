@@ -65,6 +65,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
         tbRightLl.setVisibility(View.GONE);
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
+        etNum.setFocusable(false);
     }
 
     @Override
