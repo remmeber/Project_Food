@@ -13,7 +13,7 @@
         android:id="@+id/tb_left_iv"
         android:layout_width="wrap_content"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/btn_gray_light_style"
+        android:background="?android:selectableItemBackgroundBorderless"
         android:paddingLeft="@dimen/margin_small"
         android:paddingRight="@dimen/margin_small"
         tools:src="@drawable/ic_chevron_left_black" />

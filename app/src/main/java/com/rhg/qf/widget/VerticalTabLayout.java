@@ -128,7 +128,7 @@ public class VerticalTabLayout extends ScrollView implements View.OnClickListene
             textview.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             CharSequence pageTitle = titles.get(i);
             textview.setText(pageTitle);
-            if (i == 0) {
+            if (i == lastPosition) {
                 textview.setTextColor(selectTextColor);
                 textview.setBackgroundColor(selectBgColor);
             } else {

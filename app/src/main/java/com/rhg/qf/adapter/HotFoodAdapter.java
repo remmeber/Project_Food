@@ -71,7 +71,7 @@ public class HotFoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         hotFoodViewHolder.hotSellDeliverRequire.setText(String.format(Locale.ENGLISH,
                 context.getResources().getString(R.string.tvDeliverRequire), hotFoodBean.getDelivery()));
         hotFoodViewHolder.hotSellDeliverMoney.setText(String.format(Locale.ENGLISH,
-                context.getResources().getString(R.string.tvDeliverRequire), hotFoodBean.getFee()));
+                context.getResources().getString(R.string.tvDeliverFee), hotFoodBean.getFee()));
         hotFoodViewHolder.hotSellRatingBar.setStarRating(Float.parseFloat(hotFoodBean.getStars()));
 //        hotFoodViewHolder.hotSellDeliverDistance.setText(hotFoodBean.getDistance());
         hotFoodViewHolder.hotSellTotalMoney.setText(String.format(
