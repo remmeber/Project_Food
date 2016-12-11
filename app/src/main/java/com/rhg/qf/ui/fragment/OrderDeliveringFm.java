@@ -9,8 +9,13 @@ import com.rhg.qf.constants.AppConstants;
  *email 1013773046@qq.com
  */
 public class OrderDeliveringFm extends AbstractOrderFragment {
+
+
     @Override
     protected int getFmTag() {
         return AppConstants.USER_ORDER_DELIVERING;
     }
+
+
+
 }

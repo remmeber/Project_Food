@@ -21,6 +21,7 @@ import com.rhg.qf.ui.activity.DeliverInfoActivity;
 import com.rhg.qf.ui.activity.DeliverOrderActivity;
 import com.rhg.qf.ui.activity.OrderListActivity;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
@@ -35,7 +36,6 @@ import java.util.Map;
  * email：1013773046@qq.com
  */
 public class MyFragment extends BaseFragment implements View.OnClickListener {
-
     ImageView userHeader;
     TextView userName;
     //TODO-------------------------------我的订单栏---------------------------------------------
@@ -115,7 +115,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         myPay.setOnClickListener(this);
         myPay.setTag(0);
 
-        myCancel.setText(R.string.cancel);
+        myCancel.setText(R.string.orderDelivering);
         myCancel.setOnClickListener(this);
         myCancel.setTag(1);
 
@@ -134,11 +134,11 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         workerSignIn.setOnClickListener(this);
         workerSignIn.setTag(3);
 
-        workerSignUp.setText(R.string.wokerSignUp);
+        workerSignUp.setText(R.string.deliverSignUp);
         workerSignUp.setOnClickListener(this);
         workerSignUp.setTag(4);
 
-        workerModify.setText(R.string.wokerAndAddrModify);
+        workerModify.setText(R.string.deliverAndAddrModify);
         workerModify.setOnClickListener(this);
         workerModify.setTag(5);
 
@@ -155,7 +155,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         addressAdd.setOnClickListener(this);
         addressAdd.setTag(7);
 
-        addressModify.setText(R.string.wokerAndAddrModify);
+        addressModify.setText(R.string.deliverAndAddrModify);
         addressModify.setOnClickListener(this);
         addressModify.setTag(8);
     }
@@ -183,7 +183,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(hasFetchData)
+        if (hasFetchData)
             refresh();
     }
 
@@ -199,19 +199,20 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void showSuccess(Object o) {
-        if (o == null) {/*没有登录成功*/
-            ToastHelper.getInstance()._toast("注册");
+        if (o == null) {/*没有登录*/
+//            ToastHelper.getInstance()._toast("注册");
             if (userSignUpPresenter == null)
                 userSignUpPresenter = new UserSignUpPresenter(this);
             userSignUpPresenter.userSignUp(openid, unionid, headImageUrl, nickName);
+            return;
         }
         if (o instanceof String) {
             ToastHelper.getInstance()._toast((o).toString());
             if (userSignInPresenter != null)
                 userSignInPresenter.userSignIn(AppConstants.TABLE_CLIENT, openid, unionid);
+            return;
         }
         if (o instanceof SignInBackBean.UserInfoBean) {
-            ToastHelper.getInstance()._toast("登录成功");
             userName.setClickable(false);
             isSignIn = true;
             SignInBackBean.UserInfoBean _data = (SignInBackBean.UserInfoBean) o;
@@ -223,7 +224,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             AccountUtil.getInstance().setPwd(_data.getPwd());
             userName.setText(nickName);
             ImageLoader.getInstance().displayImage(_data.getPic(), userHeader);
+            DialogUtil.cancelDialog();
+            return;
         }
+        DialogUtil.cancelDialog();
     }
 
     @Override
@@ -330,6 +334,16 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     /*TODO 登录*/
     private void doLogin() {
+        DialogUtil.showDialog(getContext(), "登陆中...");
+        /*if (pd == null) {
+            pd = new ProgressDialog(getContext());
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setTitle("提示");
+            pd.setMessage("登录中....");
+            pd.setCancelable(false);
+            pd.setCanceledOnTouchOutside(false);
+        }
+        pd.show();*/
         if (signUtil == null)
             signUtil = new UmengUtil(getActivity());
         signUtil.SignIn(SHARE_MEDIA.WEIXIN, new SignInListener() {

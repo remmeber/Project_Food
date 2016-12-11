@@ -95,25 +95,25 @@ public class DeliverOrderItemAdapter extends RecyclerView.Adapter<DeliverOrderIt
                 holder.tvOrderInd.setText(context.getResources().getString(R.string.deliverOrderUnAccept));
                 holder.tvOrderInd.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlueNormal));
                 holder.viewOrderLine.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRecommend_Red));
-                holder.rlOrderInfo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.virtual_green));
+                holder.rlOrderInfo.setBackgroundResource(R.drawable.virtual_green);
                 break;
             case AppConstants.DELIVER_ORDER_ACCEPT:
                 holder.tvOrderInd.setText(context.getResources().getString(R.string.deliverOrderAccept));
                 holder.tvOrderInd.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRecommend_Red));
                 holder.viewOrderLine.setBackgroundColor(ContextCompat.getColor(context, R.color.colorRecommend_Red));
-                holder.rlOrderInfo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.virtual_red));
+                holder.rlOrderInfo.setBackgroundResource(R.drawable.virtual_red);
                 break;
             case AppConstants.DELIVER_ORDER_DELIVERING:
                 holder.tvOrderInd.setText(context.getResources().getString(R.string.deliverOrderDelivering));
                 holder.tvOrderInd.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlueNormal));
                 holder.viewOrderLine.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlueNormal));
-                holder.rlOrderInfo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.virtual_green));
+                holder.rlOrderInfo.setBackgroundResource(R.drawable.virtual_green);
                 break;
             case AppConstants.DELIVER_ORDER_COMPLETE:
                 holder.tvOrderInd.setText(context.getResources().getString(R.string.deliverOrderFinish));
                 holder.tvOrderInd.setBackgroundColor(ContextCompat.getColor(context, R.color.colorInActive));
                 holder.viewOrderLine.setBackgroundColor(ContextCompat.getColor(context, R.color.colorInActive));
-                holder.rlOrderInfo.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.virtual_gray));
+                holder.rlOrderInfo.setBackgroundResource(R.drawable.virtual_gray);
                 holder.rlOrderInfo.setClickable(false);
                 break;
         }

@@ -25,6 +25,7 @@ import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.bean.ShareModel;
 import com.rhg.qf.bean.ShoppingCartBean;
 import com.rhg.qf.bean.SignInBackBean;
+import com.rhg.qf.bean.UserBean;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.datebase.AccountDao;
 import com.rhg.qf.impl.ShareListener;
@@ -258,12 +259,20 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         if (o instanceof SignInBackBean.UserInfoBean) {
             ToastHelper.getInstance().displayToastWithQuickClose("登录成功");
             SignInBackBean.UserInfoBean _data = (SignInBackBean.UserInfoBean) o;
-            AccountUtil.getInstance().setUserID(_data.getID());
+            UserBean.User user = new UserBean.User();
+            user.setID(_data.getID());
+            user.setPic(_data.getPic());
+            user.setPhonenumber(_data.getPhonenumber());
+            user.setCName(_data.getCName());
+            user.setPersonId(nickName);/**/
+            user.setPwd(_data.getPwd());
+            AccountUtil.getInstance().saveAccount(user);
+            /*AccountUtil.getInstance().setUserID(_data.getID());
             AccountUtil.getInstance().setHeadImageUrl(_data.getPic());
             AccountUtil.getInstance().setPhoneNumber(_data.getPhonenumber());
             AccountUtil.getInstance().setUserName(_data.getCName());
             AccountUtil.getInstance().setNickName(nickName);
-            AccountUtil.getInstance().setPwd(_data.getPwd());
+            AccountUtil.getInstance().setPwd(_data.getPwd());*/
             if (getAddressPresenter == null)
                 getAddressPresenter = new GetAddressPresenter(this);
             getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);

@@ -9,7 +9,8 @@
         android:id="@+id/rl_person_order"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="?android:selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,8 +19,8 @@
             android:layout_marginStart="@dimen/margin_little"
             android:layout_marginTop="@dimen/margin_little"
             android:text="@string/personalOrder"
-            android:textColor="@color/black_deep"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black_deep" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -45,7 +46,8 @@
         android:id="@+id/rl_today_recommend"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="?android:selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
@@ -54,8 +56,8 @@
             android:layout_marginStart="@dimen/margin_little"
             android:layout_marginTop="@dimen/margin_little"
             android:text="@string/todayRec"
-            android:textColor="@color/black_deep"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black_deep" />
 
         <ImageView
             android:layout_width="wrap_content"

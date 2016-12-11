@@ -129,4 +129,8 @@ public abstract class AbstractHotFoodFragment extends BaseFragment implements Rc
         startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
+    @Override
+    public void onItemLongClickListener(View view, int position, HotFoodUrlBean.HotFoodBean item) {
+
+    }
 }

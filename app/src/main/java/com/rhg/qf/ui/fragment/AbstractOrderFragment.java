@@ -32,7 +32,7 @@ import butterknife.Bind;
  * time：2016/5/28 16:42
  * email：1013773046@qq.com
  */
-public abstract class AbstractOrderFragment extends BaseFragment implements RcvItemClickListener<OrderUrlBean.OrderBean> {
+public abstract class AbstractOrderFragment extends BaseFragment implements RcvItemClickListener<OrderUrlBean.OrderBean>{
     @Bind(R.id.common_recycle)
     RecyclerView commonRecycle;
     @Bind(R.id.common_refresh)
@@ -114,6 +114,8 @@ public abstract class AbstractOrderFragment extends BaseFragment implements RcvI
     public void showSuccess(Object o) {
         if (commonSwipe.isRefreshing())
             commonSwipe.setRefreshing(false);
+        if(o instanceof String )
+            return;
         qFoodOrderAdapter.setmData((List<OrderUrlBean.OrderBean>) o);
         if (commonRefresh.getVisibility() == View.VISIBLE)
             commonRefresh.setVisibility(View.GONE);
@@ -127,6 +129,11 @@ public abstract class AbstractOrderFragment extends BaseFragment implements RcvI
         _intent.putExtra(AppConstants.KEY_MERCHANT_NAME, item.getRName());
         _intent.putExtra(AppConstants.KEY_ORDER_TAG, style);
         startActivity(_intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+    }
+
+    @Override
+    public void onItemLongClickListener(View view, int position, OrderUrlBean.OrderBean item) {
+
     }
 
     protected abstract int getFmTag();

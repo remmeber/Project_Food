@@ -120,6 +120,11 @@ public class FoodTypeFragment extends BaseFragment implements RcvItemClickListen
         startActivityForResult(intent, 1, ActivityOptionsCompat.makeScaleUpAnimation(view,(int)view.getX(),(int)view.getY(),view.getWidth(),view.getHeight()).toBundle());
     }
 
+    @Override
+    public void onItemLongClickListener(View view, int position, ShopDetailUrlBean.ShopDetailBean item) {
+
+    }
+
     public void setShopDetailBeanList(List<ShopDetailUrlBean.ShopDetailBean> shopDetailBeanList) {
         this.shopDetailBeanList = shopDetailBeanList;
     }
@@ -128,4 +133,6 @@ public class FoodTypeFragment extends BaseFragment implements RcvItemClickListen
         if (commonSwipe.isRefreshing())
             commonSwipe.setRefreshing(false);
     }
+
+
 }

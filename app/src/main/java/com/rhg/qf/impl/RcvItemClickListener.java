@@ -10,4 +10,6 @@ import android.view.View;
  */
 public interface RcvItemClickListener<T> {
     void onItemClickListener(View view, int position, T item);
+
+    void onItemLongClickListener(View view, int position, T item);
 }

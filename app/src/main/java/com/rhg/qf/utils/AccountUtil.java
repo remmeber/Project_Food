@@ -73,13 +73,14 @@ public class AccountUtil {
         editor.putString(AppConstants.SP_USER_NAME, account.getCName());
         editor.putString(AppConstants.KEY_OR_SP_PHONE, account.getPhonenumber());
         editor.putString(AppConstants.SP_HEAD_IMAGE, account.getPic());
+        editor.putString(AppConstants.SP_PASSWORD,account.getPwd());
+        editor.putString(AppConstants.SP_NICKNAME,account.getPersonId());
         editor.apply();
     }
 
     public void deleteAccount() {
         SharedPreferences.Editor editor = getEditor();
-        editor.clear();
-        editor.apply();
+        editor.remove(AppConstants.SP_USER_ID).remove(AppConstants.SP_USER_NAME).apply();
     }
 
     public String getUserID() {

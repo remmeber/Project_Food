@@ -90,18 +90,18 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     protected void initData() {
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
-        if (resultCode == AppConstants.BACK_WITH_ADD)
+        if (resultCode == AppConstants.BACK_WITH_ADD) {
             tbCenterTv.setText(getResources().getString(R.string.newAddress));
-        else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE});
+            else
+                startLoc();
+        } else {
             tbCenterTv.setText(getResources().getString(R.string.modifyAddress));
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_PHONE_STATE});
-        else
-            startLoc();
     }
 
     @Override
@@ -185,7 +185,13 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                 break;
             case R.id.add_new_address_location:
             case R.id.add_new_address_contact_address_content:
-                startLoc();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_PHONE_STATE});
+                else
+                    startLoc();
                 break;
         }
     }

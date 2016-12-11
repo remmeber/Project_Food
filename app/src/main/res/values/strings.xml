@@ -14,15 +14,16 @@
 
     <!-- profile -->
     <string name="myOrder">我的订单</string>
+    <string name="deliverOrder">跑腿员订单</string>
     <string name="orderDetail">订单详情</string>
     <string name="orderUnPaid">待付款</string>
-    <string name="cancel">取消</string>
+    <string name="orderDelivering">进行中</string>
     <string name="orderComplete">已完成</string>
     <string name="workerInfo">我是跑腿员</string>
     <string name="workerSignIn">登录</string>
     <string name="pleaseSignIn">请登录</string>
-    <string name="wokerSignUp">注册</string>
-    <string name="wokerAndAddrModify">修改</string>
+    <string name="deliverSignUp">注册</string>
+    <string name="deliverAndAddrModify">修改</string>
     <string name="addrInfo">我的地址</string>
     <string name="custome">常用</string>
     <string name="add">添加</string>
@@ -99,6 +100,7 @@
     <string name="contactAddressDetail">补充详细地址(如门牌号、楼层号)</string>
     <string name="sure2Modify">确定修改选中地址？</string>
     <string name="tvSave">保存</string>
+    <string name="tvExit">退出账号</string>
     <string name="tvEdit">编辑</string>
     <!--收货地址-->
 

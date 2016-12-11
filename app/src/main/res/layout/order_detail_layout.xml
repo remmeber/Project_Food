@@ -53,7 +53,7 @@
             android:layout_marginTop="@dimen/margin_little"
             android:background="@color/colorInActive" />
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_little">
@@ -90,7 +90,7 @@
                 android:minHeight="0dp"
                 android:text="@string/tvDrawback"
                 android:textSize="@dimen/text_big" />
-        </RelativeLayout>
+        </RelativeLayout>-->
 
 
         <View

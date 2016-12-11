@@ -32,12 +32,14 @@ public abstract class BaseDialogView extends Dialog {
         this.context = context;
         this.resId = resId;
     }
-    BaseDialogView(Context context, int resId, boolean cancelable){
-        super(context,R.style.MyDialogStyle);
+
+    BaseDialogView(Context context, int resId, boolean cancelable) {
+        super(context, R.style.MyDialogStyle);
         this.context = context;
         this.cancelable = cancelable;
         this.resId = resId;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

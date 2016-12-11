@@ -42,8 +42,8 @@ public class QFoodMerchantAdapter extends RecycleAbstractAdapter<MerchantUrlBean
     @Override
     protected int getLayoutResId(int viewtype) {
         if (viewtype == AppConstants.TypeHeader)
-            return R.layout.all_store_header_cardview;
-        return R.layout.item_sell_layout;
+            return R.layout.item_all_shop_header;
+        return R.layout.item_sell_body;
     }
 
     @Override

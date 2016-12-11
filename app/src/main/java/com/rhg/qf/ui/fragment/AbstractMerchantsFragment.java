@@ -17,7 +17,9 @@ import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.impl.RcvItemClickListener;
 import com.rhg.qf.mvp.presenter.MerchantsPresenter;
 import com.rhg.qf.ui.activity.ShopDetailActivity;
+import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.SizeUtil;
+import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -77,6 +79,10 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if ("".contains(AccountUtil.getInstance().getLongitude())) {
+                    ToastHelper.getInstance().displayToastWithQuickClose("无法定位当前位置");
+                    return;
+                }
                 getMerchantsOrderBySellNumberPresenter.getMerchants(AppConstants.RESTAURANTS, merchantsType);
             }
         });
@@ -125,6 +131,11 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
         intent.putExtra("productName","黄焖鸡米饭");
         intent.putExtra("goodsPrice","￥:90");
         startActivity(intent);*/
+
+    }
+
+    @Override
+    public void onItemLongClickListener(View view, int position, MerchantUrlBean.MerchantBean item) {
 
     }
 

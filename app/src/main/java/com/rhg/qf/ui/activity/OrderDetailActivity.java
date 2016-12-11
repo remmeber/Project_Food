@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,10 +47,6 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
     TextView tvReceiverAddress;
     @Bind(R.id.tvOrderNote)
     TextView tvOrderNote;
-    @Bind(R.id.tvMerchantName)
-    TextView tvMerchantName;
-    @Bind(R.id.btDrawback)
-    Button btDrawback;
     @Bind(R.id.rcyPayItem)
     RecyclerView rcyPayItem;
 
@@ -72,16 +67,16 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
     String orderId;
     int orderTag;
     String orderPrice;
-    String merchantName;
-    String productName;
+    /*String merchantName;
+    String productName;*/
     OrderDetailUrlBean.OrderDetailBean foodBean = new OrderDetailUrlBean.OrderDetailBean();
     private FoodsDetailAdapter foodsDetailAdapter;
 
     @Override
     public void dataReceive(Intent intent) {
         orderId = intent.getStringExtra(AppConstants.KEY_ORDER_ID);
-        merchantName = intent.getStringExtra(AppConstants.KEY_MERCHANT_NAME);
-        productName = merchantName;
+        /*merchantName = intent.getStringExtra(AppConstants.KEY_MERCHANT_NAME);
+        productName = merchantName;*/
         orderPrice = intent.getStringExtra(AppConstants.KEY_PRODUCT_PRICE);
         orderTag = intent.getIntExtra(AppConstants.KEY_ORDER_TAG, -1);
         /*
@@ -112,7 +107,6 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
         rcyPayItem.setHasFixedSize(true);
         foodsDetailAdapter = new FoodsDetailAdapter(this, foodBean);
         rcyPayItem.setAdapter(foodsDetailAdapter);
-        tvMerchantName.setText(merchantName);
         lyTotalCount.setVisibility(View.VISIBLE);
         tvTotalMoney.setText(String.format(Locale.ENGLISH, "%s", ""));
         setText(btPayOrRateOrConform);
@@ -130,7 +124,9 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
         if (AppConstants.USER_ORDER_COMPLETE == orderTag
                 || AppConstants.USER_ORDER_DRAWBACK == orderTag) {
             btPayOrRateOrConform.setText(getResources().getString(R.string.goEvaluate));
+            return;
         }
+        btPayOrRateOrConform.setVisibility(View.GONE);
     }
 
     @Override
@@ -139,10 +135,8 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
             foodBean = (OrderDetailUrlBean.OrderDetailBean) s;
             setData(foodBean);
         }
-        if (s instanceof String) {
-            if (((String) s).contains("order"))
-                finish();
-//            ToastHelper.getInstance()._toast((String) s);
+        if (s instanceof String && ((String) s).contains("order")) {
+            finish();
         }
     }
 
@@ -153,8 +147,8 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
                 orderDetail.getPhone()));
         tvReceiverAddress.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvReceiveAddress),
                 orderDetail.getAddress()));
-        tvOrderNote.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvNote),"无"));
-        tvMerchantName.setText(merchantName);
+        tvOrderNote.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvNote), "无"));
+//        tvMerchantName.setText(merchantName);
         tvTotalMoney.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.countMoney),
                 DecimalUtil.addWithScale(orderDetail.getFee(), orderDetail.getPrice(), 2)));
         foodsDetailAdapter.setFoodsBeanList(orderDetail);
@@ -165,18 +159,18 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
 
     }
 
-    @OnClick({R.id.tb_left_iv, R.id.btDrawback, R.id.btPayOrRateOrConform})
+    @OnClick({R.id.tb_left_iv,/* R.id.btDrawback,*/ R.id.btPayOrRateOrConform})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tb_left_iv:
                 finish();
                 break;
-            case R.id.btDrawback:
+            /*case R.id.btDrawback:
                 if (modifyOrderPresenter == null)
                     modifyOrderPresenter = new ModifyOrderPresenter(this);
-                modifyOrderPresenter.modifyUserOrDeliverOrderState(orderId/*订单号*/,
-                        /*0:退单，1,：完成*/AppConstants.ORDER_WITHDRAW);
-                break;
+                modifyOrderPresenter.modifyUserOrDeliverOrderState(orderId*//*订单号*//*,
+                        *//*0:退单，1,：完成*//*AppConstants.ORDER_WITHDRAW);
+                break;*/
             case R.id.btPayOrRateOrConform:
                 if (orderTag == AppConstants.USER_ORDER_DELIVERING || orderTag == AppConstants.USER_ORDER_COMPLETE) {
                     Intent intent = new Intent(this, DeliverStateNoneActivity.class);
@@ -193,7 +187,13 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
                     payModel.setAddress(tvReceiverAddress.getText().toString().split(":")[1]);
                     ArrayList<PayModel.PayBean> payBeen = new ArrayList<>();
                     PayModel.PayBean _pay = new PayModel.PayBean();
-                    _pay.setProductName(merchantName);
+                    StringBuilder sb = new StringBuilder();
+                    for (int index :
+                            foodBean.getIndex()) {
+                        sb.append(foodBean.getFoods().get(index).getRName());
+                        sb.append(" ");
+                    }
+                    _pay.setProductName(sb.toString());
                     _pay.setChecked(true);
                     _pay.setProductId(orderId);
                     int count = 1;

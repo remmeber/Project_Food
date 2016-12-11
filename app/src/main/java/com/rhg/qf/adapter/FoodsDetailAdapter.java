@@ -21,46 +21,62 @@ import butterknife.ButterKnife;
  *time 2016/7/10 20:32
  *email 1013773046@qq.com
  */
-public class FoodsDetailAdapter extends RecyclerView.Adapter<FoodsDetailAdapter.FoodListViewHolder> {
+public class FoodsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final static int TYPE_HEADER = 1;
+    private final static int TYPE_BODY = 2;
     Context context;
     private OrderDetailUrlBean.OrderDetailBean foodsBeanList;
+    int type;
 
     public FoodsDetailAdapter(Context context, OrderDetailUrlBean.OrderDetailBean foodsBeanList) {
         this.context = context;
         this.foodsBeanList = foodsBeanList;
     }
 
-    public void  setFoodsBeanList(OrderDetailUrlBean.OrderDetailBean foodsBeanList) {
+    public void setFoodsBeanList(OrderDetailUrlBean.OrderDetailBean foodsBeanList) {
         this.foodsBeanList = foodsBeanList;
         notifyDataSetChanged();
     }
 
     @Override
-    public FoodsDetailAdapter.FoodListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        if ((position != (getItemCount() - 1)) && foodsBeanList.getFoods().get(position).getNum() == null)
+            return TYPE_HEADER;
+        return TYPE_BODY;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
+        if (viewType == TYPE_HEADER)
+            return new FoodHeaderViewHolder(inflater.inflate(R.layout.item_order_header, parent, false));
         return new FoodListViewHolder(inflater.inflate(R.layout.item_food, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(FoodsDetailAdapter.FoodListViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position == getItemCount() - 1) {
-            holder.tvFoodName.setText("配送费");
-            holder.tvFoodPrice.setText(String.format(Locale.ENGLISH, context.getResources().getString(R.string.countMoney), foodsBeanList.getFee()));
+            ((FoodListViewHolder) holder).tvFoodName.setText("配送费");
+            ((FoodListViewHolder) holder).tvFoodPrice.setText(String.format(Locale.ENGLISH, context.getResources().getString(R.string.countMoney), foodsBeanList.getFee()));
             return;
         }
         OrderDetailUrlBean.OrderDetailBean.FoodsBean _data = foodsBeanList.getFoods().get(position);
-        holder.tvFoodName.setText(_data.getFName());
-        holder.tvFoodPrice.setText(String.format(Locale.ENGLISH, context.getResources().getString(R.string.countMoney),
-                _data.getPrice()));
-        holder.tvFoodNum.setText(String.format(Locale.ENGLISH, "× %s",
-                _data.getNum()));
+        if (getItemViewType(position) == TYPE_HEADER)
+            ((FoodHeaderViewHolder) holder).tvMerchantName.setText(_data.getRName());
+        else {
+            ((FoodListViewHolder) holder).tvFoodName.setText(_data.getFName());
+            ((FoodListViewHolder) holder).tvFoodPrice.setText(String.format(Locale.ENGLISH, context.getResources().getString(R.string.countMoney),
+                    _data.getPrice()));
+            ((FoodListViewHolder) holder).tvFoodNum.setText(String.format(Locale.ENGLISH, "× %s",
+                    _data.getNum()));
+        }
     }
 
     @Override
     public int getItemCount() {
         return foodsBeanList == null ? 0 :
-                foodsBeanList.getFoods() == null ? 0 : foodsBeanList.getFoods().size() + 1;
+                foodsBeanList.getFoods() == null ? 0 : foodsBeanList.getFoods().size() + 1;/*1是给最后的配送费用*/
     }
 
     class FoodListViewHolder extends RecyclerView.ViewHolder {
@@ -74,6 +90,16 @@ public class FoodsDetailAdapter extends RecyclerView.Adapter<FoodsDetailAdapter.
         FoodListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    class FoodHeaderViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tvMerchantName)
+        TextView tvMerchantName;
+
+        FoodHeaderViewHolder(View headerView) {
+            super(headerView);
+            ButterKnife.bind(this, headerView);
         }
     }
 }

@@ -102,6 +102,11 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
             //noinspection unchecked
             startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(SearchActivity.this).toBundle());
         }
+
+        @Override
+        public void onItemLongClickListener(View view, int position, Object item) {
+
+        }
     };
 
     public SearchActivity() {

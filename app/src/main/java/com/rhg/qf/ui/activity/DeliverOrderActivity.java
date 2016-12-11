@@ -1,5 +1,8 @@
 package com.rhg.qf.ui.activity;
 
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,7 +78,7 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     @Override
     protected void initData() {
         fl_tab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbCenterTv.setText(getResources().getString(R.string.myOrder));
+        tbCenterTv.setText(getResources().getString(R.string.deliverOrder));
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         commonRecycle.setLayoutManager(new LinearLayoutManager(this));
         commonRecycle.setHasFixedSize(false);
@@ -175,6 +178,20 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
 
     @Override
     public void onItemClickListener(View view, int position, DeliverOrderUrlBean.DeliverOrderBean item) {
+        Intent _intent = new Intent(this, OrderDetailActivity.class);
+        _intent.putExtra(AppConstants.KEY_ORDER_ID, item.getID());
+        _intent.putExtra(AppConstants.KEY_ORDER_TAG, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            startActivity(_intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+        }
+        else
+            startActivity(_intent);
+
+
+    }
+
+    @Override
+    public void onItemLongClickListener(View view, int position, DeliverOrderUrlBean.DeliverOrderBean item) {
 
     }
 

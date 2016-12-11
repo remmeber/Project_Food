@@ -18,7 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rhg.qf.R;
@@ -54,8 +54,8 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
      * email：1013773046@qq.com
      */
     private static final String CROP = "com.android.camera.action.CROP";
-    @Bind(R.id.tb_right_tv)
-    TextView tbRightTv;
+    @Bind(R.id.tb_right_ll)
+    LinearLayout llTbRight;
     @Bind(R.id.tb_left_iv)
     ImageView tbLeftIv;
     @Bind(R.id.et_name_wrap)
@@ -85,7 +85,6 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
 
     protected void initData() {
         tb_common.setBackgroundResource(R.color.colorBlueNormal);
-        tbRightTv.setText(getResources().getString(R.string.tvEdit));
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         etNameWrap.setHint("姓名");
         /*if (etNameWrap.getEditText() != null)
