@@ -155,7 +155,6 @@
     <string name="confirm_the_members">确认将此成员加入至此群黑名单?</string>
     <string name="confirmpassword">确认密码</string>
     <string name="connect_conflict">同一帐号已在其他设备登录</string>
-    <string name="connect_failuer_toast">请检查网络或稍候重试</string>
     <string name="copy">复制</string>
     <string name="copy_message">复制消息</string>
     <string name="delete">删除</string>

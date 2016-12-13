@@ -144,12 +144,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_20.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_record_animate_13.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_record_animate_13.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_3.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_3.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_record_animate_13.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_record_animate_13.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_9.png",
@@ -260,20 +260,20 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_32.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_ic_launcher.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_ic_launcher.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_chat_video_mask_to.9.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_chat_video_mask_to.9.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_14.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_14.png"
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_ic_launcher.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_ic_launcher.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_17.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_17.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_14.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_14.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_to_group_details_normal.png",
@@ -400,12 +400,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_record_animate_02.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_seabar_input.9.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_seabar_input.9.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_record_animate_11.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_record_animate_11.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_seabar_input.9.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_seabar_input.9.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_record_animate_05.png",

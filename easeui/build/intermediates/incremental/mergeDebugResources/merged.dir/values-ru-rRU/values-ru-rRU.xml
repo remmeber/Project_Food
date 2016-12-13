@@ -50,7 +50,6 @@
     <string name="confirm_resend">Вы уверены, что хотите отправить сообщение еще раз?</string>
     <string name="confirmpassword">Подтвердить пароль</string>
     <string name="connect_conflict">В данный момент эта уч.запись используется другим устройством</string>
-    <string name="connect_failuer_toast">Пожалуйста, проверьте соединение с интернетом либо попробуйте еще раз позже</string>
     <string name="copy">Копировать</string>
     <string name="copy_message">Копировать сообщение</string>
     <string name="delete">Удалить</string>
