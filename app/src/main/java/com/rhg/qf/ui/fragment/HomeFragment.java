@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.rhg.qf.R;
@@ -25,6 +26,7 @@ import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.bean.RecommendListTypeModel;
 import com.rhg.qf.bean.TextTypeBean;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.impl.ToolBarClickListener;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.HomePresenter;
@@ -44,7 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * desc:主页
@@ -82,7 +83,7 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
 
     @Override
     public int getLayoutResId() {
-        return R.layout.home_fm_layout;
+        return R.layout.common_rcv_layout;
     }
 
 
@@ -242,13 +243,6 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         recycleMultiTypeAdapter.notifyDataSetChanged();
     }
 
-    private void doSearch() {
-        Intent _intent = new Intent(getActivity(), SearchActivity.class);
-        _intent.putExtra(AppConstants.KEY_SEARCH_TAG, AppConstants.KEY_RESTAURANT_SEARCH);
-        _intent.putExtra(AppConstants.KEY_SEARCH_INDEX, 0);
-        startActivity(_intent);
-    }
-
 
     @Override
     public void bannerClick(View view, int position, BannerTypeUrlBean.BannerEntity bannerEntity) {
@@ -284,9 +278,12 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         startActivity(new Intent(getContext(), RecommendActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
-    @OnClick(R.id.tv_home_search)
-    public void onClick() {
-        doSearch();
+    @Override
+    public void r1_click(String title) {
+        Log.i("RHG", "点击的内容为：" + title);
+        Intent _intent = new Intent(getContext(), SearchActivity.class);
+        _intent.putExtra(AppConstants.KEY_SEARCH_TAG, AppConstants.KEY_RESTAURANT_SEARCH);
+        _intent.putExtra(AppConstants.KEY_SEARCH_INDEX, 0);
+        startActivity(_intent);
     }
-
 }

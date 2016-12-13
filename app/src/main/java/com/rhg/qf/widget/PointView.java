@@ -20,20 +20,35 @@ public class PointView extends LinearLayout implements ViewPager.OnPageChangeLis
 
     public PointView(Context context) {
         super(context);
-        init(context);
+//        init(context);
     }
 
     public PointView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+//        init(context);
     }
 
     public PointView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+//        init(context);
     }
 
-    private void init(Context context) {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+  /*  private void init(Context context) {
         this.mContext = context;
     }
 
@@ -109,5 +124,5 @@ public class PointView extends LinearLayout implements ViewPager.OnPageChangeLis
     public void onPageScrollStateChanged(int state) {
         if (mPointViewChangeListener != null)
             mPointViewChangeListener.onPageScrollStateChanged(state);
-    }
+    }*/
 }

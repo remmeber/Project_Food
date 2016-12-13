@@ -3,9 +3,9 @@ package com.rhg.qf.ui.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.rhg.qf.R;
 import com.rhg.qf.constants.AppConstants;
@@ -27,8 +27,8 @@ import butterknife.OnClick;
  */
 public class DeliverStateNoneActivity extends BaseAppcompactActivity {
 
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.food_receive_progress)
     LineProgress foodDeliverProgress;
     @Bind(R.id.rb_mouth_feel)
@@ -51,7 +51,6 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
         if (getDeliverStatePresenter == null)
             getDeliverStatePresenter = new DeliverStatePresenter(this);
         getDeliverStatePresenter.getDeliverState(AppConstants.ORDER_STYLE, orderId);
-
     }
 
     @Override
@@ -62,7 +61,10 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
 
     @Override
     protected void initData() {
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
+        toolbar.setTitle("订单状态");
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
         rbDeliverService.setIsIndicator(false);
         rbMouthFeel.setIsIndicator(false);
         modifyOrderPresenter = new ModifyOrderPresenter(this);
@@ -73,7 +75,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
     @Override
     public void showSuccess(Object s) {
         if (s instanceof String) {
-//            ToastHelper.getInstance()._toast(s.toString());
+            ToastHelper.getInstance()._toast(s.toString());
             if ("40".equals(s)) {
                 foodDeliverProgress.setState(-1);
                 return;
@@ -90,7 +92,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
                 foodDeliverProgress.setState(2);
                 return;
             }
-            if(((String) s).contains("order")){
+            if (((String) s).contains("order")) {
                 finish();
             }
 
@@ -103,12 +105,9 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
     }
 
 
-    @OnClick({R.id.tb_left_iv, R.id.bt_conform_receive, R.id.bt_finish})
+    @OnClick({R.id.bt_conform_receive, R.id.bt_finish})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
             case R.id.bt_conform_receive:
                 if (foodDeliverProgress.getState() == LineProgress.STATE_NONE) {
                     ToastHelper.getInstance()._toast("商品正在等待接单！");
@@ -131,7 +130,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
                         ToastHelper.getInstance()._toast("感谢您的评论"/*"口感评分：" + mouthFeelRate +
                                 ",送货服务：" + deliverServiceRate*/);
                     }
-                },1000);
+                }, 1000);
                 break;
         }
     }
@@ -161,4 +160,8 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
         }
     }
 
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
+    }
 }

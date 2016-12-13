@@ -1,13 +1,12 @@
 package com.rhg.qf.ui.activity;
 
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
@@ -24,14 +23,10 @@ import butterknife.OnClick;
  *time 2016/7/6 22:04
  *email 1013773046@qq.com
  */
-public class DeliverRegisterActivity extends BaseFragmentActivity {
+public class DeliverRegisterActivity extends BaseAppcompactActivity {
 
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.et_phone_number)
     EditText etPhoneNumber;
     @Bind(R.id.et_check_number)
@@ -52,16 +47,12 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initData() {
+        toolbar.setTitle(getResources().getString(R.string.register));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
 
-    }
-
-    @Override
-    protected void initData(Bundle savedInstanceState) {
         countTimer = new MyCountDownTimer(60000, 1000, btCheckNumber);
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
-        tbCenterTv.setText(getResources().getString(R.string.register));
         tvAgreement.setMovementMethod(ScrollingMovementMethod.getInstance());
         /*tvAfterReadAgreement.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -90,21 +81,18 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
 
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 
-    @OnClick({R.id.tb_left_iv, R.id.bt_check_number, R.id.complete_register, R.id.tv_after_read_agreement})
+    @OnClick({R.id.bt_check_number, R.id.complete_register, R.id.tv_after_read_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
             case R.id.bt_check_number:
                 if (TextUtils.isEmpty(etPhoneNumber.getText().toString().trim())) {
                     ToastHelper.getInstance()._toast("手机号码为空");
@@ -148,20 +136,25 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
+    }
+
+    @Override
+    protected void beforeFinish() {
         if (countTimer.isRunning())
             countTimer.onFinish();
         countTimer.removeView();
         countTimer = null;
-        super.onDestroy();
+        super.beforeFinish();
     }
 
     /*
-         *desc 将手机号注册到服务器端
-         *author rhg
-         *time 2016/7/6 22:02
-         *email 1013773046@qq.com
-         */
+             *desc 将手机号注册到服务器端
+             *author rhg
+             *time 2016/7/6 22:02
+             *email 1013773046@qq.com
+             */
     private void register2Server(String s) {
 
     }

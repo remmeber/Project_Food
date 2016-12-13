@@ -28,13 +28,22 @@ public class UIAlertView extends BaseDialogView {
         this.buttonRightText = buttonRightText;
     }
 
+    public UIAlertView(Context context, String title, String message,
+                       String buttonLeftText, String buttonRightText, ClickListenerInterface clickListenerInterface) {
+        super(context, R.layout.ui_alert_view, false, clickListenerInterface);
+        this.title = title;
+        this.message = message;
+        this.buttonLeftText = buttonLeftText;
+        this.buttonRightText = buttonRightText;
+    }
+
     @Override
     protected void initView(View view) {
         super.initView(view);
         TextView tvMessage = (TextView) view.findViewById(R.id.tvMessage);
         TextView tvLeft = (TextView) view.findViewById(R.id.tvBtnLeft);
         TextView tvRight = (TextView) view.findViewById(R.id.tvBtnRight);
-        TextView tvTitle = (TextView)view.findViewById(R.id.tvTitle);
+        TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
 
         if ("".equals(title)) {
             tvTitle.setVisibility(View.GONE);

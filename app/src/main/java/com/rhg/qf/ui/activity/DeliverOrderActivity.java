@@ -7,10 +7,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,12 +41,8 @@ import butterknife.OnClick;
  */
 public class DeliverOrderActivity extends BaseAppcompactActivity implements DeliverOrderItemAdapter.OrderStyleListener,
         RcvItemClickListener<DeliverOrderUrlBean.DeliverOrderBean> {
-    @Bind(R.id.fl_tab)
-    FrameLayout fl_tab;
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.bt_order_snatch)
     TextView btOrderSnatch;
     @Bind(R.id.bt_order_progress)
@@ -77,9 +73,10 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
 
     @Override
     protected void initData() {
-        fl_tab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbCenterTv.setText(getResources().getString(R.string.deliverOrder));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
+        toolbar.setTitle(getResources().getString(R.string.deliverOrder));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
         commonRecycle.setLayoutManager(new LinearLayoutManager(this));
         commonRecycle.setHasFixedSize(false);
         RecycleViewDivider _divider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
@@ -130,12 +127,9 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     }
 
 
-    @OnClick({R.id.tb_left_iv, R.id.bt_order_snatch, R.id.bt_order_progress})
+    @OnClick({R.id.bt_order_snatch, R.id.bt_order_progress})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
             case R.id.bt_order_snatch:
                 btOrderSnatch.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
                 btOrderProgress.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -183,8 +177,7 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
         _intent.putExtra(AppConstants.KEY_ORDER_TAG, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             startActivity(_intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
-        }
-        else
+        } else
             startActivity(_intent);
 
 
@@ -217,9 +210,8 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
         delDialog.show();
     }
 
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
 }

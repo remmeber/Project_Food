@@ -1,11 +1,11 @@
 package com.rhg.qf.ui.activity;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,12 +33,8 @@ import butterknife.OnClick;
  */
 public class OrderDetailActivity extends BaseAppcompactActivity {
 
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.tv_receiver)
     TextView tvReceiver;
     @Bind(R.id.tv_receiver_phone)
@@ -98,9 +94,10 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
 
     @Override
     protected void initData() {
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbCenterTv.setText(getResources().getString(R.string.orderDetail));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
+        toolbar.setTitle(getResources().getString(R.string.orderDetail));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
         ivEditRight.setVisibility(View.GONE);
         tvEdit.setVisibility(View.GONE);
         rcyPayItem.setLayoutManager(new LinearLayoutManager(this));
@@ -159,12 +156,9 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
 
     }
 
-    @OnClick({R.id.tb_left_iv,/* R.id.btDrawback,*/ R.id.btPayOrRateOrConform})
+    @OnClick({/* R.id.btDrawback,*/ R.id.btPayOrRateOrConform})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
             /*case R.id.btDrawback:
                 if (modifyOrderPresenter == null)
                     modifyOrderPresenter = new ModifyOrderPresenter(this);
@@ -209,6 +203,11 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
 
 }

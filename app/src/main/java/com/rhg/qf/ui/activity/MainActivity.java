@@ -1,15 +1,16 @@
 package com.rhg.qf.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.rhg.qf.R;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.impl.ToolBarClickListener;
 import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.ui.FragmentController;
 import com.rhg.qf.ui.fragment.HomeFragment;
@@ -21,11 +22,17 @@ import com.rhg.qf.utils.ToastHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseFragmentActivity implements BaseView
-{
+import butterknife.Bind;
+
+public class MainActivity extends BaseAppcompactActivity implements BaseView {
+    private final static int[] NAV_STRING = new int[]{R.string.Home, R.string.Merchant,
+            R.string.User, R.string.shoppingCart};
     FragmentController fragmentController;
-    BottomNavigationBar bottomNavigation;
     long first = 0L;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.bottom_navigation)
+    BottomNavigationBar bottomNavigation;
 
 
     @Override
@@ -33,13 +40,12 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
         return R.layout.activity_main;
     }
 
-    @Override
-    protected void initView(View view) {
-        bottomNavigation = (BottomNavigationBar) findViewById(R.id.bottom_navigation);
-    }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initData() {
+        toolbar.setNavigationIcon(null);
+        toolbar.setTitle("家家美食");
+        setSupportActionBar(toolbar);
 
         bottomNavigation.setMode(BottomNavigationBar.MODE_CLASSIC);
         bottomNavigation.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
@@ -47,15 +53,20 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
                 .setActiveColor(R.color.colorBlueNormal)
                 .setInActiveColor(R.color.colorInActive)
                 .setBarBackgroundColor(R.color.colorBackground);
-        bottomNavigation.addItem(new BottomNavigationItem(R.drawable.ic_home, R.string.Home))
-                .addItem(new BottomNavigationItem(R.drawable.ic_shop, R.string.Merchant))
-                .addItem(new BottomNavigationItem(R.drawable.ic_user, R.string.User))
-                .addItem(new BottomNavigationItem(R.drawable.ic_shopping_cart_black, R.string.shoppingCart))
+        bottomNavigation.addItem(new BottomNavigationItem(R.drawable.ic_home, NAV_STRING[0]))
+                .addItem(new BottomNavigationItem(R.drawable.ic_shop, NAV_STRING[1]))
+                .addItem(new BottomNavigationItem(R.drawable.ic_user, NAV_STRING[2]))
+                .addItem(new BottomNavigationItem(R.drawable.ic_shopping_cart_black, NAV_STRING[3]))
                 .initialise();
         bottomNavigation.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             //当item被选中状态
             @Override
             public void onTabSelected(int position) {
+                if (position == AppConstants.TypeHome || position == AppConstants.TypeSeller) {
+                    toolbar.getMenu().getItem(0).setVisible(true);
+                } else {
+                    toolbar.getMenu().getItem(0).setVisible(false);
+                }
                 fragmentController.showFragment(position);
             }
 
@@ -87,15 +98,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
         fragmentController.getCurrentFM().onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    /*数据回调*/
-    @Override
-    protected void showSuccess(Object s) {
-    }
-
-    @Override
-    protected void showError(Object s) {
-    }
-
     @Override
     public void hideNavigationBar(View decorView) {
 //        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
@@ -112,9 +114,11 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
+    public void rightClick() {
+        ((ToolBarClickListener) fragmentController.getCurrentFM()).r1_click(toolbar.getMenu().
+                getItem(0).getTitle().toString());
     }
+
 
     @Override
     public void onBackPressed() {

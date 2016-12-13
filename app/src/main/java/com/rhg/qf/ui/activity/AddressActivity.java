@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.AddressAdapter;
@@ -27,6 +26,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
 /*
  *desc 地址页面
  *author rhg
@@ -39,12 +39,9 @@ public class AddressActivity extends BaseAppcompactActivity {
     private static final int MODIFY = 1;
     private static final String CHOOSE = "1";
     private static final String UNCHOOSE = "0";
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.rcy_address)
     SwipeDeleteRecycleView rcyAddress;
     @Bind(R.id.srl_address)
@@ -108,9 +105,9 @@ public class AddressActivity extends BaseAppcompactActivity {
 
     @Override
     protected void initData() {
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbCenterTv.setText(getResources().getString(R.string.address));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
+        toolbar.setTitle(getResources().getString(R.string.address));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcyAddress.setLayoutManager(linearLayoutManager);
@@ -155,10 +152,6 @@ public class AddressActivity extends BaseAppcompactActivity {
             srlAddress.setRefreshing(false);
     }
 
-    @Override
-    public void showError(Object s) {
-
-    }
 
     private void selectOne(int position) {
         for (int i = 0; i < addressBeanList.size(); i++) {
@@ -169,19 +162,22 @@ public class AddressActivity extends BaseAppcompactActivity {
     }
 
 
-    @OnClick({R.id.tb_left_iv, R.id.bt_add_new_address})
+    @OnClick({R.id.bt_add_new_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_add_new_address:
                 Intent _intent = new Intent(this, AddOrNewAddressActivity.class);
                 startActivityForResult(_intent, AppConstants.BACK_WITH_ADD);
                 break;
-            case R.id.tb_left_iv:
-                AddressUrlBean.AddressBean _addressBean = getDefaultAddress(addressBeanList);
-                setResult(resultCode, new Intent().putExtra(AppConstants.ADDRESS_DEFAULT, _addressBean));
-                finish();
-                break;
         }
+    }
+
+    @Override
+    protected void beforeFinish() {
+        deleteListener = null;
+        AddressUrlBean.AddressBean _addressBean = getDefaultAddress(addressBeanList);
+        setResult(resultCode, new Intent().putExtra(AppConstants.ADDRESS_DEFAULT, _addressBean));
+        super.beforeFinish();
     }
 
     private AddressUrlBean.AddressBean getDefaultAddress(List<AddressUrlBean.AddressBean> addressBeanList) {
@@ -218,21 +214,14 @@ public class AddressActivity extends BaseAppcompactActivity {
                                                _intent.putExtra(AppConstants.KEY_ADDRESS, _addressBean);
                                                startActivityForResult(_intent, AppConstants.BACK_WITH_UPDATE);
                                            }
-                                          /* new Handler().postDelayed(new Runnable() {
-                                               @Override
-                                               public void run() {
-                                                   delDialog.dismiss();
-                                               }
-                                           }, 500);*/
                                        }
                                    }
         );
     }
 
     @Override
-    protected void onDestroy() {
-        deleteListener = null;
-        super.onDestroy();
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
 
 

@@ -43,13 +43,6 @@ public class ShoppingCartFragment extends BaseFragment {
     List<ShoppingCartBean> shoppingCartBeanList;
     QFoodShoppingCartExplAdapter QFoodShoppingCartExplAdapter;
     boolean isLogin;
-
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTV;
-    @Bind(R.id.tb_right_ll)
-    LinearLayout tbRight;
-    @Bind(R.id.fl_tab)
-    FrameLayout fl_tab;
     @Bind(R.id.tv_shopping_cart_ind)
     TextView tvShoppingCartInd;
     @Bind(R.id.rl_shopping_cart_empty)
@@ -60,8 +53,6 @@ public class ShoppingCartFragment extends BaseFragment {
     SwipeRefreshLayout srlShoppingCart;
     @Bind(R.id.tv_count_money)
     TextView tvCountMoney;
-    @Bind(R.id.ll_shopping_cart)
-    LinearLayout llShoppingCart;
     @Bind(R.id.rl_shopping_cart_pay)
     RelativeLayout rlShoppingCartPay;
     private GetAddressPresenter getAddressPresenter;
@@ -173,17 +164,12 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        fl_tab.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
-        tbCenterTV.setText(getResources().getString(R.string.shoppingCart));
-        tbRight.setVisibility(View.GONE);
         srlShoppingCart.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
         srlShoppingCart.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (AccountUtil.getInstance().hasAccount()) {
-                    isLogin = false;
-//                    userId = AccountUtil.getInstance().getUserID();
-//                    getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
+                    isLogin = true;
                     List<FoodInfoBean> foodInfoBeanList = ShoppingCartUtil.getAllProductID();
                     setData(foodInfoBeanList);
                 } else {

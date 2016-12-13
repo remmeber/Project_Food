@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar_layout" />
+
     <LinearLayout
+        android:id="@+id/ll_pay_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/btPayOrRateOrConform"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar_common_layout" />
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <View
             android:layout_width="match_parent"
@@ -137,20 +140,15 @@
     </LinearLayout>
 
     <TextView
+
         android:id="@+id/btPayOrRateOrConform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_little"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/margin_little"
-        android:background="@drawable/ease_btn_blue_selector"
+        android:layout_gravity="bottom"
+        android:background="@drawable/btn_blue_style"
         android:gravity="center"
         android:padding="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small"
         android:textSize="@dimen/text_large"
         tools:text="@string/goPay" />
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

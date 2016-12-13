@@ -2,22 +2,20 @@ package com.rhg.qf.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.view.Menu;
 import android.view.View;
 
 import com.easemob.EMCallBack;
 import com.easemob.EMError;
 import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
-import com.easemob.easeui.EaseConstant;
-import com.easemob.easeui.ui.EaseBaseActivity;
-import com.easemob.easeui.ui.EaseChatFragment;
 import com.easemob.exceptions.EaseMobException;
 import com.rhg.qf.R;
+import com.rhg.qf.easeui.EaseConstant;
+import com.rhg.qf.easeui.controller.EaseUI;
+import com.rhg.qf.easeui.ui.EaseChatFragment;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.ToastHelper;
@@ -25,33 +23,37 @@ import com.rhg.qf.utils.ToastHelper;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChatActivity extends EaseBaseActivity {
+public class ChatActivity extends BaseAppcompactActivity {
     public static ChatActivity activityInstance;
     String toChatUsername;
     String uname;
     private EaseChatFragment chatFragment;
 
     @Override
-    protected void onCreate(Bundle arg0) {
-        super.onCreate(arg0);
-        setContentView(R.layout.activity_chat);
-
+    protected void initData() {
         activityInstance = this;
         uname = "QF" + dealUName(AccountUtil.getInstance().getNickName());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkPermissionAndSetIfNecessary(new String[]{Manifest.permission_group.MICROPHONE});
         doLogin();
+
     }
 
-    private void checkPermissionAndSetIfNecessary(String[] permissions) {
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_chat;
+    }
+
+
+   /* private void checkPermissionAndSetIfNecessary(String[] permissions) {
         if (!PermissionsManager.getInstance().hasAllPermissions(this, permissions)) {
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                     permissions, null);
         }
-    }
+    }*/
 
-    @Override
+/*    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         for (int i = 0; i < permissions.length; i++) {
@@ -62,12 +64,12 @@ public class ChatActivity extends EaseBaseActivity {
             }
         }
         onGrant();
+    }*/
+
+    public void onGrant() {
     }
 
-    private void onGrant() {
-    }
-
-    private void onDeny(final String permission) {
+    public void onDeny(final String permission) {
         Snackbar.make(getWindow().getDecorView(), "授权失败，将影响您的体验", Snackbar.LENGTH_LONG)
                 .setAction("重新授权", new View.OnClickListener() {
                     @Override
@@ -118,12 +120,15 @@ public class ChatActivity extends EaseBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        EaseUI.getInstance().getNotifier().reset();
 
     }
+
 
     private void initView() {
         toChatUsername = getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID);
         chatFragment = new EaseChatFragment();
+        chatFragment.setHasOptionsMenu(true);
         //传入参数
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
@@ -222,7 +227,9 @@ public class ChatActivity extends EaseBaseActivity {
         else finish();
     }
 
-    public String getToChatUsername() {
-        return toChatUsername;
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
+
 }

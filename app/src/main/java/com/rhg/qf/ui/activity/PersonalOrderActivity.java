@@ -1,20 +1,17 @@
 package com.rhg.qf.ui.activity;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.easemob.easeui.EaseConstant;
 import com.rhg.qf.R;
 import com.rhg.qf.bean.AddressUrlBean;
 import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.bean.SignInBackBean;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.easeui.EaseConstant;
 import com.rhg.qf.impl.SignInListener;
 import com.rhg.qf.mvp.presenter.GetAddressPresenter;
 import com.rhg.qf.mvp.presenter.NewOrderPresenter;
@@ -42,14 +39,9 @@ import butterknife.OnClick;
  *email 1013773046@qq.com
  */
 public class PersonalOrderActivity extends BaseAppcompactActivity {
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_right_ll)
-    LinearLayout tbRightLl;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     UserSignInPresenter userSignInPresenter;
     UserSignUpPresenter userSignUpPresenter;
     GetAddressPresenter getAddressPresenter;
@@ -62,10 +54,9 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
 
     @Override
     protected void initData() {
-        tbCenterTv.setText(R.string.personalOrder);
-        tbRightLl.setVisibility(View.GONE);
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
+        toolbar.setTitle(getString(R.string.personalOrder));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
     }
 
     @Override
@@ -121,12 +112,9 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
     }
 
 
-    @OnClick({R.id.tb_left_iv, R.id.ivPersonalBackground})
+    @OnClick({R.id.ivPersonalBackground})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
             case R.id.ivPersonalBackground:
                 if (!NetUtil.isConnected(this)) {
                     ToastHelper.getInstance()._toast("网络未连接");
@@ -205,6 +193,11 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
 //                ToastHelper.getInstance()._toast(errorMessage);
             }
         });
+    }
+
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
 
 }

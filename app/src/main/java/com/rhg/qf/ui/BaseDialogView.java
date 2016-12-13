@@ -40,6 +40,14 @@ public abstract class BaseDialogView extends Dialog {
         this.resId = resId;
     }
 
+    BaseDialogView(Context context, int resId, boolean cancelable, ClickListenerInterface clickListenerInterface) {
+        super(context, R.style.MyDialogStyle);
+        this.context = context;
+        this.cancelable = cancelable;
+        this.resId = resId;
+        this.clickListenerInterface = clickListenerInterface;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

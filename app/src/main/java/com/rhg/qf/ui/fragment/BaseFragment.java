@@ -8,12 +8,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rhg.qf.R;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.impl.ToolBarClickListener;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.view.BaseView;
@@ -29,7 +35,7 @@ import butterknife.ButterKnife;
  * time：2016/5/28 16:45
  * email：1013773046@qq.com
  */
-public abstract class BaseFragment extends Fragment implements BaseView {
+public abstract class BaseFragment extends Fragment implements BaseView, ToolBarClickListener {
     private boolean isViewPrepare = false;
     boolean hasFetchData = false;
     //TODO 百度地图
@@ -37,6 +43,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     private MyLocationListener mLocationListener;
     protected View view;
     protected Activity mActivity;
+    private Toolbar toolbar;
 
     public BaseFragment() {
     }
@@ -56,6 +63,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         view = inflater.inflate(getLayoutResId(), container, false);
         ButterKnife.bind(this, view);
         initView(view);
+//        setHasOptionsMenu(true);
         return view;
     }
 
@@ -145,6 +153,32 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     public void onDeny(String permission) {
+    }
+
+    public void setToolbar(Toolbar toolbar) {
+        this.toolbar = toolbar;
+        this.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                l1_click();
+            }
+        });
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_click) {
+            this.r1_click(item.getTitle().toString());
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadDataIfPrepared() {
@@ -271,6 +305,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     public abstract void showSuccess(Object o);
 
+    @Override
+    public void l1_click() {
+        getActivity().finish();
+    }
 
+    @Override
+    public void r1_click(String title) {
 
+    }
 }

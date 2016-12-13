@@ -1,14 +1,10 @@
 package com.rhg.qf.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.rhg.qf.R;
@@ -23,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * desc:订单页面
@@ -31,14 +26,10 @@ import butterknife.OnClick;
  * time：2016/5/28 16:14
  * email：1013773046@qq.com
  */
-public class OrderListActivity extends BaseFragmentActivity {
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
-    @Bind(R.id.stl_myorder)
+public class OrderListActivity extends BaseAppcompactActivity {
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.stl)
     SlidingTabLayout stlMyorder;
     @Bind(R.id.vp_myorder)
     ViewPager vpMyorder;
@@ -57,10 +48,11 @@ public class OrderListActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
-        flTab.setBackgroundResource(R.color.colorBlueNormal);
-        tbCenterTv.setText(getResources().getString(R.string.myOrder));
+    protected void initData() {
+        toolbar.setTitle(getResources().getString(R.string.myOrder));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new OrderUnPaidFM());
         fragments.add(new OrderDeliveringFm());
@@ -76,21 +68,7 @@ public class OrderListActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void initView(View view) {
-    }
-
-    @Override
-    protected void showSuccess(Object s) {
-
-    }
-
-    @Override
-    protected void showError(Object s) {
-
-    }
-
-    @OnClick(R.id.tb_left_iv)
-    public void onClick() {
-        finish();
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
 }

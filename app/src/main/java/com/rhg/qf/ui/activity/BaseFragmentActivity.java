@@ -7,20 +7,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.rhg.qf.R;
 import com.rhg.qf.application.InitApplication;
-import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.KeyBoardUtil;
+import com.rhg.qf.utils.ToastHelper;
 
 import butterknife.ButterKnife;
 
@@ -40,13 +41,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.transition.Fade fade = new android.transition.Fade();
             fade.setDuration(500);
             getWindow().setEnterTransition(fade);
         }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
@@ -140,25 +141,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
             return KeyBoardUtil.closeKeybord((EditText) this.getCurrentFocus(), this);
         }
         return super.onTouchEvent(event);
-    }
-
-    public void reStartLocation() {
-        if (isFirstLoc) {
-            startLoc();
-            isFirstLoc = false;
-            return;
-        }
-        if (locationService == null)
-            locationService = GetMapService();
-        if (mLocationListener == null) {
-            Log.d("RHG", "Location listener is null");
-            mLocationListener = getLocationListener();
-            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-        }
-        locationService.registerListener(mLocationListener);
-        mLocationListener.getLocation(locationService);
-        if (AppConstants.DEBUG)
-            Log.i("RHG", "重启定位");
     }
 
     public MyLocationListener getLocationListener() {

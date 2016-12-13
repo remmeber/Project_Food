@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +45,7 @@ import butterknife.OnClick;
  * time：2016/5/28 16:14
  * email：1013773046@qq.com
  */
-public class PayActivity extends BasePayActivity implements PayItemAdapter.PayItemClickListener{
+public class PayActivity extends BasePayActivity implements PayItemAdapter.PayItemClickListener {
     private final static String WX_MERCHANT_ID = "1374528702";
     private final static String WX_PRIVATE_KEY = //"shengzhoujiaze123456jiajiameishi"
             "fXRDOhhdr7rM0XWpKzFQry6pBjo0dllb";
@@ -52,12 +53,8 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     private final static String ALI_SELLER_ID = "18858558505";
     private final static String ALI_PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMIwLMEyitvEEctRirBarCnmtDqcIYxl2slRz6cTAFh0a4MqpUDTl505iiasFmLHJtNdMJohCkz+KjjKG7fTU4ZHy5Sy2andeULbyD+31cT+ZQOgNR2F5aAHU3CYvfx0qFw9ph5PA1AWqz+FoClPolsOOZKwrkObanbQplJebavhAgMBAAECgYAreHtcWIMrRU4ydLOWXQXzb1jjUfZUpqx+qtjQbvmB07YJq+9IftWO9cWOeLGeNTTk1hS+PC1BJRiwk9X2pdEpdqlCbri8mKPlu+Z37ZB+sNRiyl+2p4sDx9WTvw8dJHIsWFlDNnbHzS0oDexlOxX68fL4NcsZu5VLQLZV0W5YAQJBAPyIvCj9gw0OT1LPcj4Yks5V+5pjr4g7NqFxKEfxtPJErE8Zjz6Zm8x0/k2E8XCd63lVk8Dh13TJSqfYwh/+ZkECQQDE2nHL/X3qN4EEqsWfbB8piAO7/5Ux956fCrhUYKXiIPJsHyiojePAw4nXlf1Nd+Fnu6rjG35xgSNmUbu7Wh2hAkBEKzj3q69jp9g712nUX1fJwSYhAAXTNYDCxcQE37djqqwE0jZ7xIVtBKvdCyUNrGNzJmmzKIO7r9aqRnXoowjBAkBi3Rqdyne8c5e2UlXiFRkpcIf/mQLDD4t4cJfWuJtXEBjwOE3hKTGjFBFcVpXanER2JohSevJr6uFud8oC8+VBAkEAgNXtGYF9xdffvrpsjmq5H54W2TWq1GPDm7oF0Ct9jduElxZx11cdtcWYAzdU+bYjr+jrbut4X3IqDFhUMCOYfw==";
 
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.tv_receiver)
     TextView tvReceiver;
     @Bind(R.id.tv_receiver_phone)
@@ -131,9 +128,10 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
 
     @Override
     protected void initData() {
-        tbCenterTv.setText(getResources().getString(R.string.tvPayTitle));
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
+        toolbar.setTitle(getResources().getString(R.string.tvPayTitle));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
         rcvItemPay.setLayoutManager(new LinearLayoutManager(this));
         rcvItemPay.setHasFixedSize(true);
         rcvItemPay.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
@@ -201,13 +199,10 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         ToastHelper.getInstance()._toast(s);
     }
 
-    @OnClick({R.id.tb_left_iv, R.id.iv_edit_right, R.id.bt_pay_affirmance,
+    @OnClick({R.id.iv_edit_right, R.id.bt_pay_affirmance,
             R.id.iv_wepay_check, R.id.iv_wepay, R.id.iv_alipay_check, R.id.iv_alipay})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
             case R.id.iv_edit_right:
                 Intent _intent = new Intent(this, AddressActivity.class);
                 _intent.setAction(AppConstants.ADDRESS_DEFAULT);
@@ -268,6 +263,11 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
                 }
                 break;*/
         }
+    }
+
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
     }
 
     @Override

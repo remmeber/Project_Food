@@ -20,7 +20,7 @@
             android:layout_marginTop="@dimen/margin_little"
             android:text="@string/personalOrder"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/black_deep" />
+            android:textColor="@color/black" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_marginTop="@dimen/margin_little"
             android:text="@string/todayRec"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/black_deep" />
+            android:textColor="@color/black" />
 
         <ImageView
             android:layout_width="wrap_content"

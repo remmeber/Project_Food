@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_common_layout" />
-
     <com.flyco.tablayout.SlidingTabLayout
         android:id="@+id/all_seller_tl"
         android:layout_width="match_parent"

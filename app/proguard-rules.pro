@@ -13,6 +13,8 @@
 -keep class com.rhg.qf.bean.** { *; }
 #自定义控件不参与混淆
 -keep class com.rhg.qf.widget.** { *; }
+-keep class com.rhg.qf.easeui.widget.**  { *;}
+-keep class com.rhg.qf.easeui.ui.**  { *;}
 
 # ButterKnife
 -keep class butterknife.** { *; }

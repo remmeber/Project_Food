@@ -7,14 +7,12 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
@@ -29,14 +27,12 @@ import com.rhg.qf.mvp.presenter.HotFoodSearchPresenter;
 import com.rhg.qf.mvp.presenter.RestaurantSearchPresenter;
 import com.rhg.qf.utils.SearchHistoryUtil;
 import com.rhg.qf.utils.SizeUtil;
-import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * desc:搜索页面
@@ -44,14 +40,18 @@ import butterknife.OnClick;
  * time：2016/6/18 13:10
  * email：1013773046@qq.com
  */
-public class SearchActivity extends BaseAppcompactActivity implements View.OnClickListener {
+public class SearchActivity extends BaseAppcompactActivity {
 
-    @Bind(R.id.tb_left_iv)
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.searchView)
+    SearchView searchView;
+    /*@Bind(R.id.tb_left_iv)
     ImageView tbLeftIv;
     @Bind(R.id.search_et)
     EditText searchEt;
     @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+    FrameLayout flTab;*/
     @Bind(R.id.tv_history_result)
     TextView tvHistoryResult;
     @Bind(R.id.tv_search_result)
@@ -78,9 +78,8 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
         public void onItemClickListener(View view, int position, Object item) {
             if (item instanceof String) {
                 isShow = false;
-                searchEt.setText((String) item);
+                setText((String) item);
                 doSearch((String) item);
-                searchEt.setCursorVisible(false);
                 historyResultsRcv.setVisibility(View.GONE);
                 tvHistoryResult.setVisibility(View.GONE);
                 itemResultsRcv.setVisibility(View.VISIBLE);
@@ -109,6 +108,17 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
         }
     };
 
+    private void setText(String item) {
+        if (searchView != null)
+            searchView.setQuery(item, true);
+    }
+
+    private String getText() {
+        if (searchView != null)
+            return searchView.getQuery().toString();
+        return "";
+    }
+
     public SearchActivity() {
 //        searchHistoryData = new ArrayList<>();
     }
@@ -131,8 +141,46 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
 
     @Override
     protected void initData() {
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.chevron_left_black));
+        toolbar.setTitle(getString(R.string.tvSearch));
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
+        searchView.setIconifiedByDefault(true);
+        searchView.onActionViewExpanded();
+        searchView.requestFocus();
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setFocusable(true);//将控件设置成可获取焦点状态,默认是无法获取焦点的,只有设置成true,才能获取控件的点击事件
+        searchView.setIconified(false);//输入框内icon不显示
+        searchView.requestFocusFromTouch();//模拟焦点点击事件
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                tvHistoryResult.setVisibility(View.GONE);
+                tvSearchResult.setVisibility(View.VISIBLE);
+                historyResultsRcv.setVisibility(View.GONE);
+                itemResultsRcv.setVisibility(View.VISIBLE);
+                if (searchHistoryData.size() == 0) {
+                    SearchHistoryUtil.insertSearchHistory( /*SearchActivity.this,*/ query.trim());
+                    searchHistoryData.add(query.trim());
+                }
+                doSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                tvHistoryResult.setVisibility(View.VISIBLE);
+                tvSearchResult.setVisibility(View.GONE);
+                historyResultsRcv.setVisibility(View.VISIBLE);
+                itemResultsRcv.setVisibility(View.GONE);
+                searchHistoryData.clear();
+                searchHistoryData = SearchHistoryUtil.getHistoryByName(/*SearchActivity.this,*/ s.trim());
+                searchHistoryAdapter.setSearchedHistory(searchHistoryData);
+                return false;
+            }
+        });
+
         RecycleViewDivider divider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
                 SizeUtil.dip2px(1), ContextCompat.getColor(this, R.color.colorInActive));
 
@@ -160,8 +208,7 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
         searchHistoryAdapter.setOnSearchHistoryClickListener(itemClick);
 
         historyResultsRcv.setAdapter(searchHistoryAdapter);
-        searchEt.setVisibility(View.VISIBLE);
-        searchEt.setOnTouchListener(new View.OnTouchListener() {
+        /*searchEt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (searchEt.getCompoundDrawables()[2] == null)
@@ -176,25 +223,25 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
                         return true;
                     }
                     if (searchHistoryData.size() == 0) {
-                        SearchHistoryUtil.insertSearchHistory(/*SearchActivity.this,*/ searchEt.getText().toString().trim());
+                        SearchHistoryUtil.insertSearchHistory(*//*SearchActivity.this,*//* searchEt.getText().toString().trim());
                         searchHistoryData.add(searchEt.getText().toString().trim());
                     }
-                        /*切换到内容搜索*/
+                        *//*切换到内容搜索*//*
                     searchEt.setCursorVisible(false);
                     doSearch(searchEt.getText().toString());
                     return true;
                 } else {
                     searchEt.setCursorVisible(true);
                     if (TextUtils.isEmpty(searchEt.getText())) {
-                        tvHistoryResult.setVisibility(View.VISIBLE);/* 隐藏历史搜索textView*/
-                        tvSearchResult.setVisibility(View.GONE);/* 显示内容搜索textView*/
-                        historyResultsRcv.setVisibility(View.VISIBLE);/*隐藏历史搜索recycleView*/
-                        itemResultsRcv.setVisibility(View.GONE);/* 显示内容搜索recycleView*/
+                        tvHistoryResult.setVisibility(View.VISIBLE);*//* 隐藏历史搜索textView*//*
+                        tvSearchResult.setVisibility(View.GONE);*//* 显示内容搜索textView*//*
+                        historyResultsRcv.setVisibility(View.VISIBLE);*//*隐藏历史搜索recycleView*//*
+                        itemResultsRcv.setVisibility(View.GONE);*//* 显示内容搜索recycleView*//*
                     }
                 }
                 return false;
             }
-        });
+        });*/
         /*清空搜索历史*/
         tvHistoryResult.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -214,7 +261,7 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
                 return false;
             }
         });
-        searchEt.addTextChangedListener(new TextWatcher() {
+        /*searchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -226,21 +273,21 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
             @Override
             public void afterTextChanged(Editable s) {
 //                if (!isShow) {
-                    /*切换到历史搜索*/
-                tvHistoryResult.setVisibility(View.VISIBLE);/* 隐藏历史搜索textView*/
-                tvSearchResult.setVisibility(View.GONE);/* 显示内容搜索textView*/
-                historyResultsRcv.setVisibility(View.VISIBLE);/*隐藏历史搜索recycleView*/
-                itemResultsRcv.setVisibility(View.GONE);/* 显示内容搜索recycleView*/
+                    *//*切换到历史搜索*//*
+                tvHistoryResult.setVisibility(View.VISIBLE);*//* 隐藏历史搜索textView*//*
+                tvSearchResult.setVisibility(View.GONE);*//* 显示内容搜索textView*//*
+                historyResultsRcv.setVisibility(View.VISIBLE);*//*隐藏历史搜索recycleView*//*
+                itemResultsRcv.setVisibility(View.GONE);*//* 显示内容搜索recycleView*//*
 //                }
                 searchHistoryData.clear();
                 if (s.toString().trim().length() != 0) {
-                    searchHistoryData = SearchHistoryUtil.getHistoryByName(/*SearchActivity.this,*/ s.toString().trim());
+                    searchHistoryData = SearchHistoryUtil.getHistoryByName(*//*SearchActivity.this,*//* s.toString().trim());
                 } else {
-                    searchHistoryData = SearchHistoryUtil.getAllHistory(/*SearchActivity.this*/);
+                    searchHistoryData = SearchHistoryUtil.getAllHistory(*//*SearchActivity.this*//*);
                 }
                 searchHistoryAdapter.setSearchedHistory(searchHistoryData);
             }
-        });
+        });*/
     }
 
     /*
@@ -292,17 +339,11 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
     public void showError(Object s) {
     }
 
-    @OnClick({R.id.tb_left_iv, R.id.tb_right_iv})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tb_left_iv:
-                finish();
-                break;
-            case R.id.tb_right_iv:
-                break;
-        }
-    }
 
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
+    }
 
     @Override
     protected void onDestroy() {

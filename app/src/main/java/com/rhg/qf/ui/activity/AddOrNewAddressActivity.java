@@ -4,12 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
@@ -34,12 +33,8 @@ import butterknife.OnClick;
  */
 
 public class AddOrNewAddressActivity extends BaseAppcompactActivity {
-    @Bind(R.id.tb_center_tv)
-    TextView tbCenterTv;
-    @Bind(R.id.tb_left_iv)
-    ImageView tbLeftIv;
-    @Bind(R.id.fl_tab)
-    FrameLayout flTab;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.add_new_address_contact_person_content)
     EditText addNewAddressContactPersonContent;
     @Bind(R.id.add_new_address_contacts_content)
@@ -49,7 +44,6 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     @Bind(R.id.add_new_address_content_detail)
     EditText addNewAddressContentDetail;
     AddOrUpdateAddressPresenter addOrUpdateAddress;
-    boolean isBackWithoutOption = true;
     private int resultCode = 0;
     private String addressId = null;
 
@@ -88,10 +82,8 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
 
     @Override
     protected void initData() {
-        flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
-        tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         if (resultCode == AppConstants.BACK_WITH_ADD) {
-            tbCenterTv.setText(getResources().getString(R.string.newAddress));
+            toolbar.setTitle(getResources().getString(R.string.newAddress));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -100,8 +92,12 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
             else
                 startLoc();
         } else {
-            tbCenterTv.setText(getResources().getString(R.string.modifyAddress));
+            toolbar.setTitle(getResources().getString(R.string.modifyAddress));
         }
+
+        setSupportActionBar(toolbar);
+        setToolbar(toolbar);
+
     }
 
     @Override
@@ -148,14 +144,10 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
         ToastHelper.getInstance()._toast(s);
     }
 
-    @OnClick({R.id.tb_left_iv, R.id.add_new_address_bt,
+    @OnClick({R.id.add_new_address_bt,
             R.id.add_new_address_location, R.id.add_new_address_contact_address_content})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tb_left_iv:
-                isBackWithoutOption = true;
-                finish();
-                break;
             case R.id.add_new_address_bt:
                 if (TextUtils.isEmpty(addNewAddressContactPersonContent.getText())) {
                     ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.contactUser_Null));
@@ -195,7 +187,12 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                 break;
         }
     }
-
+/*
+    @Override
+    protected void beforeFinish() {
+        isBackWithoutOption = true;
+        super.beforeFinish();
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -203,4 +200,8 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public void menuCreated(Menu menu) {
+        menu.getItem(0).setVisible(false);
+    }
 }

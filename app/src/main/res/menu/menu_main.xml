@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cn.rhg.com.actionbar.MainActivity">
+
+    <item
+        android:id="@+id/action_click"
+        android:icon="@drawable/search_white"
+        android:orderInCategory="100"
+        android:title="@string/tvSearch"
+        app:showAsAction="ifRoom" />
+
+</menu>
