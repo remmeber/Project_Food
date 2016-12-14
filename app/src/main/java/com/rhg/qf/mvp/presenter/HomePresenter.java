@@ -1,5 +1,7 @@
 package com.rhg.qf.mvp.presenter;
 
+import android.util.Log;
+
 import com.rhg.qf.bean.HomeBean;
 import com.rhg.qf.mvp.model.HomeModel;
 import com.rhg.qf.mvp.view.BaseView;
@@ -39,6 +41,7 @@ public class HomePresenter {
 
                     @Override
                     public void onNext(HomeBean homeBean) {
+                        Log.i("RHG", "请求返回");
                         testView.showData(homeBean);
                     }
                 });
