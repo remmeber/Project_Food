@@ -20,6 +20,8 @@ import com.rhg.qf.R;
 import com.rhg.qf.easeui.adapter.EaseMessageAdapter;
 import com.rhg.qf.easeui.utils.EaseUserUtils;
 import com.rhg.qf.easeui.widget.EaseChatMessageList;
+import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.ToastHelper;
 
 import java.util.Date;
@@ -115,12 +117,14 @@ public abstract class EaseChatRow extends LinearLayout {
         }
         //设置头像和nick
         if (message.direct == Direct.SEND) {
-            EaseUserUtils.setUserAvatar(context, EMChatManager.getInstance().getCurrentUser(), userAvatarView);
+            ImageUtils.showImage(AccountUtil.getInstance().getHeadImageUrl(), userAvatarView);
+            usernickView.setText(AccountUtil.getInstance().getNickName());
+//            EaseUserUtils.setUserAvatar(context, EMChatManager.getInstance().getCurrentUser(), userAvatarView);
             //发送方不显示nick
 //            UserUtils.setUserNick(EMChatManager.getInstance().getCurrentUser(), usernickView);
         } else {
-            EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-            EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+//            EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+//            EaseUserUtils.setUserNick(message.getFrom(), usernickView);
         }
 
         if (deliveredView != null) {
@@ -143,7 +147,7 @@ public abstract class EaseChatRow extends LinearLayout {
         }
 
 
-        if (adapter instanceof EaseMessageAdapter) {
+        /*if (adapter instanceof EaseMessageAdapter) {
             if (((EaseMessageAdapter) adapter).isShowAvatar())
                 userAvatarView.setVisibility(View.VISIBLE);
             else
@@ -154,7 +158,7 @@ public abstract class EaseChatRow extends LinearLayout {
                 else
                     usernickView.setVisibility(View.GONE);
             }
-            if (message.direct == Direct.SEND) {
+            *//*if (message.direct == Direct.SEND) {
                 if (((EaseMessageAdapter) adapter).getMyBubbleBg() != null)
                     bubbleLayout.setBackgroundDrawable(((EaseMessageAdapter) adapter).getMyBubbleBg());
                 // else
@@ -164,8 +168,8 @@ public abstract class EaseChatRow extends LinearLayout {
                     bubbleLayout.setBackgroundDrawable(((EaseMessageAdapter) adapter).getOtherBuddleBg());
 //                else
 //                    bubbleLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ease_chatfrom_bg));
-            }
-        }
+            }*//*
+        }*/
     }
 
     /**
@@ -290,17 +294,23 @@ public abstract class EaseChatRow extends LinearLayout {
 
 
     protected void updateView() {
-        if (message.status == EMMessage.Status.FAIL) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (message.status == EMMessage.Status.FAIL) {
 
-            if (message.getError() == EMError.MESSAGE_SEND_INVALID_CONTENT) {
-                ToastHelper.getInstance().displayToastWithQuickClose(activity.getString(R.string.send_fail).concat(activity.getString(R.string.error_send_invalid_content)));
-            } else if (message.getError() == EMError.MESSAGE_SEND_NOT_IN_THE_GROUP) {
+                    if (message.getError() == EMError.MESSAGE_SEND_INVALID_CONTENT) {
+                        ToastHelper.getInstance().displayToastWithQuickClose(activity.getString(R.string.send_fail).concat(activity.getString(R.string.error_send_invalid_content)));
+                    } else if (message.getError() == EMError.MESSAGE_SEND_NOT_IN_THE_GROUP) {
 //                        Toast.makeText(activity,activity.getString(R.string.send_fail) + activity.getString(R.string.error_send_not_in_the_group), 0).show();
-            } else {
-                ToastHelper.getInstance().displayToastWithQuickClose(activity.getString(R.string.send_fail).concat(activity.getString(R.string.connect_failuer_toast)));
+                    } else {
+                        ToastHelper.getInstance().displayToastWithQuickClose(activity.getString(R.string.send_fail).concat(activity.getString(R.string.connect_failuer_toast)));
+                    }
+                }
+                onUpdateView();
             }
-        }
-        onUpdateView();
+        });
+
 
     }
 

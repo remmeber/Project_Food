@@ -26,7 +26,6 @@ import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.bean.RecommendListTypeModel;
 import com.rhg.qf.bean.TextTypeBean;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.ToolBarClickListener;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.HomePresenter;
@@ -83,6 +82,7 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
 
     @Override
     public int getLayoutResId() {
+        Log.i("RHG", "FRAG");
         return R.layout.common_rcv_layout;
     }
 
@@ -137,9 +137,17 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
     protected void refresh() {
         //firstLoc 必须在startLoc方法调用后置位，在6.0以上的系统中，必须授权后再调用startLoc方法，
         //reStartLocation也必须在startLoc方法调用过一次后才能调用。
+        if ("".equals(AccountUtil.getInstance().getLatitude())) {
+            isLocated = false;
+        }
         if (firstLoc && !isLocated) {
             reStartLocation();
+        } else {/*如果定位过了，直接可以进行数据获取*/
+            if (homePresenter == null)
+                homePresenter = new HomePresenter(HomeFragment.this);
+            homePresenter.getHomeData(AppConstants.HOME_RESTAURANTS);
         }
+
     }
 
     @Override
@@ -159,13 +167,7 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if ("".equals(AccountUtil.getInstance().getLatitude())) {
-                    reStartLocation();
-                    return;
-                }
-                if (homePresenter == null)
-                    homePresenter = new HomePresenter(HomeFragment.this);
-                homePresenter.getHomeData(AppConstants.HOME_RESTAURANTS);
+                refresh();
             }
         });
     }
@@ -186,13 +188,13 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
     @Override
     public void onResume() {
         super.onResume();
-        recycleMultiTypeAdapter.startBanner();
+//        recycleMultiTypeAdapter.startBanner();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        recycleMultiTypeAdapter.stopBanner();
+//        recycleMultiTypeAdapter.stopBanner();
     }
 
     @Override

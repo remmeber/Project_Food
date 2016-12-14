@@ -8,10 +8,7 @@
     android:orientation="vertical"
     tools:ignore="contentDescription">
 
-    <include
-        layout="@layout/item_banner"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+    <include layout="@layout/item_banner" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +32,7 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:src="@drawable/ic_shopping_cart_blue"
-                app:tint_color="@color/colorBlueNormal"/>
+                app:tint_color="@color/colorBlueNormal" />
 
             <ImageView
                 android:id="@+id/ivShare"
@@ -43,7 +40,7 @@
                 android:layout_height="36dp"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/ic_share_blue"/>
+                android:src="@drawable/ic_share_blue" />
         </LinearLayout>
 
         <LinearLayout
@@ -90,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="商品介绍:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <TextView
                 android:id="@+id/tv_description_content"
@@ -117,16 +114,16 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:text="售价:" />
+                android:text="售价:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <TextView
                 android:id="@+id/tv_price_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:textColor="@color/colorPay_Red"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/colorPay_Red"
                 tools:text="商品的价格" />
         </LinearLayout>
 

@@ -46,25 +46,12 @@ public class ChatActivity extends BaseAppcompactActivity {
     }
 
 
-   /* private void checkPermissionAndSetIfNecessary(String[] permissions) {
-        if (!PermissionsManager.getInstance().hasAllPermissions(this, permissions)) {
-            PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
-                    permissions, null);
-        }
-    }*/
-
-/*    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        for (int i = 0; i < permissions.length; i++) {
-            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                final String permission = permissions[i];
-                onDeny(permission);
-                return;
-            }
-        }
-        onGrant();
-    }*/
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_click).setIcon(R.drawable.ic_delete_white);
+        menu.findItem(R.id.action_click).setTitle(R.string.delete);
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     public void onGrant() {
     }
@@ -171,6 +158,7 @@ public class ChatActivity extends BaseAppcompactActivity {
         });
     }
 
+
     private String getPwd(String nickName) {
         return "jjms" + nickName + "jjms";
     }
@@ -227,9 +215,5 @@ public class ChatActivity extends BaseAppcompactActivity {
         else finish();
     }
 
-    @Override
-    public void menuCreated(Menu menu) {
-        menu.getItem(0).setVisible(false);
-    }
 
 }

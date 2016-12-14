@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_userhead"
-            android:layout_width="@dimen/size_avatar"
-            android:layout_height="@dimen/size_avatar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
@@ -37,13 +37,17 @@
             android:layout_marginEnd="@dimen/margin_chat_activity"
             android:layout_marginRight="@dimen/margin_chat_activity"
             android:layout_toLeftOf="@id/iv_userhead"
-            android:layout_toStartOf="@id/iv_userhead">
+            android:layout_toStartOf="@id/iv_userhead"
+            android:background="@drawable/ease_chatto_bg">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
+                android:paddingBottom="6dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
                 tools:src="@mipmap/ic_launcher" />
         </RelativeLayout>
 

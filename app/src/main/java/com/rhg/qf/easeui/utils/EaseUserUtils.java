@@ -6,9 +6,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.rhg.qf.R;
 import com.rhg.qf.easeui.controller.EaseUI;
 import com.rhg.qf.easeui.domain.EaseUser;
+import com.rhg.qf.utils.ImageUtils;
 
 public class EaseUserUtils {
     

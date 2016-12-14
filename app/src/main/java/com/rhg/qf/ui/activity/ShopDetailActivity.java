@@ -74,6 +74,7 @@ public class ShopDetailActivity extends BaseAppcompactActivity {
 
     @Override
     protected void initData() {
+
         toolbar.setTitle(getString(R.string.tvShopDetail));
         setSupportActionBar(toolbar);
         setToolbar(toolbar);

@@ -46,8 +46,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
             fade.setDuration(500);
             getWindow().setEnterTransition(fade);
         }
-//        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
@@ -234,6 +232,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
         showSuccess(o);
 
     }
+
 
     public void showLocSuccess(String s) {
     }

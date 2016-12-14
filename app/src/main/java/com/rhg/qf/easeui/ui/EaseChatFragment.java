@@ -13,9 +13,12 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -47,11 +50,11 @@ import com.rhg.qf.easeui.utils.EaseImageUtils;
 import com.rhg.qf.easeui.widget.EaseChatExtendMenu;
 import com.rhg.qf.easeui.widget.EaseChatInputMenu;
 import com.rhg.qf.easeui.widget.EaseChatMessageList;
-import com.rhg.qf.easeui.widget.EaseTitleBar;
 import com.rhg.qf.easeui.widget.EaseVoiceRecorderView;
 import com.rhg.qf.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.rhg.qf.ui.BaseDialogView;
 import com.rhg.qf.ui.UIAlertView;
+import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 import com.rhg.qf.ui.fragment.BaseFragment;
 import com.rhg.qf.utils.ToastHelper;
 
@@ -75,7 +78,7 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
     protected static final int REQUEST_CODE_LOCAL = 3;
 
     @Bind(R.id.toolbar)
-    EaseTitleBar toolbar;
+    Toolbar toolbar;
     @Bind(R.id.message_list)
     EaseChatMessageList messageList;// 消息列表layout
     @Bind(R.id.voice_recorder)
@@ -110,7 +113,7 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
     static final int ITEM_PICTURE = 2;
 
     protected int[] itemStrings = {R.string.attach_take_pic, R.string.attach_picture};
-    protected int[] itemdrawables = {R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector};
+    protected int[] itemdrawables = {R.drawable.ease_chat_camera_selector, R.drawable.ease_chat_image_selector};
     protected int[] itemIds = {ITEM_TAKE_PICTURE, ITEM_PICTURE};
     private EMChatRoomChangeListener chatRoomChangeListener;
     private boolean isMessageListInited;
@@ -308,16 +311,14 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
         chatType = arguments.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         // 会话人或群组id
         toChatUsername = arguments.getString(EaseConstant.EXTRA_USER_ID);
-
-
     }
 
     @Override
     protected void initData() {
         toolbar.setTitle(EaseConstant.JJMS_SERVER);
+        ((AppCompatActivity) mActivity).setSupportActionBar(toolbar);
+        setToolbar(toolbar);
 
-
-//        setToolbar(toolbar);
         /*if (chatType == EaseConstant.CHATTYPE_SINGLE) { // 单聊
             // 设置标题
             if (EaseUserUtils.getUserInfo(toChatUsername) != null) {
@@ -344,15 +345,6 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
             onMessageListInit();
         }
 
-        // 设置标题栏点击事件
-        toolbar.setLeftLayoutClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
-
         setRefreshLayoutListener();
 
         // show forward message if the message is not null
@@ -361,8 +353,6 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
             // 发送要转发的消息
             forwardMessage(forward_msg_id);
         }
-
-
     }
 
 
@@ -684,18 +674,18 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
             public void onSuccess() {
-//                Log.i("RHG", "SUCCESS");
+                Log.i("RHG", "SUCCESS");
             }
 
             @Override
             public void onError(int i, String s) {
-//                Log.i("RHG", "onError:" + s);
+                Log.i("RHG", "onError:" + s);
 
             }
 
             @Override
             public void onProgress(int i, String s) {
-//                Log.i("RHG", "onProgress:" + s);
+                Log.i("RHG", "onProgress:" + s);
 
             }
         });
@@ -825,7 +815,7 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
      */
     protected void emptyHistory() {
         String msg = getResources().getString(R.string.Whether_to_empty_all_chats);
-        uiAlertView = new UIAlertView(getContext(), getString(R.string.resend), msg, getString(R.string.cancel), getString(R.string.sure),
+        uiAlertView = new UIAlertView(getContext(), getString(R.string.delete), msg, getString(R.string.cancel), getString(R.string.sure),
 
                 new BaseDialogView.ClickListenerInterface() {
                     @Override

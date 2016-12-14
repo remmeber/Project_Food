@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.rhg.qf.R;
 import com.rhg.qf.ui.fragment.BySellNumberFm;
@@ -33,5 +34,11 @@ public class RecommendActivity extends BaseAppcompactActivity {
         Fragment fm = new BySellNumberFm();
         ft.add(R.id.fm_list, fm, fm.getClass().getName());
         ft.commitAllowingStateLoss();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_click).setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
     }
 }

@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.hintview.IconHintView;
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.viewHolder.BannerImageHolder;
+import com.rhg.qf.adapter.BannerLoopAdapter;
 import com.rhg.qf.application.InitApplication;
 import com.rhg.qf.bean.AddressUrlBean;
 import com.rhg.qf.bean.FoodInfoBean;
@@ -55,6 +55,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.OnClick;
 
+import static com.rhg.qf.constants.AppConstants.IMAGE_INDICTORS;
+
 /**
  * desc:商品详情页面
  * author：remember
@@ -74,7 +76,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     @Bind(R.id.common_refresh)
     ProgressBar commonRefresh;
     @Bind(R.id.iv_banner)
-    ConvenientBanner ivBanner;
+    RollPagerView ivBanner;
     @Bind(R.id.tv_sell_number)
     TextView tvSellNumber;
     @Bind(R.id.tv_goods_name)
@@ -106,6 +108,8 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     String unionid;
     String headImageUrl;
     AddressUrlBean.AddressBean addressBean;
+    BannerLoopAdapter bannerLoopAdapter;
+
 
     private boolean isNeedLoc;
     private String location;
@@ -204,8 +208,9 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             etNum.setText("0");
             ivAddToShoppingCart.setNum("0");
         }
-        ivBanner.startTurning(2000);
-        ivBanner.setPageIndicator(AppConstants.IMAGE_INDICTORS);
+        bannerLoopAdapter = new BannerLoopAdapter(ivBanner);
+        ivBanner.setAdapter(bannerLoopAdapter);
+        ivBanner.setHintView(new IconHintView(this, IMAGE_INDICTORS[1], IMAGE_INDICTORS[0]));
     }
 
     @Override
@@ -309,13 +314,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
 
     private void bindData(GoodsDetailUrlBean.GoodsDetailBean _bean) {
         image = _bean.getPicsrc().get(0);
-        ivBanner.setPages(new CBViewHolderCreator<BannerImageHolder>() {
-
-            @Override
-            public BannerImageHolder createHolder() {
-                return new BannerImageHolder();
-            }
-        }, _bean.getPicsrc());
+        bannerLoopAdapter.setImgSrc(_bean.getPicsrc());
         tvGoodsName.setText(_bean.getName());
         tvSellNumber.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.sellNumber),
                 _bean.getMonthlySales()));

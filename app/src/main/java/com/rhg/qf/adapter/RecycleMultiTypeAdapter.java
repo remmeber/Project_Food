@@ -10,11 +10,9 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.jude.rollviewpager.RollPagerView;
+import com.jude.rollviewpager.hintview.IconHintView;
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.viewHolder.BannerImageHolder;
 import com.rhg.qf.adapter.viewHolder.BodyViewHolder;
 import com.rhg.qf.bean.BannerTypeBean;
 import com.rhg.qf.bean.BannerTypeUrlBean;
@@ -25,13 +23,14 @@ import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.bean.RecommendListTypeModel;
 import com.rhg.qf.bean.TextTypeBean;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.utils.BannerController;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.widget.MyGridView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.rhg.qf.constants.AppConstants.IMAGE_INDICTORS;
 
 /**
  * desc:复合类型recycleview 适配器
@@ -46,12 +45,10 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static final int TYPE_FAVORABLE = 2;
     private static final int TYPE_RECOMMEND_LIST = 3;
     private static final int TYPE_FOOTER = 4;
-    private BannerController bannerController = new BannerController();
     //----------------------------------------------------------------------------------------------
     //
     private Context context;
     private List<Object> mData;
-    private ConvenientBanner<String> convenientBanner;
     //----------------------------------------------------------------------------------------------
     //-------------------------------for banner click callback--------------------------------------
 /*    private OnBannerClickListener onBannerClickListener;
@@ -123,14 +120,21 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    private void bindViewHolderBanner(BannerTypeViewHolder holder, final BannerTypeBean data) {
+    private void bindViewHolderBanner(final BannerTypeViewHolder holder, final BannerTypeBean data) {
         List<String> images = new ArrayList<>();
         List<BannerTypeUrlBean.BannerEntity> _bannerEntity = data.getBannerEntityList();
         int _count = _bannerEntity == null ? 0 : _bannerEntity.size();
         for (int i = 0; i < _count; i++) {
             images.add(_bannerEntity.get(i).getSrc());
         }
-        convenientBanner.setPages(new CBViewHolderCreator<BannerImageHolder>() {
+        holder.bannerLoopAdapter.setImgSrc(images);
+        holder.banner.setOnItemClickListener(new com.jude.rollviewpager.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                onTypeClick.bannerClick(holder.banner, position, data.getBannerEntityList().get(position));
+            }
+        });
+       /* convenientBanner.setPages(new CBViewHolderCreator<BannerImageHolder>() {
             @Override
             public BannerImageHolder createHolder() {
                 return new BannerImageHolder();
@@ -144,7 +148,7 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
                     throw new NullPointerException("interface can not be null");
                 onTypeClick.bannerClick(convenientBanner, position, data.getBannerEntityList().get(position));
             }
-        });
+        });*/
     }
 
     @SuppressLint("NewApi")
@@ -217,15 +221,15 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((RecommendListTypeModel) mData.get(TYPE_RECOMMEND_LIST)).getRecommendShopBeanEntity().size());
     }
 
-    public void stopBanner() {
+/*    public void stopBanner() {
         bannerController.stopBanner();
         bannerController.setConvenientBanner(null);
     }
 
     public void startBanner() {
-        bannerController.startBanner(2000);
-        bannerController.setConvenientBanner(convenientBanner);
-    }
+        bannerController.startBanner();
+        bannerController.setConvenientBanner(banner);
+    }*/
 
     public void setOnTypeClick(OnTypeClick onTypeClick) {
         this.onTypeClick = onTypeClick;
@@ -246,12 +250,15 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private class BannerTypeViewHolder extends RecyclerView.ViewHolder {
+        public RollPagerView banner;
+        public BannerLoopAdapter bannerLoopAdapter;
 
         public BannerTypeViewHolder(View itemView) {
             super(itemView);
-            convenientBanner = (ConvenientBanner) itemView.findViewById(R.id.iv_banner);
-            convenientBanner.startTurning(2000);
-            bannerController.setConvenientBanner(convenientBanner);
+            banner = (RollPagerView) itemView.findViewById(R.id.iv_banner);
+            bannerLoopAdapter = new BannerLoopAdapter(banner);
+            banner.setAdapter(bannerLoopAdapter);
+            banner.setHintView(new IconHintView(context, IMAGE_INDICTORS[1], IMAGE_INDICTORS[0]));
         }
     }
 

@@ -31,16 +31,15 @@
             android:id="@+id/bubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/ease_chatto_bg"
             android:layout_toLeftOf="@id/iv_userhead"
             android:layout_marginRight="10dp"
             >
 	        <ImageView
 	            android:id="@+id/iv_voice"
 	            android:layout_centerInParent="true"
-	            android:paddingLeft="12dp"
-	            android:paddingRight="10dp"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
+	            android:layout_width="48dp"
+	            android:layout_height="24dp"
 	            android:src="@drawable/ease_chatto_voice_playing" />
 		</RelativeLayout>
         <TextView

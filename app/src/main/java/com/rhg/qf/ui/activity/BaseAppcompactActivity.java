@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -53,6 +54,8 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
             getWindow().setExitTransition(explode);
         }
         super.onCreate(savedInstanceState);
+
+
         setContentView(getLayoutResId());
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -276,6 +279,11 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
             return;
         }
         showSuccess(o);
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 
     }
 

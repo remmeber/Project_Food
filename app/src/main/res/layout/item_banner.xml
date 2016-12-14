@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bigkoo.convenientbanner.ConvenientBanner xmlns:android="http://schemas.android.com/apk/res/android"
+<com.jude.rollviewpager.RollPagerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/iv_banner"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    app:canLoop="true"
+    android:layout_height="150dp"
+    app:rollviewpager_play_delay="2000"
+    app:rollviewpager_hint_gravity="center"
     tools:background="@color/colorRecommend_Red" />

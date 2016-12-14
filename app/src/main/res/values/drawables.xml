@@ -17,6 +17,7 @@
     <item name="ic_add_blue" type="drawable">@drawable/add_blue</item>
     <item name="ic_reduce_blue" type="drawable">@drawable/reduce_blue</item>
     <item name="ic_delete_black" type="drawable">@drawable/delete_black</item>
+    <item name="ic_delete_white" type="drawable">@drawable/delete_white</item>
     <item name="ic_back_black" type="drawable">@drawable/back_black</item>
     <item name="ic_chevron_left_black" type="drawable">@drawable/chevron_left_black</item>
     <item name="ic_chevron_right_black" type="drawable">@drawable/chevron_right_black</item>

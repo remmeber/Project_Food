@@ -62,9 +62,9 @@ public class OrderListActivity extends BaseAppcompactActivity {
                 AppConstants.ORDER_TITLES);
         vpMyorder.setAdapter(qFoodVpAdapter);
         vpMyorder.setOffscreenPageLimit(3);
-        vpMyorder.setCurrentItem(vpFlag, false);
         stlMyorder.setViewPager(vpMyorder);
-
+        stlMyorder.setCurrentTab(vpFlag);
+        stlMyorder.notifyDataSetChanged();
     }
 
     @Override
