@@ -18,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -54,7 +53,6 @@ import com.rhg.qf.easeui.widget.EaseVoiceRecorderView;
 import com.rhg.qf.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.rhg.qf.ui.BaseDialogView;
 import com.rhg.qf.ui.UIAlertView;
-import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 import com.rhg.qf.ui.fragment.BaseFragment;
 import com.rhg.qf.utils.ToastHelper;
 
@@ -820,13 +818,12 @@ public class EaseChatFragment extends BaseFragment implements EMEventListener {
                 new BaseDialogView.ClickListenerInterface() {
                     @Override
                     public void doLeft() {
-//                        uiAlertView.dismiss();
                         uiAlertView.dismiss();
                     }
 
                     @Override
                     public void doRight() {
-
+                        uiAlertView.dismiss();
                         // 清空会话
                         EMChatManager.getInstance().clearConversation(toChatUsername);
                         messageList.refresh();

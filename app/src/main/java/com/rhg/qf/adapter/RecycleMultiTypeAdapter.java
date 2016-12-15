@@ -189,7 +189,6 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
         }
-
     }
 
     private void bindViewHolderRecommendList(final BodyViewHolder holder, RecommendListTypeModel listData, int position) {
@@ -221,15 +220,6 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((RecommendListTypeModel) mData.get(TYPE_RECOMMEND_LIST)).getRecommendShopBeanEntity().size());
     }
 
-/*    public void stopBanner() {
-        bannerController.stopBanner();
-        bannerController.setConvenientBanner(null);
-    }
-
-    public void startBanner() {
-        bannerController.startBanner();
-        bannerController.setConvenientBanner(banner);
-    }*/
 
     public void setOnTypeClick(OnTypeClick onTypeClick) {
         this.onTypeClick = onTypeClick;
@@ -250,10 +240,10 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private class BannerTypeViewHolder extends RecyclerView.ViewHolder {
-        public RollPagerView banner;
-        public BannerLoopAdapter bannerLoopAdapter;
+        RollPagerView banner;
+        BannerLoopAdapter bannerLoopAdapter;
 
-        public BannerTypeViewHolder(View itemView) {
+        BannerTypeViewHolder(View itemView) {
             super(itemView);
             banner = (RollPagerView) itemView.findViewById(R.id.iv_banner);
             bannerLoopAdapter = new BannerLoopAdapter(banner);
@@ -262,7 +252,7 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    class IndTypeViewHolder extends RecyclerView.ViewHolder {
+    private class IndTypeViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout rlPersonOrder;
         RelativeLayout rlTodayRecommend;
 
@@ -277,7 +267,7 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
         private final MyGridView gridView;
         private QFoodGridViewAdapter dpGridViewAdapter;
 
-        public FavorableTypeViewHolder(View itemView, int position) {
+        FavorableTypeViewHolder(View itemView, int position) {
             super(itemView);
             gridView = (MyGridView) itemView.findViewById(R.id.gridview);
             gridView.setNumColumns(3);
@@ -289,10 +279,9 @@ public class RecycleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.V
     private class FooterTypeViewHolder extends RecyclerView.ViewHolder {
         TextView footerText;
 
-        public FooterTypeViewHolder(View itemView) {
+        FooterTypeViewHolder(View itemView) {
             super(itemView);
             footerText = (TextView) itemView.findViewById(R.id.footerView);
-
         }
     }
 

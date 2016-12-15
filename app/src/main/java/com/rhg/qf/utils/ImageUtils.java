@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.rhg.qf.constants.AppConstants;
@@ -22,6 +23,10 @@ import java.io.IOException;
 public class ImageUtils {
     public static void showImage(String uri, ImageView imageView) {
         ImageLoader.getInstance().displayImage(uri, imageView, new ImageSize(400, 300));
+    }
+
+    public static void showImage(String uri, ImageView imageView, DisplayImageOptions displayImageOptions) {
+        ImageLoader.getInstance().displayImage(uri, imageView, displayImageOptions);
     }
 
     public static void clearCache() {

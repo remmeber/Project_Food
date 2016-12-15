@@ -83,6 +83,8 @@ public class EaseChatInputMenu extends LinearLayout {
         // 主按钮菜单栏,没有自定义的用默认的
         if (chatPrimaryMenu == null) {
             chatPrimaryMenu = (EaseChatPrimaryMenu) layoutInflater.inflate(R.layout.ease_layout_chat_primary_menu, null);
+//            ViewGroup.LayoutParams layoutParams = chatPrimaryMenu.getLayoutParams();
+//            Log.i("RHG", "height :" + layoutParams.height + " width: " + layoutParams.width);
         }
         primaryMenuContainer.addView(chatPrimaryMenu);
 
@@ -180,22 +182,25 @@ public class EaseChatInputMenu extends LinearLayout {
 
             @Override
             public void onToggleVoiceBtnClicked() {
+                Log.i("RHG", "onToggleVoiceBtnClicked");
                 hideExtendMenuContainer();
             }
 
             @Override
             public void onToggleExtendClicked() {
+                Log.i("RHG", "onToggleExtendClicked");
                 toggleMore();
             }
 
             @Override
             public void onToggleEmojiconClicked() {
+                Log.i("RHG", "onToggleEmojiconClicked");
                 toggleEmojicon();
             }
 
             @Override
             public void onEditTextClicked() {
-                Log.i("RHG", "隐藏扩展栏");
+                Log.i("RHG", "onEditTextClicked");
                 hideExtendMenuContainer();
             }
 
@@ -237,6 +242,7 @@ public class EaseChatInputMenu extends LinearLayout {
      * 显示或隐藏图标按钮页
      */
     protected void toggleMore() {
+        Log.i("RHG", "隐藏图标按钮页");
         if (chatExtendMenuContainer.getVisibility() == View.GONE) {
             hideKeyboard();
             handler.postDelayed(new Runnable() {
@@ -262,6 +268,7 @@ public class EaseChatInputMenu extends LinearLayout {
      * 显示或隐藏表情页
      */
     protected void toggleEmojicon() {
+        Log.i("RHG", "隐藏表情页");
         if (chatExtendMenuContainer.getVisibility() == View.GONE) {
             hideKeyboard();
             handler.postDelayed(new Runnable() {
@@ -287,6 +294,7 @@ public class EaseChatInputMenu extends LinearLayout {
      * 隐藏软键盘
      */
     private void hideKeyboard() {
+        Log.i("RHG", "隐藏软键盘");
         chatPrimaryMenu.hideKeyboard();
     }
 
@@ -294,6 +302,7 @@ public class EaseChatInputMenu extends LinearLayout {
      * 隐藏整个扩展按钮栏(包括表情栏)
      */
     public void hideExtendMenuContainer() {
+        Log.i("RHG", "隐藏扩展栏");
         chatExtendMenu.setVisibility(View.GONE);
         emojiconMenu.setVisibility(View.GONE);
         chatExtendMenuContainer.setVisibility(View.GONE);
