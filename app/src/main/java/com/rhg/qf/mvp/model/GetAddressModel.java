@@ -19,7 +19,6 @@ public class GetAddressModel {
 
     public Observable<List<AddressUrlBean.AddressBean>> getAddress(String Table) {
         String userId = AccountUtil.getInstance().getUserID();
-//        Log.i("RHG", "GET ADDRESS Presenter:" + userId);
         return QFoodApiMamager.getInstant().getQFoodApiService().getAddress(Table, userId)
                 .flatMap(new Func1<AddressUrlBean, Observable<List<AddressUrlBean.AddressBean>>>() {
                     @Override

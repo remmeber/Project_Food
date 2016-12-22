@@ -1,6 +1,5 @@
 package com.rhg.qf.mvp.presenter;
 
-import rx.android.schedulers.AndroidSchedulers;
 import com.rhg.qf.bean.AddressUrlBean;
 import com.rhg.qf.mvp.model.GetAddressModel;
 import com.rhg.qf.mvp.view.BaseView;
@@ -8,6 +7,7 @@ import com.rhg.qf.mvp.view.BaseView;
 import java.util.List;
 
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**

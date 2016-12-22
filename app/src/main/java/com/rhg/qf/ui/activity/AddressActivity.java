@@ -147,10 +147,15 @@ public class AddressActivity extends BaseAppcompactActivity {
     public void showSuccess(Object s) {
         if (s instanceof String) {
             getAddressPresenter.getAddress(AppConstants.ADDRESS_TABLE);
-            return;
+        }else
+        if(s instanceof AddressUrlBean.AddressBean){
+            addressBeanList.clear();
+            addressBeanList.add((AddressUrlBean.AddressBean) s);
+            addressAdapter.setAddressBeanList(addressBeanList);
+        }else {
+            addressBeanList = (List<AddressUrlBean.AddressBean>) s;
+            addressAdapter.setAddressBeanList(addressBeanList);
         }
-        addressBeanList = (List<AddressUrlBean.AddressBean>) s;
-        addressAdapter.setAddressBeanList(addressBeanList);
         if (srlAddress.isRefreshing())
             srlAddress.setRefreshing(false);
     }

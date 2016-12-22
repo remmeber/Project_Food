@@ -190,4 +190,14 @@ public class AddressUrlBean {
             parcel.writeString(Detail);
         }
     }
+
+    @Override
+    public String toString() {
+        return "AddressUrlBean{" +
+                "result=" + result +
+                ", msg='" + msg + '\'' +
+                ", total=" + total +
+                ", rows=" + rows.toString() +
+                '}';
+    }
 }

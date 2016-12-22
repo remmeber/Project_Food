@@ -58,6 +58,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
     String openid;
     String unionid;
     String headImageUrl;
+    AddressUrlBean.AddressBean addressBean;
     private UmengUtil signUtil;
 
     @Override
@@ -101,23 +102,41 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
             AccountUtil.getInstance().setUserName(_data.getCName());
             AccountUtil.getInstance().setNickName(nickName);
             AccountUtil.getInstance().setPwd(_data.getPwd());
+            getAddress();
             return;
-        }
-        if (o instanceof AddressUrlBean.AddressBean) {
-//            generateOrder((AddressUrlBean.AddressBean) o);
-            if (createOrderPresenter == null)
-                createOrderPresenter = new NewOrderPresenter(this);
-            createOrderPresenter.createNewOrder(generateOrder((AddressUrlBean.AddressBean) o));
         }
         if (o instanceof NewOrderBackBean) {
             DialogUtil.cancelDialog();
             startActivity(new Intent(this, ChatActivity.class)
                     .putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));
         }
+        if (o instanceof AddressUrlBean.AddressBean) {
+//            generateOrder((AddressUrlBean.AddressBean) o);
+            addressBean = (AddressUrlBean.AddressBean) o;
+            if (createOrderPresenter == null)
+                createOrderPresenter = new NewOrderPresenter(this);
+            createOrderPresenter.createNewOrder(generateOrder((AddressUrlBean.AddressBean) o));
+        }
+        if (addressBean == null)
+            startActivityForResult(new Intent(this, AddOrNewAddressActivity.class), 0);
     }
 
     @Override
     public void showError(Object s) {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == AppConstants.BACK_WITH_ADD) {
+            if (data == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("点单失败");
+                if(DialogUtil.isShow())
+                    DialogUtil.cancelDialog();
+            } else {
+                this.showSuccess(data.getParcelableExtra("return"));
+            }
+        }
     }
 
 
@@ -136,11 +155,15 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
                     return;
                 }
                 DialogUtil.showDialog(this, "跳转中....");
-                if (getAddressPresenter == null)
-                    getAddressPresenter = new GetAddressPresenter(this);
-                getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
+                getAddress();
                 break;
         }
+    }
+
+    private void getAddress(){
+        if (getAddressPresenter == null)
+            getAddressPresenter = new GetAddressPresenter(this);
+        getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
     }
 
     private NewOrderBean generateOrder(AddressUrlBean.AddressBean addressBean) {

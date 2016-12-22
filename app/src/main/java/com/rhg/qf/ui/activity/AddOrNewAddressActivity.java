@@ -129,7 +129,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                 addNewAddressContactsContent.getText().toString(),
                 addNewAddressContactAddressContent.getText().toString(),
                 addNewAddressContentDetail.getText().toString()));
-        setResult(0, intent);/*不需要做任何事情*/
+        setResult(resultCode, intent);/*不需要做任何事情*/
         finish();
     }
 
@@ -154,7 +154,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
         switch (view.getId()) {
             case R.id.tb_left_iv:
                 isBackWithoutOption = true;
-                finish();
+                this.onBackPressed();
                 break;
             case R.id.add_new_address_bt:
                 if (TextUtils.isEmpty(addNewAddressContactPersonContent.getText())) {
@@ -195,7 +195,6 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                 break;
         }
     }
-
 
     @Override
     public void onBackPressed() {

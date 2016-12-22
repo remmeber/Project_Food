@@ -204,6 +204,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             etNum.setText("0");
             ivAddToShoppingCart.setNum("0");
         }
+        accountDao = null;
         ivBanner.startTurning(2000);
         ivBanner.setPageIndicator(AppConstants.IMAGE_INDICTORS);
     }

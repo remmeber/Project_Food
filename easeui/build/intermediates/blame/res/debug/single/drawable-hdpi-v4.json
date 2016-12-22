@@ -408,12 +408,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_record_animate_11.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_31.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_31.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_record_animate_05.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_record_animate_05.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_31.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_31.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_record_animate_08.png",
