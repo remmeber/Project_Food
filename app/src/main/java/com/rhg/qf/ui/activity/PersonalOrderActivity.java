@@ -117,8 +117,11 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
                 createOrderPresenter = new NewOrderPresenter(this);
             createOrderPresenter.createNewOrder(generateOrder((AddressUrlBean.AddressBean) o));
         }
-        if (addressBean == null)
-            startActivityForResult(new Intent(this, AddOrNewAddressActivity.class), 0);
+        if (addressBean == null) {
+            Intent intent = new Intent(this, AddressActivity.class);
+            intent.setAction(AppConstants.ADDRESS_DEFAULT);
+            startActivityForResult(intent, 0);
+        }
     }
 
     @Override
@@ -128,14 +131,21 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == AppConstants.BACK_WITH_ADD) {
+        if (resultCode == 100) {
             if (data == null) {
-                ToastHelper.getInstance().displayToastWithQuickClose("点单失败");
+                ToastHelper.getInstance()._toast("点单失败");
                 if(DialogUtil.isShow())
                     DialogUtil.cancelDialog();
-            } else {
-                this.showSuccess(data.getParcelableExtra("return"));
+                return;
             }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance()._toast("点单失败，请填写详细地址");
+                if(DialogUtil.isShow())
+                    DialogUtil.cancelDialog();
+                return;
+            }
+            this.showSuccess(addressBean);
         }
     }
 

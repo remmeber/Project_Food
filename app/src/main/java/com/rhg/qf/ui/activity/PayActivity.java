@@ -277,6 +277,8 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
             AddressUrlBean.AddressBean _addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
             setAddress(_addressBean.getName(), _addressBean.getPhone(),
                     _addressBean.getAddress().concat(_addressBean.getDetail()));
+        }else {
+            ToastHelper.getInstance().displayToastWithQuickClose("请填写默认地址");
         }
     }
 

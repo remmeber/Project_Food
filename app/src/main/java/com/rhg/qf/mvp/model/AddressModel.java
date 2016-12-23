@@ -17,7 +17,7 @@ import rx.functions.Func1;
 public class AddressModel {
     public Observable<String> addOrUpdateAddress(String addressId, String user,
                                                  String phone, final String address,
-                                                 String detail, String opt) {
+                                                 String detail, final String opt) {
         String userName = AccountUtil.getInstance().getUserName();
         String pwd = AccountUtil.getInstance().getPwd();
         Observable<BaseBean> _address;
