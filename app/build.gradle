@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         rhg {
-            keyAlias 'rhg'
-            keyPassword 'ruanhugang0215'
-            storeFile file('E:/QF/app/src/main/java/qf.jks')
-            storePassword '331004'
+            keyAlias "${System.getenv("KEY_ALIAS")}"
+            keyPassword "${System.getenv("KEY_PWD")}"
+            storeFile file("${System.getenv("STORE_FILE")}")
+            storePassword "${System.getenv("STORE_PWD")}"
         }
     }
     compileSdkVersion 25
@@ -31,7 +31,7 @@ android {
         debug {
             signingConfig signingConfigs.rhg
         }
-        家家美食 {
+        release {
             debuggable false
             jniDebuggable false
             signingConfig signingConfigs.rhg
@@ -63,6 +63,7 @@ dependencies {
     compile('com.squareup.retrofit2:converter-simplexml:2.0.2') {
         exclude module: 'stax'
         exclude module: 'stax-api'
+        exclude module: 'xpp3'
     }
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.bigkoo:convenientbanner:2.0.5'
