@@ -51,6 +51,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
     String unionid;
     String headImageUrl;
     private UmengUtil signUtil;
+    private AddressUrlBean.AddressBean addressBean;
 
     @Override
     protected void initData() {
@@ -94,16 +95,44 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
             AccountUtil.getInstance().setPwd(_data.getPwd());
             return;
         }
-        if (o instanceof AddressUrlBean.AddressBean) {
-//            generateOrder((AddressUrlBean.AddressBean) o);
-            if (createOrderPresenter == null)
-                createOrderPresenter = new NewOrderPresenter(this);
-            createOrderPresenter.createNewOrder(generateOrder((AddressUrlBean.AddressBean) o));
-        }
         if (o instanceof NewOrderBackBean) {
             DialogUtil.cancelDialog();
             startActivity(new Intent(this, ChatActivity.class)
                     .putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));
+            return;
+        }
+        if (o instanceof AddressUrlBean.AddressBean) {
+//            generateOrder((AddressUrlBean.AddressBean) o);
+            addressBean = (AddressUrlBean.AddressBean) o;
+            if (createOrderPresenter == null)
+                createOrderPresenter = new NewOrderPresenter(this);
+            createOrderPresenter.createNewOrder(generateOrder((AddressUrlBean.AddressBean) o));
+        }
+        if (addressBean == null) {
+            Intent intent = new Intent(this, AddressActivity.class);
+            intent.setAction(AppConstants.ADDRESS_DEFAULT);
+            startActivityForResult(intent, 0);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100) {
+            if (data == null) {
+                ToastHelper.getInstance()._toast("点单失败");
+                if(DialogUtil.isShow())
+                    DialogUtil.cancelDialog();
+                return;
+            }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance()._toast("点单失败，请填写详细地址");
+                if(DialogUtil.isShow())
+                    DialogUtil.cancelDialog();
+                return;
+            }
+            this.showSuccess(addressBean);
         }
     }
 
