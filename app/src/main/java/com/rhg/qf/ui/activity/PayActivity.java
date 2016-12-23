@@ -1,11 +1,12 @@
 package com.rhg.qf.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,11 +19,11 @@ import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.mvp.api.QFoodApi;
 import com.rhg.qf.mvp.presenter.NewOrderPresenter;
 import com.rhg.qf.pay.BasePayActivity;
 import com.rhg.qf.pay.model.OrderInfo;
 import com.rhg.qf.pay.model.PayType;
-import com.rhg.qf.ui.UIPayView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DecimalUtil;
 import com.rhg.qf.utils.NetUtil;
@@ -51,7 +52,8 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     private final static String ALI_PARTNER = "2088422291942751";
     private final static String ALI_SELLER_ID = "18858558505";
     private final static String ALI_PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMIwLMEyitvEEctRirBarCnmtDqcIYxl2slRz6cTAFh0a4MqpUDTl505iiasFmLHJtNdMJohCkz+KjjKG7fTU4ZHy5Sy2andeULbyD+31cT+ZQOgNR2F5aAHU3CYvfx0qFw9ph5PA1AWqz+FoClPolsOOZKwrkObanbQplJebavhAgMBAAECgYAreHtcWIMrRU4ydLOWXQXzb1jjUfZUpqx+qtjQbvmB07YJq+9IftWO9cWOeLGeNTTk1hS+PC1BJRiwk9X2pdEpdqlCbri8mKPlu+Z37ZB+sNRiyl+2p4sDx9WTvw8dJHIsWFlDNnbHzS0oDexlOxX68fL4NcsZu5VLQLZV0W5YAQJBAPyIvCj9gw0OT1LPcj4Yks5V+5pjr4g7NqFxKEfxtPJErE8Zjz6Zm8x0/k2E8XCd63lVk8Dh13TJSqfYwh/+ZkECQQDE2nHL/X3qN4EEqsWfbB8piAO7/5Ux956fCrhUYKXiIPJsHyiojePAw4nXlf1Nd+Fnu6rjG35xgSNmUbu7Wh2hAkBEKzj3q69jp9g712nUX1fJwSYhAAXTNYDCxcQE37djqqwE0jZ7xIVtBKvdCyUNrGNzJmmzKIO7r9aqRnXoowjBAkBi3Rqdyne8c5e2UlXiFRkpcIf/mQLDD4t4cJfWuJtXEBjwOE3hKTGjFBFcVpXanER2JohSevJr6uFud8oC8+VBAkEAgNXtGYF9xdffvrpsjmq5H54W2TWq1GPDm7oF0Ct9jduElxZx11cdtcWYAzdU+bYjr+jrbut4X3IqDFhUMCOYfw==";
-
+    private final static String WX_URL = QFoodApi.BASE_URL + "Table/JsonSQL/weixinpay/prepay.php";
+    private final static String ALI_URL = QFoodApi.BASE_URL +"Table/JsonSQL/alipay/notify_url.php";
     @Bind(R.id.tb_center_tv)
     TextView tbCenterTv;
     @Bind(R.id.tb_left_iv)
@@ -89,14 +91,14 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     protected OrderInfo OnOrderCreate() {
         ipv4 = NetUtil.getPsdnIp();
         if (PayType.WeixinPay.equals(payType)) {
-            return BuildOrderInfo("微信支付", "30m", "http://wxpay.weixin.qq.com/pub_v2/pay/notify.v2.php",
+            return BuildOrderInfo("微信支付", "30m", WX_URL,
                     getOutTradeNo(),
                     getItemsName(payList),
                     getCheckItemTotalMoney(payList),
                     ipv4);
         }
         if (PayType.AliPay.equals(payType)) {
-            return BuildOrderInfo("支付宝支付", "30m", "http://jiaze917.com/Table/JsonSQL/alipay/notify_url.php",
+            return BuildOrderInfo("支付宝支付", "30m", ALI_URL,
                     getOutTradeNo(),
                     getItemsName(payList),
                     getCheckItemTotalMoney(payList),
@@ -177,18 +179,8 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     }
 
     private void showPayResult(boolean isSuccess) {
-        final UIPayView resultDialog;
-        if (isSuccess)
-            resultDialog = new UIPayView(PayActivity.this, R.layout.pay_result_success_layout, true);
-        else
-            resultDialog = new UIPayView(PayActivity.this, R.layout.pay_result_error_layout, true);
-        resultDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
-        resultDialog.show();
+        ((ViewGroup)decorView).removeAllViews();
+        LayoutInflater.from(this).inflate(isSuccess?R.layout.pay_result_success_layout:R.layout.pay_result_error_layout, (ViewGroup) decorView);
     }
 
     @Override
@@ -198,7 +190,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
 
     @Override
     protected void showPayError(String s) {
-        ToastHelper.getInstance()._toast(s);
+        showPayResult(false);
     }
 
     @OnClick({R.id.tb_left_iv, R.id.iv_edit_right, R.id.bt_pay_affirmance,
@@ -273,12 +265,19 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (100 == resultCode && data != null) {
+        if (100 == resultCode) {
+
+            if (data == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("设置地址失败");
+                return;
+            }
             AddressUrlBean.AddressBean _addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (_addressBean == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("设置地址失败，请填写详细地址");
+                return;
+            }
             setAddress(_addressBean.getName(), _addressBean.getPhone(),
                     _addressBean.getAddress().concat(_addressBean.getDetail()));
-        }else {
-            ToastHelper.getInstance().displayToastWithQuickClose("请填写默认地址");
         }
     }
 
@@ -350,14 +349,6 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
      */
     private String getOutTradeNo() {
-        /*SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss", Locale.getDefault());
-        Date date = new Date();
-        String key = format.format(date);
-
-        Random r = new Random();
-        key = key + r.nextInt();
-        key = key.substring(0, 15);
-        return key;*/
         return style == 0 ? tradeNumber : payList.get(0).getProductId();//style=0时，productId为商品的ID；style=1时，productId为订单的ID。
     }
 }

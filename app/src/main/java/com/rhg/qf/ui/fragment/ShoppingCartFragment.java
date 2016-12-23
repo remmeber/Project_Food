@@ -19,6 +19,7 @@ import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.bean.ShoppingCartBean;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.mvp.presenter.GetAddressPresenter;
+import com.rhg.qf.ui.activity.AddressActivity;
 import com.rhg.qf.ui.activity.PayActivity;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.ShoppingCartUtil;
@@ -65,6 +66,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @Bind(R.id.rl_shopping_cart_pay)
     RelativeLayout rlShoppingCartPay;
     private GetAddressPresenter getAddressPresenter;
+    private AddressUrlBean.AddressBean addressBean;
     //-----------------根据需求创建相应的presenter----------------------------------------------------
 
     public ShoppingCartFragment() {
@@ -261,19 +263,43 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public void showSuccess(Object o) {
-        if (o instanceof AddressUrlBean.AddressBean) {
-            AddressUrlBean.AddressBean addressBean = (AddressUrlBean.AddressBean) o;
-            createOrderAndToPay(addressBean);
-            return;
-        }
+
         if (o instanceof String) {
             if ("error".equals(o)) {
-                ToastHelper.getInstance()._toast(o.toString());
+                ToastHelper.getInstance().displayToastWithQuickClose(o.toString());
                 return;
             }
             if (((String) o).contains("order")) {
                 refresh();
             }
+        }
+
+        if (o instanceof AddressUrlBean.AddressBean) {
+             addressBean = (AddressUrlBean.AddressBean) o;
+            createOrderAndToPay(addressBean);
+        }
+
+        if (addressBean == null) {
+            Intent intent = new Intent(getContext(), AddressActivity.class);
+            intent.setAction(AppConstants.ADDRESS_DEFAULT);
+            startActivityForResult(intent, 0);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100) {
+            if (data == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单");
+                return;
+            }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单，请填写详细地址");
+                return;
+            }
+            createOrderAndToPay(addressBean);
         }
     }
 

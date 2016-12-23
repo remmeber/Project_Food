@@ -44,9 +44,31 @@ public abstract class BaseDialogView extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCancelable(cancelable);
+        /*ViewGroup decorView = (ViewGroup)((BaseAppcompactActivity)context).getWindow().getDecorView();
+        decorView.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(resId, null);
+        View view = inflater.inflate(resId,decorView);*/
+        /*ViewGroup viewGroup = (ViewGroup) ((ViewGroup) ((BaseAppcompactActivity) context).findViewById(android.R.id.content)).getChildAt(0);
+        ViewGroup viewParent = (ViewGroup) viewGroup.getParent();
+        viewParent.removeView(viewGroup);*/
+        /*for (int i = 0; ; i++) {
+            if (viewGroup.getParent() != null)
+                viewGroup = (ViewGroup) viewGroup.getParent();
+            else {
+                Log.i("RHG", "Depth:" + i + 1);
+                break;
+            }
+        }*/
+//        Log.i("RHG","parent is : "+viewParent.getParent().getParent());
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(resId,null);
         initView(view);
+//        viewParent.addView(view);
+//        initView(viewParent);
+      /*  LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(resId,viewParent,true);
+        initView(view);*/
+//        viewGroup.addView(view);
     }
 
     protected void initView(View view) {

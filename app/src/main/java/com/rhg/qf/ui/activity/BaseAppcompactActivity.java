@@ -198,7 +198,7 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     protected void onDestroy() {
         ImageUtils.clearCache();
         super.onDestroy();
-        ButterKnife.bind(this);
+        ButterKnife.unbind(this);
         if (locationService != null) {
             locationService.stop();
             locationService.unregisterListener(mLocationListener);

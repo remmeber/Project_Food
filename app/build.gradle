@@ -16,8 +16,8 @@ android {
         applicationId 'com.rhg.qf'
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 111
+        versionName "1.1.1"
         //testCompile 'junit:junit:4.12'
         multiDexEnabled = true//用来解决方法超过65536
 
@@ -25,6 +25,7 @@ android {
     dexOptions {//用来解决方法超过65536
         jumboMode = true
         javaMaxHeapSize "2g"
+//        incremental true
     }
 
     buildTypes {
@@ -45,6 +46,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -67,6 +72,7 @@ dependencies {
     compile('com.squareup.retrofit2:converter-simplexml:2.0.2') {
         exclude module: 'stax'
         exclude module: 'stax-api'
+        exclude module: 'xpp3'
     }
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.bigkoo:convenientbanner:2.0.5'

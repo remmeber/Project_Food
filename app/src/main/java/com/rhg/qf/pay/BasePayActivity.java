@@ -4,7 +4,6 @@ package com.rhg.qf.pay;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.rhg.qf.pay.model.KeyLibs;
@@ -192,7 +191,7 @@ public abstract class BasePayActivity extends BaseAppcompactActivity {
                     PayResult payResult = new PayResult((String) msg.obj);
                     // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
                     String resultInfo = payResult.getResult();
-                    Log.i("RHG", "result is:" + resultInfo + "\nmemo is :" + payResult.getMemo());
+//                    Log.i("RHG", "result is:" + resultInfo + "\nmemo is :" + payResult.getMemo());
                     String resultStatus = payResult.getResultStatus();
 
                     if (TextUtils.equals(resultStatus, "9000")) {

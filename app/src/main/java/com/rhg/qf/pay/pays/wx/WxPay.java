@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.rhg.qf.mvp.api.QFoodApi;
 import com.rhg.qf.pay.model.KeyLibs;
 import com.rhg.qf.pay.model.OrderInfo;
 import com.rhg.qf.pay.pays.IPayable;
@@ -41,6 +40,7 @@ import okhttp3.Response;
  */
 public class WxPay implements IPayable {
     OkHttpClient client = null;
+    String wx_url;
     //微信sdk对象
     private IWXAPI msgApi;
     //生成预付单需要的参数
@@ -59,6 +59,7 @@ public class WxPay implements IPayable {
     public OrderInfo BuildOrderInfo(String body, String invalidTime,
                                     String notifyUrl, String tradeNo,
                                     String subject, String totalFee, String spbillCreateIp) {
+        wx_url= notifyUrl;
         try {
 //            String nonceStr = GetNonceStr();
             /*List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
@@ -108,12 +109,11 @@ public class WxPay implements IPayable {
     }
 
     public void GenParam(final OrderInfo orderInfo) {
-        final String url = QFoodApi.BASE_URL + "Table/JsonSQL/weixinpay/prepay.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<String> result = executorService.submit(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                byte[] result = post(url);
+                byte[] result = post(wx_url);
                 return result != null ? new String(result) : null;
             }
         });
