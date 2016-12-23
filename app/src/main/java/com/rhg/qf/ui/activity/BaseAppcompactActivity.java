@@ -84,7 +84,8 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         if (!PermissionsManager.getInstance().hasAllPermissions(this, permissions)) {
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                     permissions, null);
-        }
+        }else
+            onGrant();
     }
 
 
