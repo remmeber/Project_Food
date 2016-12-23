@@ -16,8 +16,8 @@ android {
         applicationId 'com.rhg.qf'
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 111
+        versionName "1.1.1"
         //testCompile 'junit:junit:4.12'
         multiDexEnabled = true//用来解决方法超过65536
 

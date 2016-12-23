@@ -21,4 +21,8 @@ public class DialogUtil {
         if (pd != null)
             pd.cancel();
     }
+
+    public static boolean isShow() {
+        return pd.isShowing();
+    }
 }

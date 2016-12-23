@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -243,7 +242,7 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     protected void onDestroy() {
         ImageUtils.clearCache();
         super.onDestroy();
-        ButterKnife.bind(this);
+        ButterKnife.unbind(this);
         if (locationService != null) {
             locationService.stop();
             locationService.unregisterListener(mLocationListener);
