@@ -11,7 +11,6 @@ import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.mvp.api.QFoodApiMamager;
 import com.rhg.qf.mvp.api.QFoodApiService;
 import com.rhg.qf.utils.AccountUtil;
-import com.rhg.qf.utils.ToastHelper;
 
 import rx.Observable;
 import rx.functions.Func4;
@@ -25,12 +24,12 @@ import rx.functions.Func4;
 public class HomeModel {
     public Observable<HomeBean> getHomeData(String headrestaurants) {
         QFoodApiService qFoodApiService = QFoodApiMamager.getInstant().getQFoodApiService();
-        String x = AccountUtil.getInstance().getLongitude();
-        String y = AccountUtil.getInstance().getLatitude();
+        String y = AccountUtil.getInstance().getLongitude();
+        String x = AccountUtil.getInstance().getLatitude();
         return Observable.zip(
                 qFoodApiService.getBannerUrl(AppConstants.HEAD_ROW),
                 qFoodApiService.getFavorableFood(AppConstants.HEAD_HOT),
-                qFoodApiService.getHomeMerchants(headrestaurants, x, y),
+                qFoodApiService.getHomeMerchants(headrestaurants, y, x),
                 qFoodApiService.getMessage(),
                 new Func4<BannerTypeUrlBean, FavorableFoodUrlBean,
                         MerchantUrlBean, TextTypeBean, HomeBean>() {

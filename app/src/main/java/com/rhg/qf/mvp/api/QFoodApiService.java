@@ -12,7 +12,7 @@ import com.rhg.qf.bean.HeadMerchantUrlBean;
 import com.rhg.qf.bean.HotFoodUrlBean;
 import com.rhg.qf.bean.MerchantInfoDetailUrlBean;
 import com.rhg.qf.bean.MerchantUrlBean;
-import com.rhg.qf.bean.NewOrderBackBean;
+import com.rhg.qf.bean.NewOrderBackModel;
 import com.rhg.qf.bean.OrderDetailUrlBean;
 import com.rhg.qf.bean.OrderUrlBean;
 import com.rhg.qf.bean.ShopDetailUrlBean;
@@ -232,14 +232,14 @@ public interface QFoodApiService {
     /*TODO API 18 生成订单标记为待付款状态*/
     @FormUrlEncoded
     @POST("Table/JsonSQL/AddNewOrder2.php")
-    Observable<NewOrderBackBean> createOrder(@Field("Address") String address,
-                                             @Field("Client") String client,
-                                             @Field("Receiver") String receiver,
-                                             @Field("Phone") String phone,
-                                             @Field("Price") String price,
-                                             @Field("Y") String y,
-                                             @Field("X") String x,
-                                             @Field("Food") String foodBeen
+    Observable<NewOrderBackModel> createOrder(@Field("Address") String address,
+                                              @Field("Client") String client,
+                                              @Field("Receiver") String receiver,
+                                              @Field("Phone") String phone,
+                                              @Field("Price") String price,
+                                              @Field("Y") String Y,
+                                              @Field("X") String X,
+                                              @Field("Food") String foodBeen
                                      /*@Body NewOrderBean newOrderBean*/);
 
 

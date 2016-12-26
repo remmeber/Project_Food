@@ -96,6 +96,7 @@ public class PayModel implements Parcelable {
             }
         };
         String merchantName;
+        String merchantId;
         String productId;
         String productName;
         String productPrice;
@@ -106,6 +107,7 @@ public class PayModel implements Parcelable {
 
         protected PayBean(Parcel in) {
             merchantName = in.readString();
+            merchantId = in.readString();
             productId = in.readString();
             productName = in.readString();
             productPrice = in.readString();
@@ -124,6 +126,14 @@ public class PayModel implements Parcelable {
 
         public void setMerchantName(String merchantName) {
             this.merchantName = merchantName;
+        }
+
+        public String getMerchantId() {
+            return merchantId;
+        }
+
+        public void setMerchantId(String merchantId) {
+            this.merchantId = merchantId;
         }
 
         public String getProductId() {
@@ -190,6 +200,7 @@ public class PayModel implements Parcelable {
         @Override
         public void writeToParcel(Parcel parcel, int i) {
             parcel.writeString(merchantName);
+            parcel.writeString(merchantId);
             parcel.writeString(productId);
             parcel.writeString(productName);
             parcel.writeString(productPrice);

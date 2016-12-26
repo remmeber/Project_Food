@@ -144,10 +144,11 @@ public class ShoppingCartUtil {
         ArrayList<PayModel.PayBean> payBeen = new ArrayList<>();
         for (int i = 0; i < listGoods.size(); i++) {
             for (int j = 0; j < listGoods.get(i).getGoods().size(); j++) {
-                boolean isSelectd = listGoods.get(i).getGoods().get(j).isChildSelected();
-                if (isSelectd) {
+                boolean isSelected = listGoods.get(i).getGoods().get(j).isChildSelected();
+                if (isSelected) {
                     PayModel.PayBean _pay = new PayModel.PayBean();
                     _pay.setMerchantName(listGoods.get(i).getMerchantName());
+                    _pay.setMerchantId(listGoods.get(i).getMerID());
                     ShoppingCartBean.Goods _goods = listGoods.get(i).getGoods().get(j);
                     _pay.setProductName(_goods.getGoodsName());
                     _pay.setChecked(true);
@@ -185,7 +186,7 @@ public class ShoppingCartUtil {
      */
     public static void delGood(String merchantId, String productID) {
         AccountDao.getInstance().deleteItemInTableById(AccountDBHelper.Q_SHOPPING_CART_TABLE,
-                ShoppingCartBean.KEY_FOOD_ID + " =? and " + ShoppingCartBean.KEY_MERCHANT_ID + " =?", new String[]{productID ,merchantId});
+                ShoppingCartBean.KEY_FOOD_ID + " =? and " + ShoppingCartBean.KEY_MERCHANT_ID + " =?", new String[]{productID, merchantId});
     }
 
     /**

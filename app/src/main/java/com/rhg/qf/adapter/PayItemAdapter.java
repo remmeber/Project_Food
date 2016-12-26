@@ -50,6 +50,8 @@ public class PayItemAdapter extends RecyclerView.Adapter<PayItemAdapter.PayItemV
 
     @Override
     public void onBindViewHolder(final PayItemAdapter.PayItemViewHolder holder, int position) {
+        if(payList == null)
+            return;
         if (payList.get(position).getMerchantName() != null)
             holder.tvPayTitle.setText(payList.get(position).getMerchantName());
         else holder.tvPayTitle.setText(payList.get(position).getProductName());

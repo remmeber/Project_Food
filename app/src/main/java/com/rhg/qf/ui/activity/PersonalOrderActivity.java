@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.easemob.easeui.EaseConstant;
 import com.rhg.qf.R;
 import com.rhg.qf.bean.AddressUrlBean;
-import com.rhg.qf.bean.NewOrderBackBean;
+import com.rhg.qf.bean.NewOrderBackModel;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.bean.SignInBackBean;
 import com.rhg.qf.constants.AppConstants;
@@ -105,7 +105,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
             getAddress();
             return;
         }
-        if (o instanceof NewOrderBackBean) {
+        if (o instanceof NewOrderBackModel) {
             DialogUtil.cancelDialog();
             startActivity(new Intent(this, ChatActivity.class)
                     .putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));
