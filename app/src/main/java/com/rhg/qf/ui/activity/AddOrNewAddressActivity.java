@@ -125,7 +125,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                 addNewAddressContactsContent.getText().toString(),
                 addNewAddressContactAddressContent.getText().toString(),
                 addNewAddressContentDetail.getText().toString()));
-        setResult(0, intent);/*不需要做任何事情*/
+        setResult(resultCode, intent);/*不需要做任何事情*/
         finish();
     }
 
@@ -193,6 +193,11 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
         isBackWithoutOption = true;
         super.beforeFinish();
     }*/
+
+//    @Override
+//    protected void beforeFinish() {
+//        super.beforeFinish();
+//    }
 
     @Override
     public void onBackPressed() {

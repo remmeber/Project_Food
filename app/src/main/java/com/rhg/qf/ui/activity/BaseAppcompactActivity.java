@@ -94,7 +94,8 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
             @Override
             public void onClick(View v) {
                 beforeFinish();
-                finish();
+//                finish();
+                onBackPressed();
             }
         });
     }

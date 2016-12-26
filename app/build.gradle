@@ -1,12 +1,14 @@
 apply plugin: 'com.android.application'
-
+def versionMajor = 1
+def versionMinor = 1
+def versionPatch = 1
 android {
     signingConfigs {
-        rhg {
-            keyAlias 'rhg'
-            keyPassword 'ruanhugang0215'
-            storeFile file('qf.jks')
-            storePassword '331004'
+        release {
+            storeFile file("${System.getenv("STORE_FILE")}")
+            keyAlias "${System.getenv("KEY_ALIAS")}"
+            keyPassword "${System.getenv("APP_KEY_PWD")}"
+            storePassword "${System.getenv("APP_STORE_PWD")}"
 
         }
     }
@@ -16,8 +18,8 @@ android {
         applicationId 'com.rhg.qf'
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 111
-        versionName "1.1.1"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         //testCompile 'junit:junit:4.12'
         multiDexEnabled = true//用来解决方法超过65536
 
@@ -32,19 +34,23 @@ android {
         debug {
             minifyEnabled false
             shrinkResources false
-            signingConfig signingConfigs.rhg
+            signingConfig signingConfigs.release
         }
-        家家美食 {
+        release {
             /*debuggable false
             jniDebuggable false
             renderscriptDebuggable false
             zipAlignEnabled true*/
-            signingConfig signingConfigs.rhg
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -67,6 +73,7 @@ dependencies {
     compile('com.squareup.retrofit2:converter-simplexml:2.0.2') {
         exclude module: 'stax'
         exclude module: 'stax-api'
+        exclude module: 'xpp3'
     }
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jude:rollviewpager:1.4.5'
