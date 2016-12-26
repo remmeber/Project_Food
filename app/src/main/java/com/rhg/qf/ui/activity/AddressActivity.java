@@ -18,6 +18,7 @@ import com.rhg.qf.mvp.presenter.GetAddressPresenter;
 import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AddressUtil;
 import com.rhg.qf.utils.SizeUtil;
+import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 import com.rhg.qf.widget.SwipeDeleteRecycleView;
 
@@ -136,6 +137,10 @@ public class AddressActivity extends BaseAppcompactActivity {
     @Override
     public void onBackPressed() {
         AddressUrlBean.AddressBean _addressBean = getDefaultAddress(addressBeanList);
+        if (addressBeanList.size() > 0 && _addressBean == null) {
+            ToastHelper.getInstance().displayToastWithQuickClose("请选择收货地址");
+            return;
+        }
         setResult(resultCode, new Intent().putExtra(AppConstants.ADDRESS_DEFAULT, _addressBean));
         super.onBackPressed();
     }
@@ -144,10 +149,14 @@ public class AddressActivity extends BaseAppcompactActivity {
     public void showSuccess(Object s) {
         if (s instanceof String) {
             getAddressPresenter.getAddress(AppConstants.ADDRESS_TABLE);
-            return;
+        } else if (s instanceof AddressUrlBean.AddressBean) {
+            addressBeanList.clear();
+            addressBeanList.add((AddressUrlBean.AddressBean) s);
+            addressAdapter.setAddressBeanList(addressBeanList);
+        } else {
+            addressBeanList = (List<AddressUrlBean.AddressBean>) s;
+            addressAdapter.setAddressBeanList(addressBeanList);
         }
-        addressBeanList = (List<AddressUrlBean.AddressBean>) s;
-        addressAdapter.setAddressBeanList(addressBeanList);
         if (srlAddress.isRefreshing())
             srlAddress.setRefreshing(false);
     }
@@ -181,7 +190,7 @@ public class AddressActivity extends BaseAppcompactActivity {
     }
 
     private AddressUrlBean.AddressBean getDefaultAddress(List<AddressUrlBean.AddressBean> addressBeanList) {
-        AddressUrlBean.AddressBean _addressBean = new AddressUrlBean.AddressBean();
+        AddressUrlBean.AddressBean _addressBean = null;
         for (AddressUrlBean.AddressBean _address : addressBeanList) {
             if (CHOOSE.equals(_address.getDefault())) {
                 _addressBean = _address;

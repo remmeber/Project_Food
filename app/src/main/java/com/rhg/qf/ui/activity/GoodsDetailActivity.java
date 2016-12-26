@@ -287,8 +287,11 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             addressBean = (AddressUrlBean.AddressBean) o;
             createOrderAndToPay(addressBean);
         }
-        if (addressBean == null)
-            startActivityForResult(new Intent(this, AddOrNewAddressActivity.class), 0);
+        if (addressBean == null) {
+            Intent intent = new Intent(this, AddressActivity.class);
+            intent.setAction(AppConstants.ADDRESS_DEFAULT);
+            startActivityForResult(intent, 0);
+        }
 
     }
 
@@ -301,13 +304,17 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0) {
+        if (resultCode == 100) {
             if (data == null) {
                 ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单");
-            } else {
-                addressBean = data.getParcelableExtra("return");
-                createOrderAndToPay(addressBean);
+                return;
             }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单，请填写详细地址");
+                return;
+            }
+            createOrderAndToPay(addressBean);
         }
     }
 

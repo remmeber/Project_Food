@@ -71,7 +71,6 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     ImageView ivAlipayCheck;
 
     ArrayList<PayModel.PayBean> payList = new ArrayList<>();
-    NewOrderBean newOrderBean;
     NewOrderPresenter createOrderPresenter;
     String ipv4;
     String tradeNumber;
@@ -154,7 +153,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
 
     private void createOrder() {
         if (style == 0) {
-            newOrderBean = generateOrder();
+            NewOrderBean newOrderBean = generateOrder();
             if (createOrderPresenter == null)
                 createOrderPresenter = new NewOrderPresenter(this);
             createOrderPresenter.createNewOrder(newOrderBean);

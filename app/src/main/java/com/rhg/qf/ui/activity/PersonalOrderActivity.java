@@ -93,6 +93,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
             AccountUtil.getInstance().setUserName(_data.getCName());
             AccountUtil.getInstance().setNickName(nickName);
             AccountUtil.getInstance().setPwd(_data.getPwd());
+            getAddress();
             return;
         }
         if (o instanceof NewOrderBackBean) {
@@ -153,11 +154,15 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
                     return;
                 }
                 DialogUtil.showDialog(this, "跳转中....");
-                if (getAddressPresenter == null)
-                    getAddressPresenter = new GetAddressPresenter(this);
-                getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
+                getAddress();
                 break;
         }
+    }
+
+    private void getAddress(){
+        if (getAddressPresenter == null)
+            getAddressPresenter = new GetAddressPresenter(this);
+        getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
     }
 
     private NewOrderBean generateOrder(AddressUrlBean.AddressBean addressBean) {
