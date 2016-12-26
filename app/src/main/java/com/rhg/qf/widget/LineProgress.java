@@ -105,6 +105,7 @@ public class LineProgress extends View {
         finalWidth = w;
         finalHeight = h;
         startY = finalHeight - strokeWidth / 2;
+        progress = strokeWidth/2;
     }
 
     @Override
@@ -117,6 +118,7 @@ public class LineProgress extends View {
             leftX = totalLength / 6 - mDefaultTextPaint.measureText(leftText) / 2 + strokeWidth / 2;
             centerX = leftX + totalLength / 3;
             rightX = centerX + totalLength / 3;
+            canvas.drawLine(strokeWidth / 2, startY, finalWidth - strokeWidth / 2, startY, mDefaultProgressPaint);
         }
         drawText(canvas);
         drawProgress(canvas);
@@ -126,17 +128,17 @@ public class LineProgress extends View {
         switch (state) {
             case STATE_LEFT:
                 canvas.drawText(leftText, leftX, textStartY, mCoveredTextPaint);
-                canvas.drawText(leftText, centerX, textStartY, mDefaultTextPaint);
+                canvas.drawText(centerText, centerX, textStartY, mDefaultTextPaint);
                 canvas.drawText(rightText, rightX, textStartY, mDefaultTextPaint);
                 break;
             case STATE_CENTER:
                 canvas.drawText(leftText, leftX, textStartY, mCoveredTextPaint);
-                canvas.drawText(leftText, centerX, textStartY, mCoveredTextPaint);
+                canvas.drawText(centerText, centerX, textStartY, mCoveredTextPaint);
                 canvas.drawText(rightText, rightX, textStartY, mDefaultTextPaint);
                 break;
             case STATE_RIGHT:
                 canvas.drawText(leftText, leftX, textStartY, mCoveredTextPaint);
-                canvas.drawText(leftText, centerX, textStartY, mCoveredTextPaint);
+                canvas.drawText(centerText, centerX, textStartY, mCoveredTextPaint);
                 canvas.drawText(rightText, rightX, textStartY, mCoveredTextPaint);
                 break;
             default:
@@ -148,7 +150,6 @@ public class LineProgress extends View {
     }
 
     private void drawProgress(Canvas canvas) {
-        canvas.drawLine(strokeWidth / 2, startY, finalWidth - strokeWidth / 2, startY, mDefaultProgressPaint);
         canvas.drawLine(strokeWidth / 2, startY, progress, startY, mCoveredProgressPaint);
     }
 
@@ -158,7 +159,8 @@ public class LineProgress extends View {
 
     public void setState(int state) {
         this.state = state;
-        startAnim();
+        if (state != LineProgress.STATE_NONE)
+            startAnim();
     }
 
     private void startAnim() {
@@ -187,7 +189,7 @@ public class LineProgress extends View {
             return totalLength * 2 / 3 + strokeWidth / 2;
         else if (state == STATE_RIGHT)
             return totalLength + strokeWidth / 2;
-        return 0;
+        return strokeWidth / 2;
     }
 
     public void setContent(String leftText, String centerText, String rightText) {

@@ -75,21 +75,21 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
     @Override
     public void showSuccess(Object s) {
         if (s instanceof String) {
-            ToastHelper.getInstance()._toast(s.toString());
-            if ("40".equals(s)) {
-                foodDeliverProgress.setState(-1);
+//            ToastHelper.getInstance()._toast(s.toString());
+            if (AppConstants.DELIVER_ORDER_UNACCEPT.equals(s)) {
+                foodDeliverProgress.setState(LineProgress.STATE_NONE);
                 return;
             }
-            if ("60".equals(s)) {
-                foodDeliverProgress.setState(0);
+            if (AppConstants.DELIVER_ORDER_ACCEPT.equals(s)) {
+                foodDeliverProgress.setState(LineProgress.STATE_LEFT);
                 return;
             }
-            if ("80".equals(s)) {
-                foodDeliverProgress.setState(1);
+            if (AppConstants.DELIVER_ORDER_DELIVERING.equals(s)) {
+                foodDeliverProgress.setState(LineProgress.STATE_CENTER);
                 return;
             }
-            if ("100".equals(s)) {
-                foodDeliverProgress.setState(2);
+            if (AppConstants.DELIVER_ORDER_COMPLETE.equals(s)) {
+                foodDeliverProgress.setState(LineProgress.STATE_RIGHT);
                 return;
             }
             if (((String) s).contains("order")) {
@@ -110,14 +110,14 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
         switch (view.getId()) {
             case R.id.bt_conform_receive:
                 if (foodDeliverProgress.getState() == LineProgress.STATE_NONE) {
-                    ToastHelper.getInstance()._toast("商品正在等待接单！");
+                    ToastHelper.getInstance().displayToastWithQuickClose("商品正在等待接单！");
                     break;
                 }
                 if (foodDeliverProgress.getState() == LineProgress.STATE_LEFT) {
-                    ToastHelper.getInstance()._toast("商家已经接单，请耐心等待！");
+                    ToastHelper.getInstance().displayToastWithQuickClose("商家已经接单，请耐心等待！");
                 }
                 if (foodDeliverProgress.getState() == LineProgress.STATE_CENTER) {
-                    ToastHelper.getInstance()._toast("跑腿员努力为您送货中！");
+                    ToastHelper.getInstance().displayToastWithQuickClose("跑腿员努力为您送货中！");
                 }
                 dialogShow();
                 break;
@@ -127,7 +127,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ToastHelper.getInstance()._toast("感谢您的评论"/*"口感评分：" + mouthFeelRate +
+                        ToastHelper.getInstance().displayToastWithQuickClose("感谢您的评论"/*"口感评分：" + mouthFeelRate +
                                 ",送货服务：" + deliverServiceRate*/);
                     }
                 }, 1000);
