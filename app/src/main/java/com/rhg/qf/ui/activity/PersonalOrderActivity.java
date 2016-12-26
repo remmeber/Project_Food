@@ -109,6 +109,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
             DialogUtil.cancelDialog();
             startActivity(new Intent(this, ChatActivity.class)
                     .putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));
+            return;
         }
         if (o instanceof AddressUrlBean.AddressBean) {
 //            generateOrder((AddressUrlBean.AddressBean) o);
@@ -116,6 +117,7 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
             if (createOrderPresenter == null)
                 createOrderPresenter = new NewOrderPresenter(this);
             createOrderPresenter.createNewOrder(generateOrder((AddressUrlBean.AddressBean) o));
+            return;
         }
         if (addressBean == null) {
             Intent intent = new Intent(this, AddressActivity.class);

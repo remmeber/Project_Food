@@ -272,11 +272,13 @@ public class ShoppingCartFragment extends BaseFragment {
             if (((String) o).contains("order")) {
                 refresh();
             }
+            return;
         }
 
         if (o instanceof AddressUrlBean.AddressBean) {
              addressBean = (AddressUrlBean.AddressBean) o;
             createOrderAndToPay(addressBean);
+            return;
         }
 
         if (addressBean == null) {
