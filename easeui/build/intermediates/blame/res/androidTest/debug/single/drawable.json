@@ -28,12 +28,12 @@
         "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_recording_text_hint_bg.xml"
     },
     {
-        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_chat_image_selector.xml",
-        "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chat_image_selector.xml"
-    },
-    {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_chat_press_speak_btn.xml",
         "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chat_press_speak_btn.xml"
+    },
+    {
+        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_chat_image_selector.xml",
+        "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\drawable\\ease_chat_image_selector.xml"
     },
     {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ease_chatto_bg.xml",

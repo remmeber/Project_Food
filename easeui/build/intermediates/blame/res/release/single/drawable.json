@@ -44,12 +44,12 @@
         "source": "E:\\QF\\easeui\\src\\main\\res\\drawable\\ease_msg_state_failed_resend.xml"
     },
     {
-        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_btn_cancel_pressed_shape.xml",
-        "source": "E:\\QF\\easeui\\src\\main\\res\\drawable\\ease_btn_cancel_pressed_shape.xml"
-    },
-    {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_common_tab_bg.xml",
         "source": "E:\\QF\\easeui\\src\\main\\res\\drawable\\ease_common_tab_bg.xml"
+    },
+    {
+        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_btn_cancel_pressed_shape.xml",
+        "source": "E:\\QF\\easeui\\src\\main\\res\\drawable\\ease_btn_cancel_pressed_shape.xml"
     },
     {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_btn_cancel_normal_shape.xml",
