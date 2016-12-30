@@ -18,13 +18,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.HotFoodAdapter;
+import com.rhg.qf.adapter.MainAdapter;
 import com.rhg.qf.adapter.SearchHistoryAdapter;
-import com.rhg.qf.adapter.SearchMerchantAdapter;
+import com.rhg.qf.adapter.viewHolder.AllShopsViewHolder;
+import com.rhg.qf.adapter.viewHolder.HotFoodViewHolder;
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.HotFoodUrlBean;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.RcvItemClickListener;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.HotFoodSearchPresenter;
 import com.rhg.qf.mvp.presenter.RestaurantSearchPresenter;
 import com.rhg.qf.utils.SearchHistoryUtil;
@@ -32,7 +36,6 @@ import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -44,7 +47,7 @@ import butterknife.OnClick;
  * time：2016/6/18 13:10
  * email：1013773046@qq.com
  */
-public class SearchActivity extends BaseAppcompactActivity implements View.OnClickListener {
+public class SearchActivity extends BaseAppcompactActivity implements OnItemClickListener<IBaseModel> {
 
     @Bind(R.id.tb_left_iv)
     ImageView tbLeftIv;
@@ -62,20 +65,19 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
     RecyclerView itemResultsRcv;
 
     SearchHistoryAdapter searchHistoryAdapter;
-    HotFoodAdapter hotFoodAdapter;
-    SearchMerchantAdapter searchMerchantAdapter;
-    List<MerchantUrlBean.MerchantBean> merchantBeanList;
-    List<HotFoodUrlBean.HotFoodBean> hotFoodBeanList;
+    MainAdapter<IBaseModel> hotFoodAdapter;
+    MainAdapter<IBaseModel> searchMerchantAdapter;
+    CommonListModel<MerchantUrlBean.MerchantBean> merchantBeanList;
+    CommonListModel<HotFoodUrlBean.HotFoodBean> hotFoodBeanList;
     RestaurantSearchPresenter restaurantSearchPresenter;
     HotFoodSearchPresenter hotFoodSearchPresenter;
     boolean isShow;
     private List<String> searchHistoryData;
     private int searchTag;
     private int searchIndex;
-    private RcvItemClickListener itemClick = new RcvItemClickListener() {
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private OnItemClickListener itemClick = new OnItemClickListener() {
         @Override
-        public void onItemClickListener(View view, int position, Object item) {
+        public void onItemClick(View view, int position, Object item) {
             if (item instanceof String) {
                 isShow = false;
                 searchEt.setText((String) item);
@@ -87,24 +89,10 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
                 tvSearchResult.setVisibility(View.VISIBLE);
                 return;
             }
-            Intent intent = new Intent();
-            if (item instanceof MerchantUrlBean.MerchantBean) {
-                intent.setClass(SearchActivity.this, ShopDetailActivity.class);
-                intent.putExtra(AppConstants.KEY_MERCHANT_ID, ((MerchantUrlBean.MerchantBean) item).getID());
-                intent.putExtra(AppConstants.KEY_MERCHANT_NAME, ((MerchantUrlBean.MerchantBean) item).getName());
-                intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, ((MerchantUrlBean.MerchantBean) item).getPic());
-            } else if (item instanceof HotFoodUrlBean.HotFoodBean) {
-                intent.setClass(SearchActivity.this, GoodsDetailActivity.class);
-                intent.putExtra(AppConstants.KEY_PRODUCT_ID, ((HotFoodUrlBean.HotFoodBean) item).getID());
-                intent.putExtra(AppConstants.KEY_MERCHANT_ID, ((HotFoodUrlBean.HotFoodBean) item).getRId());
-                intent.putExtra(AppConstants.KEY_MERCHANT_NAME, ((HotFoodUrlBean.HotFoodBean) item).getRName());
-            }
-            //noinspection unchecked
-            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(SearchActivity.this).toBundle());
         }
 
         @Override
-        public void onItemLongClickListener(View view, int position, Object item) {
+        public void onItemLongClick(View view, int position, Object item) {
 
         }
     };
@@ -146,14 +134,18 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
         historyResultsRcv.addItemDecoration(divider);
 
         if (searchTag == AppConstants.KEY_RESTAURANT_SEARCH) {
-            merchantBeanList = new ArrayList<>();
-            searchMerchantAdapter = new SearchMerchantAdapter(this, merchantBeanList);
-            searchMerchantAdapter.setOnRcvItemClickListener(itemClick);
+            merchantBeanList = new CommonListModel<>();
+            searchMerchantAdapter = new MainAdapter<>(
+                    new InflateModel(new Class[]{AllShopsViewHolder.class, View.class}, new Object[]{R.layout.item_sell_shop}),
+                    merchantBeanList,
+                    this);
             itemResultsRcv.setAdapter(searchMerchantAdapter);
         } else {
-            hotFoodBeanList = new ArrayList<>();
-            hotFoodAdapter = new HotFoodAdapter(this, hotFoodBeanList);
-            hotFoodAdapter.setOnRcvItemClickListener(itemClick);
+            hotFoodBeanList = new CommonListModel<>();
+            hotFoodAdapter = new MainAdapter<>(
+                    new InflateModel(new Class[]{HotFoodViewHolder.class, View.class}, new Object[]{R.layout.item_hot_sell}),
+                    hotFoodBeanList,
+                    this);
             itemResultsRcv.setAdapter(hotFoodAdapter);
         }
         searchHistoryAdapter = new SearchHistoryAdapter(this, searchHistoryData);
@@ -208,6 +200,7 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
                         - tvHistoryResult.getCompoundDrawables()[2].getBounds().width()
                         - tvHistoryResult.getPaddingRight()) {
                     SearchHistoryUtil.deleteAllHistory(/*SearchActivity.this*/);
+
                     searchHistoryAdapter.setSearchedHistory(null);
                     return true;
                 }
@@ -250,13 +243,6 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
      *email 1013773046@qq.com
      */
     private void doSearch(String s) {
-        /*String _str = "";
-        try {
-            _str = URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Log.i("RHG", "ITEM SEARCH" + _str);*/
         switch (searchTag) {
             case AppConstants.KEY_RESTAURANT_SEARCH:
                 if (restaurantSearchPresenter == null)
@@ -275,12 +261,16 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
 
     @Override
     public void showSuccess(Object s) {
-        if (s instanceof MerchantUrlBean) {
-            merchantBeanList = ((MerchantUrlBean) s).getRows();
-            searchMerchantAdapter.setmData(merchantBeanList);
-        } else {
-            hotFoodBeanList = ((HotFoodUrlBean) s).getRows();
-            hotFoodAdapter.setHotFoodBeanList(hotFoodBeanList);
+        if (s instanceof IBaseModel) {
+            if (((IBaseModel) s).getEntity() == null)
+                return;
+            if (((IBaseModel) s).getEntity().get(0) instanceof MerchantUrlBean.MerchantBean) {
+                merchantBeanList.setRecommendShopBeanEntity(((IBaseModel) s).getEntity());
+                searchMerchantAdapter.notifyDataSetChanged();
+            } else {
+                hotFoodBeanList.setRecommendShopBeanEntity(((IBaseModel) s).getEntity());
+                hotFoodAdapter.notifyDataSetChanged();
+            }
         }
         tvHistoryResult.setVisibility(View.GONE);/* 隐藏历史搜索textView*/
         tvSearchResult.setVisibility(View.VISIBLE);/* 显示内容搜索textView*/
@@ -313,6 +303,32 @@ public class SearchActivity extends BaseAppcompactActivity implements View.OnCli
         itemClick = null;
         searchHistoryData.clear();
         super.onDestroy();
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onItemClick(View view, int position, IBaseModel item) {
+        Intent intent = new Intent();
+        //noinspection unchecked
+        if (item.getEntity().get(position) instanceof MerchantUrlBean.MerchantBean) {
+            MerchantUrlBean.MerchantBean data = (MerchantUrlBean.MerchantBean) item.getEntity().get(position);
+            intent.setClass(SearchActivity.this, ShopDetailActivity.class);
+            intent.putExtra(AppConstants.KEY_MERCHANT_ID, data.getID());
+            intent.putExtra(AppConstants.KEY_MERCHANT_NAME, data.getName());
+            intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, data.getPic());
+        } else {
+            HotFoodUrlBean.HotFoodBean data = (HotFoodUrlBean.HotFoodBean) item.getEntity().get(position);
+            intent.setClass(SearchActivity.this, GoodsDetailActivity.class);
+            intent.putExtra(AppConstants.KEY_PRODUCT_ID, data.getID());
+            intent.putExtra(AppConstants.KEY_MERCHANT_ID, data.getRId());
+            intent.putExtra(AppConstants.KEY_MERCHANT_NAME, data.getRName());
+        }
+        startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(SearchActivity.this).toBundle());
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position, IBaseModel item) {
 
     }
 }

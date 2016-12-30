@@ -41,7 +41,6 @@ public class ModifyOrderPresenter {
 
                     @Override
                     public void onNext(String s) {
-                        Log.i("RHG", "修改结果：" + s);
                         modifyUserOrderView.showData(s);
                     }
                 });

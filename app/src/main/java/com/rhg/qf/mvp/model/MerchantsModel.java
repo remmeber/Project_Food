@@ -1,10 +1,9 @@
 package com.rhg.qf.mvp.model;
 
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.mvp.api.QFoodApiMamager;
 import com.rhg.qf.utils.AccountUtil;
-
-import java.util.List;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -16,7 +15,7 @@ import rx.functions.Func1;
  * email：1013773046@qq.com
  */
 public class MerchantsModel {
-    public Observable<List<MerchantUrlBean.MerchantBean>> getMerchants(String table, int page) {
+    public Observable<CommonListModel<MerchantUrlBean.MerchantBean>> getMerchants(String table, int page) {
 //        QFoodApiService qFoodApiService = QFoodApiMamager.getInstant().getQFoodApiService();
         return /*Observable.zip(qFoodApiService.getHeadMerchant("toprestaurants"),
                 qFoodApiService.getBodyMerchants(table, page,
@@ -32,14 +31,16 @@ public class MerchantsModel {
                         return _merchantsList;
                     }
                 });*/
-        QFoodApiMamager.getInstant().getQFoodApiService().getBodyMerchants(table, page,
-                AccountUtil.getInstance().getLongitude(),
-                AccountUtil.getInstance().getLatitude())
-                .flatMap(new Func1<MerchantUrlBean, Observable<List<MerchantUrlBean.MerchantBean>>>() {
-                    @Override
-                    public Observable<List<MerchantUrlBean.MerchantBean>> call(final MerchantUrlBean merchantUrlBean) {
-                        return Observable.just(merchantUrlBean.getRows());
-                    }
-                });
+                QFoodApiMamager.getInstant().getQFoodApiService().getBodyMerchants(table, page,
+                        AccountUtil.getInstance().getLongitude(),
+                        AccountUtil.getInstance().getLatitude())
+                        .flatMap(new Func1<MerchantUrlBean, Observable<CommonListModel<MerchantUrlBean.MerchantBean>>>() {
+                            @Override
+                            public Observable<CommonListModel<MerchantUrlBean.MerchantBean>> call(final MerchantUrlBean merchantUrlBean) {
+                                CommonListModel<MerchantUrlBean.MerchantBean> commonListModel = new CommonListModel<>();
+                                commonListModel.setRecommendShopBeanEntity(merchantUrlBean.getRows());
+                                return Observable.just(commonListModel);
+                            }
+                        });
     }
 }

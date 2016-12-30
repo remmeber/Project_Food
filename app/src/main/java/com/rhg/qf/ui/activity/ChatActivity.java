@@ -18,23 +18,42 @@ import com.easemob.easeui.ui.EaseBaseActivity;
 import com.easemob.easeui.ui.EaseChatFragment;
 import com.easemob.exceptions.EaseMobException;
 import com.rhg.qf.R;
+import com.rhg.qf.bean.BaseAddress;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.NewOrderBackBean;
+import com.rhg.qf.bean.NewOrderBean;
+import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.mvp.presenter.GetAddressPresenter;
+import com.rhg.qf.mvp.presenter.NewOrderPresenter;
+import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.ToastHelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChatActivity extends EaseBaseActivity {
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class ChatActivity extends EaseBaseActivity implements BaseView{
     public static ChatActivity activityInstance;
     String toChatUsername;
     String uname;
     private EaseChatFragment chatFragment;
+    GetAddressPresenter getAddressPresenter;
+    NewOrderPresenter createOrderPresenter;
+    BaseAddress addressBean;
+
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.activity_chat);
+        ButterKnife.bind(this);
 
         activityInstance = this;
         uname = "QF" + dealUName(AccountUtil.getInstance().getNickName());
@@ -48,6 +67,27 @@ public class ChatActivity extends EaseBaseActivity {
         if (!PermissionsManager.getInstance().hasAllPermissions(this, permissions)) {
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                     permissions, null);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100) {
+            if (data == null) {
+                ToastHelper.getInstance()._toast("点单失败");
+                if (DialogUtil.isShow())
+                    DialogUtil.cancelDialog();
+                return;
+            }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance()._toast("点单失败，请填写详细地址");
+                if (DialogUtil.isShow())
+                    DialogUtil.cancelDialog();
+                return;
+            }
+            this.showData(addressBean);
         }
     }
 
@@ -170,6 +210,7 @@ public class ChatActivity extends EaseBaseActivity {
         return "jjms" + nickName + "jjms";
     }
 
+    /*去除中文*/
     private String dealUName(String uname) {
         String reg = "[\u4e00-\u9fa5]";
         Pattern pat = Pattern.compile(reg);
@@ -224,5 +265,64 @@ public class ChatActivity extends EaseBaseActivity {
 
     public String getToChatUsername() {
         return toChatUsername;
+    }
+
+    @OnClick(R.id.fab)
+    public void onClick() {
+        DialogUtil.showDialog(this, "下单中！");
+        getAddress();
+    }
+
+    private void getAddress() {
+        if (getAddressPresenter == null)
+            getAddressPresenter = new GetAddressPresenter(this);
+        getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
+    }
+
+    @Override
+    public void showData(Object o) {
+        if (o instanceof NewOrderBackBean) {
+            DialogUtil.cancelDialog();
+            startActivity(new Intent(this, ChatActivity.class)
+                    .putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));
+            return;
+        }
+
+        if (o instanceof IBaseModel) {
+            if (((IBaseModel) o).getEntity().size() == 0) {
+                Intent intent = new Intent(this, AddressActivity.class);
+                intent.setAction(AppConstants.ADDRESS_DEFAULT);
+                startActivityForResult(intent, 0);
+                return;
+            }
+            addressBean = (BaseAddress) ((IBaseModel) o).getEntity().get(0);
+            if (createOrderPresenter == null)
+                createOrderPresenter = new NewOrderPresenter(this);
+            createOrderPresenter.createNewOrder(generateOrder(addressBean));
+        }
+    }
+
+
+    private NewOrderBean generateOrder(BaseAddress addressBean) {
+        NewOrderBean _orderBean = new NewOrderBean();
+        _orderBean.setReceiver(addressBean.getName());
+        _orderBean.setPhone(addressBean.getPhone());
+        _orderBean.setAddress(addressBean.getAddress().concat(addressBean.getDetail()));
+        _orderBean.setFood(getFoodList());
+        _orderBean.setClient(AccountUtil.getInstance().getUserID());
+        _orderBean.setPrice("1");
+        return _orderBean;
+    }
+
+
+
+    private List<NewOrderBean.FoodBean> getFoodList() {
+        List<NewOrderBean.FoodBean> _bean = new ArrayList<>();
+        NewOrderBean.FoodBean foodBean = new NewOrderBean.FoodBean();
+        foodBean.setID("0");
+        foodBean.setNum("1");
+        _bean.add(foodBean);
+
+        return _bean;
     }
 }

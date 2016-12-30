@@ -1,5 +1,7 @@
 package com.rhg.qf.bean;
 
+import java.util.List;
+
 /**
  * 作者：rememberon 2016/7/10
  * 邮箱：1013773046@qq.com
@@ -13,6 +15,7 @@ public class BaseBean {
 
     private int result;
     private String msg;
+    private int total;
 
     public int getResult() {
         return result;
@@ -30,11 +33,20 @@ public class BaseBean {
         this.msg = msg;
     }
 
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
     @Override
     public String toString() {
         return "BaseBean{" +
                 "result=" + result +
                 ", msg='" + msg + '\'' +
+                ", total=" + total +
                 '}';
     }
 }

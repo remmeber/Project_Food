@@ -10,10 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.AddressAdapter;
+import com.rhg.qf.adapter.MainAdapter;
+import com.rhg.qf.adapter.viewHolder.AddressManageViewHolder;
 import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
+import com.rhg.qf.bean.CommonListModel;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.impl.DeleteItemListener;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.AddOrUpdateAddressPresenter;
 import com.rhg.qf.mvp.presenter.GetAddressPresenter;
 import com.rhg.qf.ui.UIAlertView;
@@ -23,7 +29,6 @@ import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 import com.rhg.qf.widget.SwipeDeleteRecycleView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,7 +40,7 @@ import butterknife.OnClick;
  *time 2016/7/3 22:11
  *email 1013773046@qq.com
  */
-public class AddressActivity extends BaseAppcompactActivity {
+public class AddressActivity extends BaseAppcompactActivity implements OnItemClickListener<CommonListModel<AddressUrlBean.AddressBean>> {
 
     private static final int DELETE = 0;
     private static final int MODIFY = 1;
@@ -51,40 +56,17 @@ public class AddressActivity extends BaseAppcompactActivity {
     SwipeDeleteRecycleView rcyAddress;
     @Bind(R.id.srl_address)
     SwipeRefreshLayout srlAddress;
-    AddressAdapter addressAdapter;
+    MainAdapter<CommonListModel<AddressUrlBean.AddressBean>> addressAdapter;
     int lastPosition = -1;
     int longClickPosition = -1;
     int resultCode;
-    List<AddressUrlBean.AddressBean> addressBeanList;
+    CommonListModel<AddressUrlBean.AddressBean> addressBeanList;
     GetAddressPresenter getAddressPresenter = new GetAddressPresenter(this);
     AddOrUpdateAddressPresenter addOrUpdateAddressPresenter = new AddOrUpdateAddressPresenter(this);
-    private DeleteItemListener deleteListener = new DeleteItemListener() {
-        @Override
-        public void onDelete(int position) {
-            showDelDialog(position, "确定要删除选中的地址?", DELETE);
-        }
 
-        @Override
-        public void onItemClick(int position) {
-            if (position != lastPosition) {
-                selectOne(position);
-                addressAdapter.notifyDataSetChanged();
-                lastPosition = position;
-                addOrUpdateAddressPresenter.addOrUpdateAddress(addressBeanList.get(position).getID(),
-                        null, null, null, null, AppConstants.CHOOSE_DEFAULT);
-            }
-
-        }
-
-        @Override
-        public void onLongClick(int position) {
-            longClickPosition = position;
-            showDelDialog(position, getResources().getString(R.string.sure2Modify), MODIFY);
-        }
-    };
 
     public AddressActivity() {
-        addressBeanList = new ArrayList<>();
+        addressBeanList = new CommonListModel<>();
     }
 
     @Override
@@ -102,8 +84,8 @@ public class AddressActivity extends BaseAppcompactActivity {
 
     @Override
     public void loadingData() {
-        addressBeanList = AddressUtil.getAddressList();
-        if (addressBeanList.size() == 0) {
+        addressBeanList.setRecommendShopBeanEntity(AddressUtil.getAddressList());
+        if (addressBeanList.getEntity().size() == 0) {
             getAddressPresenter.getAddress(AppConstants.ADDRESS_TABLE);
         }
     }
@@ -120,8 +102,11 @@ public class AddressActivity extends BaseAppcompactActivity {
         RecycleViewDivider divider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
                 SizeUtil.dip2px(8), ContextCompat.getColor(this, R.color.colorBackground));
         rcyAddress.addItemDecoration(divider);
-        addressAdapter = new AddressAdapter(this, addressBeanList);
-        addressAdapter.setItemListener(deleteListener);
+        addressAdapter = new MainAdapter<>(
+                new InflateModel(new Class[]{AddressManageViewHolder.class, View.class}, new Object[]{R.layout.item_address_content}),
+                addressBeanList,
+                this
+        );
         rcyAddress.setAdapter(addressAdapter);
         srlAddress.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
         srlAddress.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -140,8 +125,8 @@ public class AddressActivity extends BaseAppcompactActivity {
 
     @Override
     public void onBackPressed() {
-        AddressUrlBean.AddressBean _addressBean = getDefaultAddress(addressBeanList);
-        if (addressBeanList.size() > 0 && _addressBean == null) {
+        BaseAddress _addressBean = getDefaultAddress(addressBeanList.getEntity());
+        if (addressBeanList.getEntity().size() > 0 && _addressBean == null) {
             ToastHelper.getInstance().displayToastWithQuickClose("请选择收货地址");
             return;
         }
@@ -153,14 +138,13 @@ public class AddressActivity extends BaseAppcompactActivity {
     public void showSuccess(Object s) {
         if (s instanceof String) {
             getAddressPresenter.getAddress(AppConstants.ADDRESS_TABLE);
-        } else if (s instanceof AddressUrlBean.AddressBean) {
-            addressBeanList.clear();
-            addressBeanList.add((AddressUrlBean.AddressBean) s);
-            addressAdapter.setAddressBeanList(addressBeanList);
-        } else {
-            addressBeanList = (List<AddressUrlBean.AddressBean>) s;
-            addressAdapter.setAddressBeanList(addressBeanList);
+            return;
         }
+        if (s instanceof IBaseModel) {
+            addressBeanList.setRecommendShopBeanEntity(((IBaseModel) s).getEntity());
+            addressAdapter.notifyDataSetChanged();
+        }
+
         if (srlAddress.isRefreshing())
             srlAddress.setRefreshing(false);
     }
@@ -170,7 +154,7 @@ public class AddressActivity extends BaseAppcompactActivity {
 
     }
 
-    private void selectOne(int position) {
+    private void selectOne(List<AddressUrlBean.AddressBean> addressBeanList, int position) {
         for (int i = 0; i < addressBeanList.size(); i++) {
             if (position == i)
                 addressBeanList.get(i).setDefault(CHOOSE);
@@ -195,11 +179,15 @@ public class AddressActivity extends BaseAppcompactActivity {
         }
     }
 
-    private AddressUrlBean.AddressBean getDefaultAddress(List<AddressUrlBean.AddressBean> addressBeanList) {
-        AddressUrlBean.AddressBean _addressBean = null;
+    private BaseAddress getDefaultAddress(List<AddressUrlBean.AddressBean> addressBeanList) {
+        BaseAddress _addressBean = null;
         for (AddressUrlBean.AddressBean _address : addressBeanList) {
             if (CHOOSE.equals(_address.getDefault())) {
-                _addressBean = _address;
+                _addressBean = new BaseAddress();
+                _addressBean.setName(_address.getName());
+                _addressBean.setPhone(_address.getPhone());
+                _addressBean.setAddress(_address.getAddress());
+                _addressBean.setDetail(_address.getDetail());
                 break;
             }
         }
@@ -221,10 +209,10 @@ public class AddressActivity extends BaseAppcompactActivity {
                                            delDialog.dismiss();
                                            if (tag == DELETE) {
                                                addOrUpdateAddressPresenter
-                                                       .addOrUpdateAddress(addressBeanList.get(position).getID(),
+                                                       .addOrUpdateAddress(addressBeanList.getEntity().get(position).getID(),
                                                                null, null, null, null, AppConstants.DELETE_ADDRESS);
                                            } else {
-                                               AddressUrlBean.AddressBean _addressBean = addressBeanList.get(position);
+                                               AddressUrlBean.AddressBean _addressBean = addressBeanList.getEntity().get(position);
                                                Intent _intent = new Intent(AddressActivity.this, AddOrNewAddressActivity.class);
                                                _intent.putExtra(AppConstants.KEY_ADDRESS, _addressBean);
                                                startActivityForResult(_intent, AppConstants.BACK_WITH_UPDATE);
@@ -242,9 +230,31 @@ public class AddressActivity extends BaseAppcompactActivity {
 
     @Override
     protected void onDestroy() {
-        deleteListener = null;
         super.onDestroy();
     }
 
 
+    @Override
+    public void onItemClick(View view, int position, CommonListModel<AddressUrlBean.AddressBean> item) {
+        switch (view.getId()) {
+            case R.id.holder:
+                showDelDialog(position, "确定要删除选中的地址?", DELETE);
+                break;
+            case R.id.rl_address:
+                if (position != lastPosition) {
+                    selectOne(addressBeanList.getEntity(), position);
+                    addressAdapter.notifyDataSetChanged();
+                    lastPosition = position;
+                    addOrUpdateAddressPresenter.addOrUpdateAddress(addressBeanList.getEntity().get(position).getID(),
+                            null, null, null, null, AppConstants.CHOOSE_DEFAULT);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position, CommonListModel<AddressUrlBean.AddressBean> item) {
+        longClickPosition = position;
+        showDelDialog(position, getResources().getString(R.string.sure2Modify), MODIFY);
+    }
 }

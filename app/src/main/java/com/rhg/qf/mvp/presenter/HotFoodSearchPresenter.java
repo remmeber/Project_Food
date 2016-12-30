@@ -1,5 +1,6 @@
 package com.rhg.qf.mvp.presenter;
 
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.HotFoodUrlBean;
 import com.rhg.qf.mvp.model.HotFoodSearchModel;
 import com.rhg.qf.mvp.view.BaseView;
@@ -41,7 +42,9 @@ public class HotFoodSearchPresenter {
 
                     @Override
                     public void onNext(HotFoodUrlBean hotFoodSearchBeen) {
-                        hotFoodSearchResult.showData(hotFoodSearchBeen);
+                        CommonListModel<HotFoodUrlBean.HotFoodBean> hotFoodModel = new CommonListModel<HotFoodUrlBean.HotFoodBean>();
+                        hotFoodModel.setRecommendShopBeanEntity(hotFoodSearchBeen.getRows());
+                        hotFoodSearchResult.showData(hotFoodModel);
                     }
 
                 });

@@ -26,6 +26,7 @@ public class HomePresenter {
     }
 
     public void getHomeData(String headrestaurants) {
+        Log.i("RHG", "PRESENTER");
         homeModel.getHomeData(headrestaurants).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<HomeBean>() {
@@ -41,7 +42,6 @@ public class HomePresenter {
 
                     @Override
                     public void onNext(HomeBean homeBean) {
-                        Log.i("RHG", "请求返回");
                         testView.showData(homeBean);
                     }
                 });

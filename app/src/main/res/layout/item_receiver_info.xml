@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_address_info"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black_deep" />
 
     <TextView
         android:id="@+id/tv_receiver"
@@ -11,7 +18,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/margin_little"
-        android:textSize="@dimen/text_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="收货人:某某某" />
 
     <TextView
@@ -22,7 +29,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/margin_little"
-        android:textSize="@dimen/text_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="联系方式:00000000" />
 
     <TextView
@@ -30,14 +37,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_receiver_phone"
-        android:layout_marginEnd="80dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="80dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/margin_little"
+        android:layout_toLeftOf="@+id/iv_edit_right"
+        android:layout_toStartOf="@+id/iv_edit_right"
         android:maxLines="3"
-        android:paddingBottom="@dimen/margin_little"
-        android:textSize="@dimen/text_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="收货地址:江苏省南" />
 
     <ImageView
@@ -47,18 +53,31 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
         android:src="@drawable/ic_chevron_right_blue"
         tools:ignore="contentDescription" />
 
-    <TextView
-        android:id="@+id/tv_edit"
-        android:layout_width="wrap_content"
+    <ViewStub
+        android:id="@+id/tvOrderNote"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/iv_edit_right"
-        android:layout_toStartOf="@+id/iv_edit_right"
-        android:background="@drawable/tv_state_bg"
-        android:gravity="center"
-        android:textSize="@dimen/text_large"
-        tools:text="编辑" />
+        android:layout_below="@id/tv_receiver_address"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/margin_little"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+        android:textColor="@color/colorTextOrder"
+        tools:text="@string/tvNote" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@id/tvOrderNote"
+        android:layout_marginTop="@dimen/margin_little"
+        android:background="@color/black_deep" />
+
 </RelativeLayout>

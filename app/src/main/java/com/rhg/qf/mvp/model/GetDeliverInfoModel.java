@@ -1,6 +1,8 @@
 package com.rhg.qf.mvp.model;
 
 import com.rhg.qf.bean.DeliverInfoBean;
+import com.rhg.qf.bean.DeliverOrderNumber;
+import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.mvp.api.QFoodApiMamager;
 import com.rhg.qf.utils.AccountUtil;
 
@@ -20,8 +22,22 @@ public class GetDeliverInfoModel {
                 flatMap(new Func1<DeliverInfoBean, Observable<DeliverInfoBean.InfoBean>>() {
                     @Override
                     public Observable<DeliverInfoBean.InfoBean> call(final DeliverInfoBean deliverInfoBean) {
-                        return Observable.just(deliverInfoBean.getDeliverInfo().get(0));
+                        return Observable.from(deliverInfoBean.getDeliverInfo());
                     }
-                });
+                }).flatMap(new Func1<DeliverInfoBean.InfoBean, Observable<DeliverInfoBean.InfoBean>>() {
+            @Override
+            public Observable<DeliverInfoBean.InfoBean> call(final DeliverInfoBean.InfoBean infoBean) {
+                return QFoodApiMamager.getInstant().getQFoodApiService().getDeliverOrderNum(AppConstants.DELIVER_ORDER_NUMBER, infoBean.getID())
+                        .flatMap(new Func1<DeliverOrderNumber, Observable<DeliverInfoBean.InfoBean>>() {
+                            @Override
+                            public Observable<DeliverInfoBean.InfoBean> call(DeliverOrderNumber deliverOrderNumber) {
+                                if (deliverOrderNumber.getResult() == 0) {
+                                    infoBean.setDeliverOrderNum((deliverOrderNumber.getRows().get(0)).getNum());
+                                }
+                                return Observable.just(infoBean);
+                            }
+                        });
+            }
+        });
     }
 }

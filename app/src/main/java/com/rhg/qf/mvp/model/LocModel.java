@@ -1,5 +1,7 @@
 package com.rhg.qf.mvp.model;
 
+import android.util.Log;
+
 import com.rhg.qf.locationservice.LocationService;
 
 import rx.Observable;

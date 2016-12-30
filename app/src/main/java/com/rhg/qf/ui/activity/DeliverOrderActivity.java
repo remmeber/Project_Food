@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,20 +16,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.DeliverOrderItemAdapter;
+import com.rhg.qf.adapter.MainAdapter;
+import com.rhg.qf.adapter.viewHolder.DeliverOrderViewHolder;
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.DeliverOrderUrlBean;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.RcvItemClickListener;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.DeliverOrderPresenter;
 import com.rhg.qf.mvp.presenter.ModifyOrderPresenter;
 import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.DecimalUtil;
 import com.rhg.qf.utils.SizeUtil;
-import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -39,8 +41,7 @@ import butterknife.OnClick;
  * time：2016/7/9 0:14
  * email：1013773046@qq.com
  */
-public class DeliverOrderActivity extends BaseAppcompactActivity implements DeliverOrderItemAdapter.OrderStyleListener,
-        RcvItemClickListener<DeliverOrderUrlBean.DeliverOrderBean> {
+public class DeliverOrderActivity extends BaseAppcompactActivity implements OnItemClickListener<CommonListModel<DeliverOrderUrlBean.DeliverOrderBean>> {
     @Bind(R.id.fl_tab)
     FrameLayout fl_tab;
     @Bind(R.id.tb_center_tv)
@@ -60,16 +61,13 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     DeliverOrderPresenter getDeliverOrder;/*获取跑腿员订单接口*/
     ModifyOrderPresenter modifyOrderPresenter;/*修改跑腿员订单接口*/
     UIAlertView delDialog;
-    private List<DeliverOrderUrlBean.DeliverOrderBean> deliverOrderBeanList = new ArrayList<>();
-    private DeliverOrderItemAdapter deliverOrderItemAdapter;
+    int pos;
+    private CommonListModel<DeliverOrderUrlBean.DeliverOrderBean> deliverOrderBeanList = new CommonListModel<>();
+    private MainAdapter<CommonListModel<DeliverOrderUrlBean.DeliverOrderBean>> deliverOrderItemAdapter;
 
     @Override
     public void loadingData() {
         commonRefresh.setVisibility(View.VISIBLE);
-        if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
-            ToastHelper.getInstance().displayToastWithQuickClose("请登录跑腿员");
-            return;
-        }
         if (getDeliverOrder == null)
             getDeliverOrder = new DeliverOrderPresenter(this);
         getDeliverOrder.getDeliverOrder(AppConstants.DELIVER_ORDER, AccountUtil.getInstance().getDeliverID());
@@ -85,19 +83,17 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
         RecycleViewDivider _divider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
                 SizeUtil.dip2px(16), ContextCompat.getColor(this, R.color.white));
         commonRecycle.addItemDecoration(_divider);
-        deliverOrderItemAdapter = new DeliverOrderItemAdapter(this, deliverOrderBeanList);
-        deliverOrderItemAdapter.setOnRcvItemClick(this);
-        deliverOrderItemAdapter.setOnStyleChange(this);
+        deliverOrderItemAdapter = new MainAdapter<>(
+                new InflateModel(new Class[]{DeliverOrderViewHolder.class, View.class}, new Object[]{R.layout.item_order_manage}),
+                deliverOrderBeanList,
+                this
+        );
         commonRecycle.setAdapter(deliverOrderItemAdapter);
 
         commonSwipe.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录跑腿员");
-                    return;
-                }
                 if (getDeliverOrder == null)
                     getDeliverOrder = new DeliverOrderPresenter(DeliverOrderActivity.this);
                 getDeliverOrder.getDeliverOrder(AppConstants.DELIVER_ORDER, AccountUtil.getInstance().getDeliverID());
@@ -113,20 +109,37 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     @Override
     public void showSuccess(Object s) {
         if (s instanceof String) {
-//            ToastHelper.getInstance()._toast((String) s);
-            return;
+            if (!((String) s).contains("error")) {
+                deliverOrderBeanList.getEntity().get(pos).setStyle(s.toString());
+                deliverOrderItemAdapter.notifyItemChanged(pos);
+                updateOrderNum(s.toString());
+            }
         }
-        deliverOrderBeanList = (List<DeliverOrderUrlBean.DeliverOrderBean>) s;
-        deliverOrderItemAdapter.setDeliverOrderBeanList(deliverOrderBeanList);
+        if (s instanceof IBaseModel) {
+            deliverOrderBeanList.setRecommendShopBeanEntity(((IBaseModel) s).getEntity());
+            deliverOrderItemAdapter.notifyDataSetChanged();
+        }
         if (commonRefresh.getVisibility() == View.VISIBLE)
             commonRefresh.setVisibility(View.GONE);
         if (commonSwipe.isRefreshing())
             commonSwipe.setRefreshing(false);
     }
 
-    @Override
-    public void showError(Object s) {
+    private void updateOrderNum(String s) {
+        String num = AccountUtil.getInstance().getDeliverOrderNum();
+        switch (s) {
+            case AppConstants.DELIVER_ORDER_ACCEPT:
 
+                AccountUtil.getInstance().setDeliverOrderNum(DecimalUtil.add(TextUtils.isEmpty(num) ? "0" : num, "1"));
+                Log.i("RHG", "增加1");
+                break;
+            case AppConstants.DELIVER_ORDER_COMPLETE:
+                if (TextUtils.isEmpty(num))
+                    return;
+                AccountUtil.getInstance().setDeliverOrderNum(DecimalUtil.subtract(num, "1"));
+                Log.i("RHG", "减少1");
+                break;
+        }
     }
 
 
@@ -148,52 +161,44 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
         }
     }
 
-    @Override
-    public void onStyleChange(String style, int position) {
+    private void changeStyle(String style, String id) {
+        if (style.equals(AppConstants.DELIVER_ORDER_COMPLETE))
+            return;
         if (modifyOrderPresenter == null)
             modifyOrderPresenter = new ModifyOrderPresenter(this);
         switch (style) {
             case AppConstants.DELIVER_ORDER_UNACCEPT:
-                deliverOrderBeanList.get(position).setStyle(AppConstants.DELIVER_ORDER_ACCEPT);
-                deliverOrderItemAdapter.updateCertainPosition(deliverOrderBeanList, position);
-                modifyOrderPresenter.modifyUserOrDeliverOrderState(deliverOrderBeanList.get(position).getID(),
-                        AppConstants.UPDATE_ORDER_WAIT);
+                /*deliverOrderBeanList.get(position).setStyle(AppConstants.DELIVER_ORDER_ACCEPT);
+                deliverOrderItemAdapter.updateCertainPosition(deliverOrderBeanList, position);*/
+                modifyOrderPresenter.modifyUserOrDeliverOrderState(id, AppConstants.UPDATE_ORDER_WAIT);
                 break;
             case AppConstants.DELIVER_ORDER_ACCEPT:
-                deliverOrderBeanList.get(position).setStyle(AppConstants.DELIVER_ORDER_DELIVERING);
-                deliverOrderItemAdapter.updateCertainPosition(deliverOrderBeanList, position);
-                modifyOrderPresenter.modifyUserOrDeliverOrderState(deliverOrderBeanList.get(position).getID(),
-                        AppConstants.UPDATE_ORDER_DELIVER);
+                /*deliverOrderBeanList.get(position).setStyle(AppConstants.DELIVER_ORDER_DELIVERING);
+                deliverOrderItemAdapter.updateCertainPosition(deliverOrderBeanList, position);*/
+                modifyOrderPresenter.modifyUserOrDeliverOrderState(id, AppConstants.UPDATE_ORDER_DELIVER);
                 break;
             case AppConstants.DELIVER_ORDER_DELIVERING:
-                deliverOrderBeanList.get(position).setStyle(AppConstants.DELIVER_ORDER_COMPLETE);
-                deliverOrderItemAdapter.updateCertainPosition(deliverOrderBeanList, position);
-                modifyOrderPresenter.modifyUserOrDeliverOrderState(deliverOrderBeanList.get(position).getID(),
-                        AppConstants.ORDER_FINISH);/*1表示已完成*/
+                /*deliverOrderBeanList.get(position).setStyle(AppConstants.DELIVER_ORDER_COMPLETE);
+                deliverOrderItemAdapter.updateCertainPosition(deliverOrderBeanList, position);*/
+                modifyOrderPresenter.modifyUserOrDeliverOrderState(id, AppConstants.ORDER_FINISH);/*1表示已完成*/
                 break;
             default:
                 break;
         }
     }
 
-    @Override
-    public void onItemClickListener(View view, int position, DeliverOrderUrlBean.DeliverOrderBean item) {
+/*    @Override
+    public void onItemClick(View view, int position, DeliverOrderUrlBean.DeliverOrderBean item) {
         Intent _intent = new Intent(this, OrderDetailActivity.class);
         _intent.putExtra(AppConstants.KEY_ORDER_ID, item.getID());
         _intent.putExtra(AppConstants.KEY_ORDER_TAG, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             startActivity(_intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
-        }
-        else
+        } else
             startActivity(_intent);
 
 
-    }
-
-    @Override
-    public void onItemLongClickListener(View view, int position, DeliverOrderUrlBean.DeliverOrderBean item) {
-
-    }
+    }*/
 
     private void showDelDialog(final String content) {
         if (delDialog == null) {
@@ -221,5 +226,29 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements Deli
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onItemClick(View view, int position, CommonListModel<DeliverOrderUrlBean.DeliverOrderBean> item) {
+        switch (view.getId()) {
+            case R.id.rl_order_info:
+                Intent _intent = new Intent(this, OrderDetailActivity.class);
+                _intent.putExtra(AppConstants.KEY_ORDER_ID, item.getEntity().get(position).getID());
+                _intent.putExtra(AppConstants.KEY_ORDER_TAG, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    startActivity(_intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+                } else
+                    startActivity(_intent);
+                break;
+            case R.id.tv_order_ind:
+                pos = position;
+                changeStyle(item.getEntity().get(position).getStyle(), item.getEntity().get(position).getID());
+                break;
+        }
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position, CommonListModel<DeliverOrderUrlBean.DeliverOrderBean> item) {
+
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
-import com.rhg.qf.impl.RcvItemClickListener;
+import com.rhg.qf.impl.OnItemClickListener;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 public class SearchHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     List<String> searchHistory;
-    private RcvItemClickListener<String> onSearchItemClick;
+    private OnItemClickListener<String> onSearchItemClick;
 
     public SearchHistoryAdapter(Context context, List<String> searchHistory) {
         this.context = context;
@@ -47,7 +47,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<RecyclerView.View
             @Override
             public void onClick(View v) {
                 if (onSearchItemClick != null)
-                    onSearchItemClick.onItemClickListener(searchHistoryViewHolder.tvSearchHistory,clickPosition, searchHistory.get(clickPosition));
+                    onSearchItemClick.onItemClick(searchHistoryViewHolder.tvSearchHistory,clickPosition, searchHistory.get(clickPosition));
             }
         });
     }
@@ -57,7 +57,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<RecyclerView.View
         return searchHistory == null ? 0 : searchHistory.size();
     }
 
-    public void setOnSearchHistoryClickListener(RcvItemClickListener<String> onSearchItemClick) {
+    public void setOnSearchHistoryClickListener(OnItemClickListener<String> onSearchItemClick) {
         this.onSearchItemClick = onSearchItemClick;
     }
 

@@ -1,5 +1,6 @@
 package com.rhg.qf.mvp.presenter;
 
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.DeliverOrderUrlBean;
 import com.rhg.qf.mvp.model.DeliverOrderModel;
 import com.rhg.qf.mvp.view.BaseView;
@@ -41,7 +42,9 @@ public class DeliverOrderPresenter {
 
                     @Override
                     public void onNext(List<DeliverOrderUrlBean.DeliverOrderBean> deliverOrderBeen) {
-                        deliverOrderView.showData(deliverOrderBeen);
+                        CommonListModel<DeliverOrderUrlBean.DeliverOrderBean> deliverOrderModel = new CommonListModel<>();
+                        deliverOrderModel.setRecommendShopBeanEntity(deliverOrderBeen);
+                        deliverOrderView.showData(deliverOrderModel);
                     }
                 });
 

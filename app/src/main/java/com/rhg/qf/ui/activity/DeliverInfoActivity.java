@@ -14,11 +14,11 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.rhg.qf.R;
@@ -54,6 +54,8 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
      * email：1013773046@qq.com
      */
     private static final String CROP = "com.android.camera.action.CROP";
+    @Bind(R.id.tb_center_tv)
+    TextView tbCenterTv;
     @Bind(R.id.tb_right_ll)
     LinearLayout llTbRight;
     @Bind(R.id.tb_left_iv)
@@ -85,6 +87,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
 
     protected void initData() {
         tb_common.setBackgroundResource(R.color.colorBlueNormal);
+        tbCenterTv.setText("跑腿员信息");
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         etNameWrap.setHint("姓名");
         /*if (etNameWrap.getEditText() != null)
@@ -95,7 +98,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
         etPlaceWrap.setHint("配送范围");
         imageStr = AccountUtil.getInstance().getHeadImageUrl();
         /*从本地获取头像URI*/
-//        if (AccountUtil.getInstance().hasAccount()) {
+//        if (AccountUtil.getInstance().hasUserAccount()) {
         if (!"".equals(imageStr)) {
             ImageLoader.getInstance().displayImage(imageStr, headView);
         } else {
@@ -133,10 +136,10 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
             return;
         }
         if (s instanceof DeliverInfoBean.InfoBean) {
-            Log.i("RHG", "跑腿员信息：" + s);
             setData((DeliverInfoBean.InfoBean) s);
+            AccountUtil.getInstance().setDeliverOrderNum(((DeliverInfoBean.InfoBean) s).getDeliverOrderNum());
+//            ToastHelper.getInstance().displayToastWithQuickClose("登录成功");
         }
-
     }
 
     @Override
@@ -304,7 +307,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
     }
 
 
-    @OnClick({R.id.bt_save, R.id.bt_exit, R.id.tb_left_iv, R.id.ci_head, R.id.tb_right_tv})
+    @OnClick({R.id.bt_save,R.id.tb_left_iv, R.id.ci_head, R.id.tb_right_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tb_left_iv:
@@ -334,10 +337,10 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
                         etPhoneWrap.getEditText().getText().toString(),
                         etPlaceWrap.getEditText().getText().toString());
                 break;
-            case R.id.bt_exit:
-                AccountUtil.getInstance().deleteAccount();
+            /*case R.id.bt_exit:
+                AccountUtil.getInstance().deleteDeliverAccount();
                 finish();
-                break;
+                break;*/
             case R.id.ci_head:
                 if (modifyHeadImageDialog == null) {
                     modifyHeadImageDialog = new ModifyHeadImageDialog(this);

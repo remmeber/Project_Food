@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
+import com.rhg.qf.application.InitApplication;
 import com.rhg.qf.bean.OrderDetailUrlBean;
 
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -25,30 +27,23 @@ public class FoodsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private final static int TYPE_HEADER = 1;
     private final static int TYPE_BODY = 2;
-    Context context;
-    private OrderDetailUrlBean.OrderDetailBean foodsBeanList;
+    private List<OrderDetailUrlBean.OrderDetailBean.FoodsBean> foodsBeanList;
     int type;
 
-    public FoodsDetailAdapter(Context context, OrderDetailUrlBean.OrderDetailBean foodsBeanList) {
-        this.context = context;
+    public FoodsDetailAdapter(Context context, List<OrderDetailUrlBean.OrderDetailBean.FoodsBean> foodsBeanList) {
         this.foodsBeanList = foodsBeanList;
-    }
-
-    public void setFoodsBeanList(OrderDetailUrlBean.OrderDetailBean foodsBeanList) {
-        this.foodsBeanList = foodsBeanList;
-        notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if ((position != (getItemCount() - 1)) && foodsBeanList.getFoods().get(position).getNum() == null)
+        if ((position != (getItemCount() - 1)) && foodsBeanList.get(position).getNum() == null)
             return TYPE_HEADER;
         return TYPE_BODY;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == TYPE_HEADER)
             return new FoodHeaderViewHolder(inflater.inflate(R.layout.item_order_header, parent, false));
         return new FoodListViewHolder(inflater.inflate(R.layout.item_food, parent, false));
@@ -56,27 +51,21 @@ public class FoodsDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == getItemCount() - 1) {
-            ((FoodListViewHolder) holder).tvFoodName.setText("配送费");
-            ((FoodListViewHolder) holder).tvFoodPrice.setText(String.format(Locale.ENGLISH, context.getResources().getString(R.string.countMoney), foodsBeanList.getFee()));
-            return;
-        }
-        OrderDetailUrlBean.OrderDetailBean.FoodsBean _data = foodsBeanList.getFoods().get(position);
+        OrderDetailUrlBean.OrderDetailBean.FoodsBean _data = foodsBeanList.get(position);
         if (getItemViewType(position) == TYPE_HEADER)
             ((FoodHeaderViewHolder) holder).tvMerchantName.setText(_data.getRName());
         else {
             ((FoodListViewHolder) holder).tvFoodName.setText(_data.getFName());
-            ((FoodListViewHolder) holder).tvFoodPrice.setText(String.format(Locale.ENGLISH, context.getResources().getString(R.string.countMoney),
+            ((FoodListViewHolder) holder).tvFoodPrice.setText(String.format(Locale.ENGLISH, InitApplication.getInstance().getString(R.string.countMoney),
                     _data.getPrice()));
-            ((FoodListViewHolder) holder).tvFoodNum.setText(String.format(Locale.ENGLISH, "× %s",
+            ((FoodListViewHolder) holder).tvFoodNum.setText(String.format(Locale.ENGLISH, InitApplication.getInstance().getString(R.string.countNumber),
                     _data.getNum()));
         }
     }
 
     @Override
     public int getItemCount() {
-        return foodsBeanList == null ? 0 :
-                foodsBeanList.getFoods() == null ? 0 : foodsBeanList.getFoods().size() + 1;/*1是给最后的配送费用*/
+        return foodsBeanList == null ? 0 : foodsBeanList.size();/*1是给最后的配送费用*/
     }
 
     class FoodListViewHolder extends RecyclerView.ViewHolder {

@@ -12,13 +12,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.PayItemAdapter;
+import com.rhg.qf.adapter.MainAdapter;
+import com.rhg.qf.adapter.WrapperAdapter;
+import com.rhg.qf.adapter.viewHolder.AddressViewHolder;
+import com.rhg.qf.adapter.viewHolder.PayItemViewHolder;
+import com.rhg.qf.adapter.viewHolder.TotalViewHolder;
 import com.rhg.qf.application.InitApplication;
-import com.rhg.qf.bean.AddressUrlBean;
-import com.rhg.qf.bean.NewOrderBackModel;
+import com.rhg.qf.bean.BaseAddress;
+import com.rhg.qf.bean.BaseAddressModel;
+import com.rhg.qf.bean.CommonListModel;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
+import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.bean.PayModel;
+import com.rhg.qf.bean.TotalModel;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.api.QFoodApi;
 import com.rhg.qf.mvp.presenter.NewOrderPresenter;
 import com.rhg.qf.pay.BasePayActivity;
@@ -33,7 +43,6 @@ import com.rhg.qf.widget.RecycleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -45,7 +54,7 @@ import butterknife.OnClick;
  * time：2016/5/28 16:14
  * email：1013773046@qq.com
  */
-public class PayActivity extends BasePayActivity implements PayItemAdapter.PayItemClickListener {
+public class PayActivity extends BasePayActivity implements OnItemClickListener<IBaseModel> {
     private final static String WX_MERCHANT_ID = "1374528702";
     private final static String WX_PRIVATE_KEY = //"shengzhoujiaze123456jiajiameishi"
             "fXRDOhhdr7rM0XWpKzFQry6pBjo0dllb";
@@ -60,12 +69,6 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     ImageView tbLeftIv;
     @Bind(R.id.fl_tab)
     FrameLayout flTab;
-    @Bind(R.id.tv_receiver)
-    TextView tvReceiver;
-    @Bind(R.id.tv_receiver_phone)
-    TextView tvReceiverPhone;
-    @Bind(R.id.tv_receiver_address)
-    TextView tvReceiverAddress;
     @Bind(R.id.rcv_item_pay)
     RecyclerView rcvItemPay;
     @Bind(R.id.iv_wepay_check)
@@ -73,17 +76,14 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
     @Bind(R.id.iv_alipay_check)
     ImageView ivAlipayCheck;
 
-    ArrayList<PayModel.PayBean> payList;
-    List<PayModel.PayBean> showList;
-    List<String> payMerchantIdList = new ArrayList<>();
+    CommonListModel<PayModel.PayBean> payList;
+    TotalModel totalModel;
+    BaseAddressModel addressInfo;
     NewOrderPresenter createOrderPresenter;
     String ipv4;
     String tradeNumber;
     int style = 0;//用来表示是否需要生成订单
-    String receiver;
-    String phone;
-    String address;
-    private PayItemAdapter payItemAdapter;
+    WrapperAdapter<IBaseModel> payAdapter;
 
 
     @Override
@@ -92,15 +92,16 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         if (PayType.WeixinPay.equals(payType)) {
             return BuildOrderInfo("微信支付", "30m", WX_URL,
                     getOutTradeNo(),
-                    getItemsName(payList),
-                    getCheckItemTotalMoney(payList),
+                    getItemsName(payList.getEntity()),
+                    totalModel.getEntity().get(TotalModel.ORDER_TOTAL_PRICE),
+//                    getCheckItemTotalMoney(payList.getEntity()),
                     ipv4);
         }
         if (PayType.AliPay.equals(payType)) {
             return BuildOrderInfo("支付宝支付", "30m", ALI_URL,
                     getOutTradeNo(),
-                    getItemsName(payList),
-                    getCheckItemTotalMoney(payList),
+                    getItemsName(payList.getEntity()),
+                    totalModel.getEntity().get(TotalModel.ORDER_TOTAL_PRICE),
                     ipv4);
         }
         return null;
@@ -108,12 +109,14 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
 
     private NewOrderBean generateOrder() {
         NewOrderBean _orderBean = new NewOrderBean();
-        _orderBean.setReceiver(receiver);
-        _orderBean.setPhone(phone);
-        _orderBean.setAddress(address);
-        _orderBean.setFood(getCheckedFood(payList));
+        _orderBean.setReceiver(addressInfo.getEntity().get(BaseAddressModel.ADDRESS_RECEIVER));
+        _orderBean.setPhone(addressInfo.getEntity().get(BaseAddressModel.ADDRESS_PHONE));
+        _orderBean.setAddress(addressInfo.getEntity().get(BaseAddressModel.ADDRESS_CONTENT).concat(
+                addressInfo.getEntity().get(BaseAddressModel.ADDRESS_DETAIL)
+        ));
+        _orderBean.setFood(getCheckedFood(payList.getEntity()));
         _orderBean.setClient(AccountUtil.getInstance().getUserID());
-        _orderBean.setPrice(getCheckItemTotalMoney(payList));
+        _orderBean.setPrice(getCheckItemTotalMoney(payList.getEntity()));
         return _orderBean;
     }
 
@@ -122,44 +125,31 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         PayModel payModel = intent.getParcelableExtra(AppConstants.KEY_PARCELABLE);
         style = intent.getIntExtra(AppConstants.ORDER_STYLE, 0);
         if (payModel != null) {
-            setAddress(payModel.getReceiver(), payModel.getPhone(), payModel.getAddress());
-//            payMerchantIdList = getPayMerchantIdList(payList);
-            payList = payModel.getPayBeanList();
-            showList = getShowList(payList);
-//            payList.addAll(payModel.getPayBeanList());
+            if (payList == null)
+                payList = new CommonListModel<>();
+            payList.setRecommendShopBeanEntity(payModel.getPayBeanList());
+            if (addressInfo == null) {
+                addressInfo = new BaseAddressModel();
+            }
+            setAddress(payModel);
+            if (totalModel == null)
+                totalModel = new TotalModel();
+            if (style != 0) {
+                List<String> totalFeeAndDeliver = new ArrayList<>();
+                totalFeeAndDeliver.add(0, payList.getEntity().get(0).getDeliverFee());
+                totalFeeAndDeliver.add(1, payList.getEntity().get(0).getProductPrice());
+                totalModel.setRecommendShopBeanEntity(totalFeeAndDeliver);
+            }
         }
     }
 
-    private List<PayModel.PayBean> getShowList(ArrayList<PayModel.PayBean> payList) {
-        List<PayModel.PayBean> _payBeenList = null;
-        String last = "";
-        for (PayModel.PayBean payBean :
-                payList) {
-            if (!last.equals(payBean.getMerchantId())) {
-                if (_payBeenList == null)
-                    _payBeenList = new ArrayList<>();
-                _payBeenList.add(payBean);
-            }
-        }
-        return _payBeenList;
-    }
-
-    private List<String> getPayMerchantIdList(ArrayList<PayModel.PayBean> payList) {
-        /*Collections.sort(payList, new Comparator<PayModel.PayBean>() {
-            @Override
-            public int compare(PayModel.PayBean payBean1, PayModel.PayBean payBean2) {
-                return payBean1.getMerchantId().compareTo(payBean2.getMerchantId());
-            }
-        });*/
-        List<String> index = new ArrayList<>();
-        String last = "";
-        for (PayModel.PayBean payBean :
-                payList) {
-            if (!last.equals(payBean.getMerchantId())) {
-                index.add(payBean.getMerchantId());
-            }
-        }
-        return index;
+    private void setAddress(PayModel payModel) {
+        List<String> addressList = new ArrayList<>();
+        addressList.add(BaseAddressModel.ADDRESS_RECEIVER, payModel.getName());
+        addressList.add(BaseAddressModel.ADDRESS_PHONE, payModel.getPhone());
+        addressList.add(BaseAddressModel.ADDRESS_CONTENT, payModel.getAddress());
+        addressList.add(BaseAddressModel.ADDRESS_DETAIL, payModel.getDetail());/*地址详情*/
+        addressInfo.setRecommendShopBeanEntity(addressList);
     }
 
     @Override
@@ -171,13 +161,19 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         rcvItemPay.setHasFixedSize(true);
         rcvItemPay.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
                 SizeUtil.dip2px(1), ContextCompat.getColor(this, R.color.colorInActive)));
-        payItemAdapter = new PayItemAdapter(this, showList);
-        payItemAdapter.setOnPayItemClick(this);
-        rcvItemPay.setAdapter(payItemAdapter);
+        MainAdapter<IBaseModel> payItemAdapter = new MainAdapter<>(
+                new InflateModel(new Class[]{PayItemViewHolder.class, View.class}, new Object[]{R.layout.item_pay}),
+                payList,
+                this
+        );
+        payAdapter = new WrapperAdapter<>(payItemAdapter, this);
+        payAdapter.addFooterViews(new InflateModel(new Class[]{TotalViewHolder.class, View.class}, new Object[]{R.layout.total_pay_layout}), totalModel);
+        payAdapter.addHeaderViews(new InflateModel(new Class[]{AddressViewHolder.class, View.class}, new Object[]{R.layout.item_receiver_info}), addressInfo);
+        rcvItemPay.setAdapter(payAdapter);
+        createOrder();
 
         RegisterBasePay(ALI_PARTNER, ALI_SELLER_ID, ALI_PRIVATE_KEY,
                 InitApplication.WXID, WX_MERCHANT_ID, WX_PRIVATE_KEY);
-        createOrder();
     }
 
     @Override
@@ -192,15 +188,6 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
                 createOrderPresenter = new NewOrderPresenter(this);
             createOrderPresenter.createNewOrder(newOrderBean);
         }
-    }
-
-    private void setAddress(String receiver, String phone, String address) {
-        tvReceiver.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvReceiver),
-                receiver));
-        tvReceiverPhone.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvContactPhone),
-                phone));
-        tvReceiverAddress.setText(String.format(Locale.ENGLISH, getResources().getString(R.string.tvReceiveAddress),
-                address));
     }
 
     /*支付成功的回调*/
@@ -224,20 +211,15 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         showPayResult(false);
     }
 
-    @OnClick({R.id.tb_left_iv, R.id.iv_edit_right, R.id.bt_pay_affirmance,
+    @OnClick({R.id.tb_left_iv, R.id.bt_pay_affirmance,
             R.id.iv_wepay_check, R.id.iv_wepay, R.id.iv_alipay_check, R.id.iv_alipay})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tb_left_iv:
                 finish();
                 break;
-            case R.id.iv_edit_right:
-                Intent _intent = new Intent(this, AddressActivity.class);
-                _intent.setAction(AppConstants.ADDRESS_DEFAULT);
-                startActivityForResult(_intent, 100);
-                break;
             case R.id.bt_pay_affirmance:
-                if (getCheckCount(payList) == 0) {
+                if (getCheckCount(payList.getEntity()) == 0) {
                     ToastHelper.getInstance().displayToastWithQuickClose("当前未选择商品！");
                     return;
                 }
@@ -270,26 +252,7 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
                     payType = PayType.AliPay;
                     break;
                 }
-             /*   if (PayType.Cash.equals(payType)) {
-                    ivCashCheck.setImageDrawable(getResources().getDrawable(R.drawable.ic_uncheck_green));
-                    payType = PayType.AliPay;
-                }*/
                 break;
-          /*  case R.id.iv_cash_check:
-            case R.id.iv_cash:
-                if (PayType.Cash.equals(payType))
-                    return;
-                ivCashCheck.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_green));
-                if (PayType.WeixinPay.equals(payType)) {
-                    ivWxpayCheck.setImageDrawable(getResources().getDrawable(R.drawable.ic_uncheck_green));
-                    payType = PayType.Cash;
-                    break;
-                }
-                if (PayType.AliPay.equals(payType)) {
-                    ivAlipayCheck.setImageDrawable(getResources().getDrawable(R.drawable.ic_uncheck_green));
-                    payType = PayType.Cash;
-                }
-                break;*/
         }
     }
 
@@ -302,23 +265,19 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
                 ToastHelper.getInstance().displayToastWithQuickClose("设置地址失败");
                 return;
             }
-            AddressUrlBean.AddressBean _addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            BaseAddress _addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
             if (_addressBean == null) {
                 ToastHelper.getInstance().displayToastWithQuickClose("设置地址失败，请填写详细地址");
                 return;
             }
-            setAddress(_addressBean.getName(), _addressBean.getPhone(),
-                    _addressBean.getAddress().concat(_addressBean.getDetail()));
+            PayModel payModel = new PayModel();
+            payModel.setName(_addressBean.getName());
+            payModel.setPhone(_addressBean.getPhone());
+            payModel.setAddress(_addressBean.getAddress());
+            payModel.setDetail(_addressBean.getDetail());
+            setAddress(payModel);
+            payAdapter.notifyItemChanged(0);
         }
-    }
-
-    @Override
-    public void onPayItemClick(int position) {
-       /* if (payList.get(position).isChecked()) {
-            payList.get(position).setChecked(false);
-        } else
-            payList.get(position).setChecked(true);
-        payItemAdapter.setPayList(payList);*/
     }
 
     private int getCheckCount(List<PayModel.PayBean> payList) {
@@ -344,6 +303,14 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         return _bean;
     }
 
+    private String getItemsName(List<PayModel.PayBean> payList) {
+        String concatName = "";
+        for (PayModel.PayBean _payBean : payList) {
+            concatName = concatName.concat(_payBean.getProductName());
+        }
+        return concatName;
+    }
+
     private String getCheckItemTotalMoney(List<PayModel.PayBean> payList) {
         String count = "0";
         for (PayModel.PayBean _payBean : payList) {
@@ -353,44 +320,15 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
         return count;
     }
 
-    private String getItemsName(List<PayModel.PayBean> payList) {
-        String concatName = "";
-        for (PayModel.PayBean _payBean : payList) {
-            concatName = concatName.concat(_payBean.getProductName());
-        }
-        return concatName;
-    }
-
     @Override
     public void showData(Object o) {
-        if (o instanceof NewOrderBackModel) {
-            tradeNumber = ((NewOrderBackModel) o).getMsg();
-//            ToastHelper.getInstance().displayToastWithQuickClose("正在支付中....");
-            List<NewOrderBackModel.NewOrderBackBean> backBeanList = ((NewOrderBackModel) o).getRows();
-            for (int i = 0; i < backBeanList.size(); ) {
-                NewOrderBackModel.NewOrderBackBean _backList = backBeanList.get(i);
-                int j = 0;
-                for (; j < showList.size(); ) {
-                    if (showList.get(j).getMerchantId().equals(_backList.getRId())) {
-                        String fee = _backList.getFee();
-                        String price = _backList.getPrice();
-                        showList.get(j).setProductPrice(DecimalUtil.add(fee, price));
-                        showList.get(j).setDeliverFee(fee);
-                        i++;
-                        break;
-                    }
-                }
-                if (j == showList.size()) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("订单创建失败");
-                    return;
-                }
-            }
-           /* fee = ((NewOrderBackModel) o).getFee();
-            price = ((NewOrderBackModel) o).getPrice();
-//            Log.i("RHG", "Fee: " + fee + " price: " + price);
-            payList.get(0).setProductPrice(DecimalUtil.add(fee, price));
-            payList.get(0).setDeliverFee(fee);*/
-            payItemAdapter.setPayList(showList);
+        if (o instanceof NewOrderBackBean) {
+            tradeNumber = ((NewOrderBackBean) o).getMsg();
+            List<String> totalList = new ArrayList<>();
+            totalList.add(TotalModel.DELIVER_FEE, ((NewOrderBackBean) o).getFee());
+            totalList.add(TotalModel.ORDER_TOTAL_PRICE, DecimalUtil.add(((NewOrderBackBean) o).getFee(), ((NewOrderBackBean) o).getPrice()));
+            totalModel.setRecommendShopBeanEntity(totalList);
+            payAdapter.notifyDataSetChanged();
         } else if (o instanceof String) {
             if (o.equals("new_order_error"))
                 ToastHelper.getInstance()._toast("订单创建失败");
@@ -401,6 +339,21 @@ public class PayActivity extends BasePayActivity implements PayItemAdapter.PayIt
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
      */
     private String getOutTradeNo() {
-        return style == 0 ? tradeNumber : payList.get(0).getProductId();//style=0时，productId为商品的ID；style=1时，productId为订单的ID。
+        return style == 0 ? tradeNumber : payList.getEntity().get(0).getProductId();//style=0时，productId为商品的ID；style=1时，productId为订单的ID。
+    }
+
+    @Override
+    public void onItemClick(View view, int position, IBaseModel item) {
+        switch (view.getId()) {
+            case R.id.rl_address_info:
+                Intent _intent = new Intent(this, AddressActivity.class);
+                _intent.setAction(AppConstants.ADDRESS_DEFAULT);
+                startActivityForResult(_intent, 100);
+                break;
+        }
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position, IBaseModel item) {
     }
 }

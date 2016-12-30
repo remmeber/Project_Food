@@ -1,7 +1,7 @@
 package com.rhg.qf.mvp.model;
 
 import com.google.gson.Gson;
-import com.rhg.qf.bean.NewOrderBackModel;
+import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.mvp.api.QFoodApiMamager;
 import com.rhg.qf.utils.AccountUtil;
@@ -20,7 +20,7 @@ import rx.Observable;
  * email：1013773046@qq.com
  */
 public class NewOrderModel {
-    public Observable<NewOrderBackModel> createNewOrder(NewOrderBean newOrderBean) {
+    public Observable<NewOrderBackBean> createNewOrder(NewOrderBean newOrderBean) {
         List<Map<String, String>> mapList = new ArrayList<>();
         for (NewOrderBean.FoodBean foodBean : newOrderBean.getFood()) {
             Map<String, String> foodMap = new LinkedHashMap<>();

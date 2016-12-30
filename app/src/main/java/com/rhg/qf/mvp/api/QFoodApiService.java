@@ -4,6 +4,7 @@ import com.rhg.qf.bean.AddressUrlBean;
 import com.rhg.qf.bean.BannerTypeUrlBean;
 import com.rhg.qf.bean.BaseBean;
 import com.rhg.qf.bean.DeliverInfoBean;
+import com.rhg.qf.bean.DeliverOrderNumber;
 import com.rhg.qf.bean.DeliverOrderUrlBean;
 import com.rhg.qf.bean.DeliverStateBean;
 import com.rhg.qf.bean.FavorableFoodUrlBean;
@@ -12,18 +13,16 @@ import com.rhg.qf.bean.HeadMerchantUrlBean;
 import com.rhg.qf.bean.HotFoodUrlBean;
 import com.rhg.qf.bean.MerchantInfoDetailUrlBean;
 import com.rhg.qf.bean.MerchantUrlBean;
-import com.rhg.qf.bean.NewOrderBackModel;
+import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.OrderDetailUrlBean;
 import com.rhg.qf.bean.OrderUrlBean;
 import com.rhg.qf.bean.ShopDetailUrlBean;
 import com.rhg.qf.bean.SignInBackBean;
-import com.rhg.qf.bean.TextTypeBean;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -41,9 +40,6 @@ public interface QFoodApiService {
     @FormUrlEncoded
     @POST("/Table/Json.php")
     Observable<BannerTypeUrlBean> getBannerUrl(@Field("Table") String headRowPic);
-
-    @GET("json/message.html")
-    Observable<TextTypeBean> getMessage();
 
     @FormUrlEncoded
     @POST("Table/Json.php")
@@ -207,7 +203,14 @@ public interface QFoodApiService {
                                                     @Field("Y") String y,
                                                     @Field("X") String x);
 
+    /*TODO API19 跑腿员订单数目*/
+    @FormUrlEncoded
+    @POST("Table/Json.php")
+    Observable<DeliverOrderNumber> getDeliverOrderNum(@Field("Table") String deliverOrderNumber,
+                                                      @Field("Deliver") String deliverId);
 
+
+    /*{"result":0,"msg":"请求成功","total":1,"rows":[{"count(id)":"2"}]}*/
     /*TODO API19 跑腿员订单详情*/
     @FormUrlEncoded
     @POST("Table/Json.php")
@@ -232,14 +235,14 @@ public interface QFoodApiService {
     /*TODO API 18 生成订单标记为待付款状态*/
     @FormUrlEncoded
     @POST("Table/JsonSQL/AddNewOrder2.php")
-    Observable<NewOrderBackModel> createOrder(@Field("Address") String address,
-                                              @Field("Client") String client,
-                                              @Field("Receiver") String receiver,
-                                              @Field("Phone") String phone,
-                                              @Field("Price") String price,
-                                              @Field("Y") String Y,
-                                              @Field("X") String X,
-                                              @Field("Food") String foodBeen
+    Observable<NewOrderBackBean> createOrder(@Field("Address") String address,
+                                             @Field("Client") String client,
+                                             @Field("Receiver") String receiver,
+                                             @Field("Phone") String phone,
+                                             @Field("Price") String price,
+                                             @Field("Y") String Y,
+                                             @Field("X") String X,
+                                             @Field("Food") String foodBeen
                                      /*@Body NewOrderBean newOrderBean*/);
 
 

@@ -3,7 +3,7 @@ package com.rhg.qf.bean;
 import java.util.List;
 
 /**
- * desc:轮播图片的网络访问数据模型，网络请求后，需要将该类转换为{@link BannerTypeBean}
+ * desc:轮播图片的网络访问数据模型，网络请求后，需要将该类转换为{@link CommonListModel<>}
  * author：remember
  * time：2016/5/28 16:23
  * email：1013773046@qq.com
@@ -53,7 +53,7 @@ public class BannerTypeUrlBean {
         this.msg = msg;
     }
 
-    public static class BannerEntity {
+    public static class BannerEntity{
 
         String id;
         String Src;

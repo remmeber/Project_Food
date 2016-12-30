@@ -23,7 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginRight="@dimen/margin_medium"
-        android:background="@drawable/bg_white"
+        android:background="@drawable/personal_order_background"
         android:scaleType="fitXY"
         tools:ignore="contentDescription" />
 

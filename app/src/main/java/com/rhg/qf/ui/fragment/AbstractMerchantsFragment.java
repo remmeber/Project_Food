@@ -11,10 +11,17 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.QFoodMerchantAdapter;
+import com.rhg.qf.adapter.MainAdapter;
+import com.rhg.qf.adapter.WrapperAdapter;
+import com.rhg.qf.adapter.viewHolder.AllShopsViewHolder;
+import com.rhg.qf.adapter.viewHolder.HomeShopViewHolder;
+import com.rhg.qf.adapter.viewHolder.HeaderViewHolder;
+import com.rhg.qf.bean.CommonListModel;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.RcvItemClickListener;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.MerchantsPresenter;
 import com.rhg.qf.ui.activity.ShopDetailActivity;
 import com.rhg.qf.utils.AccountUtil;
@@ -22,7 +29,7 @@ import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,7 +41,7 @@ import butterknife.Bind;
  * time：2016/5/28 16:42
  * email：1013773046@qq.com
  */
-public abstract class AbstractMerchantsFragment extends BaseFragment implements RcvItemClickListener<MerchantUrlBean.MerchantBean> {
+public abstract class AbstractMerchantsFragment extends BaseFragment implements OnItemClickListener<IBaseModel> {
     @Bind(R.id.common_recycle)
     RecyclerView commonRecycle;
     @Bind(R.id.common_refresh)
@@ -42,9 +49,10 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
     @Bind(R.id.common_swipe)
     SwipeRefreshLayout commonSwipe;
 
-    List<MerchantUrlBean.MerchantBean> dataBySellNumberModels = new ArrayList<>();
+    CommonListModel<MerchantUrlBean.MerchantBean> bodyMerchant = new CommonListModel<>();
+    CommonListModel<MerchantUrlBean.MerchantBean> headMerchant = new CommonListModel<>();
     MerchantsPresenter getMerchantsOrderBySellNumberPresenter;
-    QFoodMerchantAdapter qFoodMerchantAdapter;
+    WrapperAdapter<IBaseModel> wrapperAdapter;
     int merchantsType;
 
     public AbstractMerchantsFragment() {
@@ -53,8 +61,8 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
     }
 
     public void setContext(Context context) {
-        if (qFoodMerchantAdapter != null)
-            qFoodMerchantAdapter.setContext(context);
+        /*if (qFoodMerchantAdapter != null)
+            qFoodMerchantAdapter.setContext(context);*/
     }
 
     protected abstract int getMerchantsFmType();
@@ -69,12 +77,17 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
     protected void initData() {
         commonRecycle.setHasFixedSize(true);
         commonRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
-        qFoodMerchantAdapter = new QFoodMerchantAdapter(getContext(), dataBySellNumberModels);
-        qFoodMerchantAdapter.setOnRcvItemClickListener(this);
-        commonRecycle.setAdapter(qFoodMerchantAdapter);
         commonRecycle.addItemDecoration(new RecycleViewDivider(getContext(),
-                LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(5),
+                LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(2),
                 ContextCompat.getColor(getContext(), R.color.white_light)));
+        MainAdapter<IBaseModel> mainAdapter = new MainAdapter<>(
+                new InflateModel(new Class[]{AllShopsViewHolder.class, View.class}, new Object[]{R.layout.item_sell_shop}),
+                bodyMerchant,
+                this
+        );
+        wrapperAdapter = new WrapperAdapter<>(mainAdapter, this);
+        wrapperAdapter.addHeaderViews(new InflateModel(new Class[]{HeaderViewHolder.class, View.class}, new Object[]{R.layout.item_all_shop_header}), headMerchant);
+        commonRecycle.setAdapter(wrapperAdapter);
         commonSwipe.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -101,13 +114,17 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
 
     @Override
     protected void showFailed() {
-        qFoodMerchantAdapter.setOnRcvItemClickListener(null);
     }
 
     @Override
     public void showSuccess(Object o) {
-        dataBySellNumberModels = (List<MerchantUrlBean.MerchantBean>) o;
-        qFoodMerchantAdapter.setmData(dataBySellNumberModels);
+        if (o instanceof CommonListModel) {
+            List<MerchantUrlBean.MerchantBean> merchantBeenList = ((CommonListModel<MerchantUrlBean.MerchantBean>) o).getEntity();
+            headMerchant.setRecommendShopBeanEntity(Collections.singletonList(merchantBeenList.get(0)));
+            merchantBeenList.remove(0);
+            bodyMerchant.setRecommendShopBeanEntity(merchantBeenList);
+            wrapperAdapter.notifyDataSetChanged();
+        }
         if (commonSwipe.isRefreshing())
             commonSwipe.setRefreshing(false);
         if (commonRefresh.getVisibility() == View.VISIBLE) {
@@ -117,9 +134,9 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
 
 
     @Override
-    public void onItemClickListener(View view, int position, MerchantUrlBean.MerchantBean item) {
+    public void onItemClick(View view, int position, IBaseModel item) {
         Intent intent = new Intent(getContext(), ShopDetailActivity.class);
-        MerchantUrlBean.MerchantBean merchantBean = dataBySellNumberModels.get(position);
+        MerchantUrlBean.MerchantBean merchantBean = (MerchantUrlBean.MerchantBean) item.getEntity().get(position);
         /*目前后台还没有加入这是三个字段*/
 
         intent.putExtra(AppConstants.KEY_MERCHANT_ID, merchantBean.getID());
@@ -135,7 +152,7 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
     }
 
     @Override
-    public void onItemLongClickListener(View view, int position, MerchantUrlBean.MerchantBean item) {
+    public void onItemLongClick(View view, int position, IBaseModel item) {
 
     }
 

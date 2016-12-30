@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.rhg.qf.R;
 import com.rhg.qf.application.InitApplication;
 import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
@@ -124,11 +125,12 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     public void showSuccess(Object s) {
 //        setResult(resultCode, new Intent().putExtra(AppConstants.KEY_ADDRESS, addressBean));
         Intent intent = new Intent();
-        intent.putExtra("return", new AddressUrlBean.AddressBean(
-                addNewAddressContactPersonContent.getText().toString(),
-                addNewAddressContactsContent.getText().toString(),
-                addNewAddressContactAddressContent.getText().toString(),
-                addNewAddressContentDetail.getText().toString()));
+        BaseAddress baseAddress = new BaseAddress();
+        baseAddress.setAddress(addNewAddressContactsContent.getText().toString());
+        baseAddress.setDetail(addNewAddressContentDetail.getText().toString());
+        baseAddress.setName(addNewAddressContactPersonContent.getText().toString());
+        baseAddress.setPhone(addNewAddressContactsContent.getText().toString());
+        intent.putExtra("return", baseAddress);
         setResult(resultCode, intent);/*不需要做任何事情*/
         finish();
     }

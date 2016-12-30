@@ -163,9 +163,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
                 locationService.registerListener(mLocationListener);
                 locationService.setLocationOption(locationService.getDefaultLocationClientOption());
                 mLocationListener.getLocation(locationService);
-            }
+            }else
+                Log.i("RHG", "mLocationListener is null");
 
-        }
+        }else
+            Log.i("RHG", "locationService is null");
     }
 
     public void reStartLocation() {

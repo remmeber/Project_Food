@@ -11,11 +11,14 @@
         android:id="@+id/all_seller_tl"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/colorTab"
-        app:tl_indicator_color="@color/colorBlueNormal"
+        android:background="@color/colorBlueNormal"
+        app:tl_divider_color="@color/white"
+        app:tl_divider_padding="@dimen/margin_small"
+        app:tl_divider_width="1dp"
+        app:tl_indicator_color="@color/white"
         app:tl_indicator_gravity="BOTTOM"
         app:tl_tab_space_equal="true"
-        app:tl_textSelectColor="@color/colorBlueNormal"
+        app:tl_textSelectColor="@color/white"
         app:tl_textUnselectColor="@color/black"
         app:tl_textsize="@dimen/text_big" />
 

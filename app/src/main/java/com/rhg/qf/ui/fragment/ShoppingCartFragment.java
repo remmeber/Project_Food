@@ -3,7 +3,6 @@ package com.rhg.qf.ui.fragment;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -13,8 +12,9 @@ import android.widget.TextView;
 
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.QFoodShoppingCartExplAdapter;
-import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.bean.FoodInfoBean;
+import com.rhg.qf.bean.IBaseModel;
 import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.bean.ShoppingCartBean;
 import com.rhg.qf.constants.AppConstants;
@@ -66,7 +66,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @Bind(R.id.rl_shopping_cart_pay)
     RelativeLayout rlShoppingCartPay;
     private GetAddressPresenter getAddressPresenter;
-    private AddressUrlBean.AddressBean addressBean;
+    private BaseAddress addressBean;
     //-----------------根据需求创建相应的presenter----------------------------------------------------
 
     public ShoppingCartFragment() {
@@ -83,7 +83,7 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        if (AccountUtil.getInstance().hasAccount()) {
+        if (AccountUtil.getInstance().hasUserAccount()) {
             isLogin = true;
             List<FoodInfoBean> foodInfoBeanList = ShoppingCartUtil.getAllProductID();
 
@@ -111,7 +111,6 @@ public class ShoppingCartFragment extends BaseFragment {
         ShoppingCartBean shoppingCartBean = null;
         List<ShoppingCartBean.Goods> goodsList = null;
         for (FoodInfoBean foodInfoBean : foodInfoBeanList) {
-            Log.i("RHG", foodInfoBean.toString());
             newMerchantId = foodInfoBean.getMerchantId();
 
             if (!newMerchantId.equals(lastMerchantId)) {
@@ -155,7 +154,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     protected void refresh() {
         super.refresh();
-        if (AccountUtil.getInstance().hasAccount()) {
+        if (AccountUtil.getInstance().hasUserAccount()) {
             isLogin = true;
 //            userId = AccountUtil.getInstance().getUserID();
 //            getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
@@ -182,7 +181,7 @@ public class ShoppingCartFragment extends BaseFragment {
         srlShoppingCart.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (AccountUtil.getInstance().hasAccount()) {
+                if (AccountUtil.getInstance().hasUserAccount()) {
                     isLogin = false;
 //                    userId = AccountUtil.getInstance().getUserID();
 //                    getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
@@ -207,7 +206,7 @@ public class ShoppingCartFragment extends BaseFragment {
             @Override
             public void onDataChange(String CountMoney) {
                 if (shoppingCartBeanList.size() == 0) {
-                    showEmpty(true, isLogin ? getString(R.string.emptyCart) : getString(R.string.pleaseSignIn));
+                    showEmpty(true, isLogin ? getString(R.string.emptyCart) : getString(R.string.pleaseSignInAsUser));
                 } else
                     showEmpty(false, null);
                 String countMoney = String.format(getResources().getString(R.string.countMoney), CountMoney);
@@ -275,16 +274,16 @@ public class ShoppingCartFragment extends BaseFragment {
             return;
         }
 
-        if (o instanceof AddressUrlBean.AddressBean) {
-             addressBean = (AddressUrlBean.AddressBean) o;
-            createOrderAndToPay(addressBean);
-            return;
-        }
+        if (o instanceof IBaseModel) {
+            if (((IBaseModel) o).getEntity().size() == 0) {
+                Intent intent = new Intent(getContext(), AddressActivity.class);
+                intent.setAction(AppConstants.ADDRESS_DEFAULT);
+                startActivityForResult(intent, 0);
+                return;
+            }
 
-        if (addressBean == null) {
-            Intent intent = new Intent(getContext(), AddressActivity.class);
-            intent.setAction(AppConstants.ADDRESS_DEFAULT);
-            startActivityForResult(intent, 0);
+            addressBean = (BaseAddress) ((IBaseModel) o).getEntity().get(0);
+            createOrderAndToPay(addressBean);
         }
     }
 
@@ -305,17 +304,17 @@ public class ShoppingCartFragment extends BaseFragment {
         }
     }
 
-    private void createOrderAndToPay(AddressUrlBean.AddressBean addressBean) {
+    private void createOrderAndToPay(BaseAddress addressBean) {
         Intent intent = new Intent(getActivity(),
                 PayActivity.class);
         PayModel payModel = new PayModel();
-        payModel.setReceiver(addressBean.getName());
+        payModel.setName(addressBean.getName());
         payModel.setPhone(addressBean.getPhone());
-        payModel.setAddress(addressBean.getAddress().concat(addressBean.getDetail()));
+        payModel.setAddress(addressBean.getAddress());
+        payModel.setDetail(addressBean.getDetail());
         ArrayList<PayModel.PayBean> payBeen = ShoppingCartUtil.getSelectGoods(shoppingCartBeanList);
         payModel.setPayBeanList(payBeen);
-        intent.putExtra(AppConstants.KEY_PARCELABLE, payModel);
-//        intent.putExtra(AppConstants.ORDER_STYLE, AppConstants.USER_ORDER_UNPAID);
+        intent.putExtra(AppConstants.KEY_PARCELABLE,payModel);
         startActivity(intent);
     }
 

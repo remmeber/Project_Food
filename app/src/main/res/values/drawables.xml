@@ -5,7 +5,7 @@
     <item name="ic_home" type="drawable">@drawable/home_black</item>
     <item name="ic_user" type="drawable">@drawable/user</item>
     <item name="ic_shop" type="drawable">@drawable/shop_gray</item>
-    <item name="ic_shop_green" type="drawable">@drawable/shop_light_blue</item>
+    <item name="ic_shop_blue" type="drawable">@drawable/shop_light_blue</item>
     <item name="ic_shopping_cart_blue" type="drawable">@drawable/shopping_cart_blue</item>
     <item name="ic_shopping_cart_black" type="drawable">@drawable/shopping_cart_black</item>
     <item name="ic_search_black" type="drawable">@drawable/search_black</item>

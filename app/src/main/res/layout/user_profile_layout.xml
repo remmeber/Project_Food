@@ -10,9 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/status_bar_height"
         android:background="@color/colorBlueNormal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="@dimen/status_bar_height">
 
         <com.rhg.qf.widget.CircleImageView
             android:id="@+id/userHeader"
@@ -26,10 +26,10 @@
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_gray_light_style"
             android:gravity="center_horizontal"
             android:paddingBottom="@dimen/margin_small"
             android:paddingTop="@dimen/margin_small"
-            android:background="@drawable/btn_gray_light_style"
             android:textColor="@color/white"
             android:textSize="@dimen/text_big"
             tools:text="某某某人" />
@@ -50,15 +50,16 @@
                 layout="@layout/item_profile" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin">
 
             <include
-                android:id="@+id/profileWorker"
+                android:id="@+id/profileDeliver"
                 layout="@layout/item_profile" />
-        </LinearLayout>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

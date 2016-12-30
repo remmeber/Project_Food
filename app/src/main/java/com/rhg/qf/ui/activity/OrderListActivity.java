@@ -72,7 +72,7 @@ public class OrderListActivity extends BaseFragmentActivity {
         vpMyorder.setOffscreenPageLimit(3);
         vpMyorder.setCurrentItem(vpFlag, false);
         stlMyorder.setViewPager(vpMyorder);
-
+        stlMyorder.setCurrentTab(vpFlag);
     }
 
     @Override

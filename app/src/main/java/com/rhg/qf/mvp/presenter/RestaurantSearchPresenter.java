@@ -1,5 +1,6 @@
 package com.rhg.qf.mvp.presenter;
 
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.mvp.model.RestaurantSearchModel;
 import com.rhg.qf.mvp.view.BaseView;
@@ -36,12 +37,13 @@ public class RestaurantSearchPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
                     public void onNext(MerchantUrlBean merchantBeen) {
-                        restaurantSearchResult.showData(merchantBeen);
+                        CommonListModel<MerchantUrlBean.MerchantBean> merchantBeanCommonListModel = new CommonListModel<>();
+                        merchantBeanCommonListModel.setRecommendShopBeanEntity(merchantBeen.getRows());
+                        restaurantSearchResult.showData(merchantBeanCommonListModel);
                     }
                 });
     }

@@ -1,6 +1,8 @@
 package com.rhg.qf.mvp.presenter;
 
 import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.mvp.model.GetAddressModel;
 import com.rhg.qf.mvp.view.BaseView;
 
@@ -28,7 +30,7 @@ public class GetAddressPresenter {
     public void getAddress(String Table) {
         getAddressModel.getAddress(Table).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<AddressUrlBean.AddressBean>>() {
+                .subscribe(new Observer<List<BaseAddress>>() {
                     @Override
                     public void onCompleted() {
 
@@ -40,11 +42,10 @@ public class GetAddressPresenter {
                     }
 
                     @Override
-                    public void onNext(List<AddressUrlBean.AddressBean> addressBeen) {
-                        if (addressBeen.size() == 1)
-                            baseView.showData(addressBeen.get(0));
-                        else
-                            baseView.showData(addressBeen);
+                    public void onNext(List<BaseAddress> addressBean) {
+                        CommonListModel<BaseAddress> addressModel = new CommonListModel<>();
+                        addressModel.setRecommendShopBeanEntity(addressBean);
+                        baseView.showData(addressModel);
                     }
                 });
     }

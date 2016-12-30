@@ -66,7 +66,6 @@ public class OrderDetailUrlBean {
         private String Address;
         private String Fee;
         private String Price;
-        private List<Integer> index;
         /**
          * FName : 微辣黄焖鸡米饭
          * Price : 288
@@ -123,15 +122,6 @@ public class OrderDetailUrlBean {
             Price = price;
         }
 
-        /*用来记录商家列表*/
-        public List<Integer> getIndex() {
-            return index;
-        }
-
-        public void setIndex(List<Integer> index) {
-            this.index = index;
-        }
-
         @Override
         public String toString() {
             return "OrderDetailBean{" +
@@ -180,6 +170,7 @@ public class OrderDetailUrlBean {
             public void setRName(String RName) {
                 this.RName = RName;
             }
+
 
             @Override
             public String toString() {

@@ -18,9 +18,10 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.viewHolder.BannerImageHolder;
 import com.rhg.qf.application.InitApplication;
-import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.bean.FoodInfoBean;
 import com.rhg.qf.bean.GoodsDetailUrlBean;
+import com.rhg.qf.bean.IBaseModel;
 import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.bean.ShareModel;
 import com.rhg.qf.bean.ShoppingCartBean;
@@ -105,7 +106,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     String openid;
     String unionid;
     String headImageUrl;
-    AddressUrlBean.AddressBean addressBean;
+    BaseAddress addressBean;
 
     private boolean isNeedLoc;
     private String location;
@@ -279,14 +280,16 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
             return;
         }
-        if (o instanceof AddressUrlBean.AddressBean) {
-            addressBean = (AddressUrlBean.AddressBean) o;
+        if (o instanceof IBaseModel) {
+            if (((IBaseModel) o).getEntity().size() == 0) {
+                Intent intent = new Intent(this, AddressActivity.class);
+                intent.setAction(AppConstants.ADDRESS_DEFAULT);
+                startActivityForResult(intent, 0);
+                return;
+            }
+
+            addressBean = (BaseAddress) ((IBaseModel) o).getEntity().get(0);
             createOrderAndToPay(addressBean);
-        }
-        if (addressBean == null) {
-            Intent intent = new Intent(this, AddressActivity.class);
-            intent.setAction(AppConstants.ADDRESS_DEFAULT);
-            startActivityForResult(intent, 0);
         }
 
     }
@@ -417,7 +420,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
                     ToastHelper.getInstance().displayToastWithQuickClose("未选择商品数量");
                     return;
                 }
-                if (!AccountUtil.getInstance().hasAccount()) {
+                if (!AccountUtil.getInstance().hasUserAccount()) {
                     signInDialogShow("当前用户未登录，请登录！");
                 } else {
                     /*todo 调用获取默认地址接口*/
@@ -471,13 +474,14 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         });
     }
 
-    private void createOrderAndToPay(AddressUrlBean.AddressBean addressBean) {
+    private void createOrderAndToPay(BaseAddress addressBean) {
         Intent intent = new Intent(GoodsDetailActivity.this,
                 PayActivity.class);
         PayModel payModel = new PayModel();
-        payModel.setReceiver(addressBean.getName());
+        payModel.setName(addressBean.getName());
         payModel.setPhone(addressBean.getPhone());
-        payModel.setAddress(addressBean.getAddress().concat(addressBean.getDetail()));
+        payModel.setAddress(addressBean.getAddress());
+        payModel.setDetail(addressBean.getDetail());
         ArrayList<PayModel.PayBean> payBeen = new ArrayList<>();
         PayModel.PayBean _pay = new PayModel.PayBean();
         _pay.setMerchantName(merchantName);

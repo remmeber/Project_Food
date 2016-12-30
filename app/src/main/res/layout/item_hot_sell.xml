@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_shop_green" />
+            android:src="@drawable/ic_shop_blue" />
 
         <TextView
             android:id="@+id/hot_sell_merchant_name"

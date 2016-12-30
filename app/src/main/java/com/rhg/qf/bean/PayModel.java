@@ -11,69 +11,9 @@ import java.util.ArrayList;
  * time：2016/7/11 0:10
  * email：1013773046@qq.com
  */
-public class PayModel implements Parcelable {
-    public static final Creator<PayModel> CREATOR = new Creator<PayModel>() {
-        @Override
-        public PayModel createFromParcel(Parcel in) {
-            return new PayModel(in);
-        }
+public class PayModel extends BaseAddress {
 
-        @Override
-        public PayModel[] newArray(int size) {
-            return new PayModel[size];
-        }
-    };
-    public String receiver;
-    public String phone;
-    public String address;
     public ArrayList<PayBean> payBeanList;
-
-    public PayModel() {
-    }
-
-    protected PayModel(Parcel in) {
-        receiver = in.readString();
-        phone = in.readString();
-        address = in.readString();
-        payBeanList = in.readArrayList(PayBean.class.getClassLoader());
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(receiver);
-        dest.writeString(phone);
-        dest.writeString(address);
-        dest.writeList(payBeanList);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public ArrayList<PayBean> getPayBeanList() {
         return payBeanList;
@@ -82,6 +22,38 @@ public class PayModel implements Parcelable {
     public void setPayBeanList(ArrayList<PayBean> payBeanList) {
         this.payBeanList = payBeanList;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeTypedList(this.payBeanList);
+    }
+
+    public PayModel() {
+    }
+
+    protected PayModel(Parcel in) {
+        super(in);
+        this.payBeanList = in.createTypedArrayList(PayBean.CREATOR);
+    }
+
+    public static final Creator<PayModel> CREATOR = new Creator<PayModel>() {
+        @Override
+        public PayModel createFromParcel(Parcel source) {
+            return new PayModel(source);
+        }
+
+        @Override
+        public PayModel[] newArray(int size) {
+            return new PayModel[size];
+        }
+    };
 
     public static class PayBean implements Parcelable {
         public static final Creator<PayBean> CREATOR = new Creator<PayBean>() {

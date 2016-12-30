@@ -15,6 +15,8 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
+import com.rhg.qf.constants.AppConstants;
+
 /*
  *desc 自定义侧滑删除
  *author rhg
@@ -86,10 +88,12 @@ public class SwipeDeleteLayout extends LinearLayout {
                     }
                     if (Math.abs(dy) > Math.abs(dx) && state == SHRINK) {//垂直滑动
                         allowParentsInterceptTouchEvent(getParent());
-                        Log.i("RHG", "MOVE DONE VERTICAL");
+                        if (AppConstants.DEBUG)
+                            Log.i("RHG", "MOVE DONE VERTICAL");
                         intercept = false;
                     } else if (Math.abs(dx) / Math.abs(dy) >= 2) {//水平滑动
-                        Log.i("RHG", "MOVE DONE HORIZONTAL");
+                        if (AppConstants.DEBUG)
+                            Log.i("RHG", "MOVE DONE HORIZONTAL");
                         disallowParentsInterceptTouchEvent(getParent());
                         intercept = true;
                         setExpandedView(this);
@@ -213,16 +217,19 @@ public class SwipeDeleteLayout extends LinearLayout {
             postInvalidate();
         } else {
             if (getScrollX() == 0) {
-                Log.i("RHG", "shrink.....");
+                if (AppConstants.DEBUG)
+                    Log.i("RHG", "shrink.....");
                 intercept = false;
                 state = SHRINK;
                 setExpandedView(null);
             } else if (getScrollX() == rightWidth) {
-                Log.i("RHG", "expand.....");
+                if (AppConstants.DEBUG)
+                    Log.i("RHG", "expand.....");
                 setExpandedView(this);
                 state = EXPAND;
             } else {
-                Log.i("RHG", "expanding.....");
+                if (AppConstants.DEBUG)
+                    Log.i("RHG", "expanding.....");
                 state = EXPANDING;
             }
 
@@ -241,7 +248,6 @@ public class SwipeDeleteLayout extends LinearLayout {
     }
 
     private void disallowParentsInterceptTouchEvent(ViewParent parent) {
-        Log.i("RHG", "disallow.....");
         if (null == parent) {
             return;
         }
@@ -249,7 +255,6 @@ public class SwipeDeleteLayout extends LinearLayout {
     }
 
     private void allowParentsInterceptTouchEvent(ViewParent parent) {
-        Log.i("RHG", "allow.....");
         if (null == parent) {
             return;
         }

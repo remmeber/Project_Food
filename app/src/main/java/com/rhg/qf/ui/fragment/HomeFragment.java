@@ -9,22 +9,28 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.QFoodGridViewAdapter;
-import com.rhg.qf.adapter.RecycleMultiTypeAdapter;
+import com.rhg.qf.adapter.MainAdapter;
+import com.rhg.qf.adapter.WrapperAdapter;
+import com.rhg.qf.adapter.viewHolder.BannerTypeViewHolder;
+import com.rhg.qf.adapter.viewHolder.HomeShopViewHolder;
+import com.rhg.qf.adapter.viewHolder.FooterHolder;
+import com.rhg.qf.adapter.viewHolder.GridViewHolder;
+import com.rhg.qf.adapter.viewHolder.IndTypeViewHolder;
 import com.rhg.qf.application.InitApplication;
-import com.rhg.qf.bean.BannerTypeBean;
 import com.rhg.qf.bean.BannerTypeUrlBean;
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.FavorableFoodUrlBean;
-import com.rhg.qf.bean.FavorableTypeModel;
-import com.rhg.qf.bean.FooterTypeModel;
 import com.rhg.qf.bean.HomeBean;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.bean.MerchantUrlBean;
-import com.rhg.qf.bean.RecommendListTypeModel;
-import com.rhg.qf.bean.TextTypeBean;
 import com.rhg.qf.constants.AppConstants;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.HomePresenter;
@@ -52,32 +58,32 @@ import butterknife.OnClick;
  * time：2016/5/28 16:44
  * email：1013773046@qq.com
  */
-public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapter.OnTypeClick {
-
-    FavorableTypeModel favorableTypeModel;
-    BannerTypeBean bannerTypeBean;
-    TextTypeBean textTypeBean;
-    RecommendListTypeModel recommendListTypeModel;
-    RecycleMultiTypeAdapter recycleMultiTypeAdapter;
-
-    HomePresenter homePresenter;
-    MyLocationListener myLocationListener;
-
-    List<Object> mData;
-    boolean isLocated;
-    boolean firstLoc;
-
+public class HomeFragment extends BaseFragment implements OnItemClickListener<IBaseModel> {
     @Bind(R.id.home_recycle)
     RecyclerView home_rcv;
     @Bind(R.id.home_swipe)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    CommonListModel<BannerTypeUrlBean.BannerEntity> bannerModel;
+    CommonListModel<FavorableFoodUrlBean.FavorableFoodEntity> favorableTypeModel;
+    CommonListModel<MerchantUrlBean.MerchantBean> commonListModel;
+
+
+    WrapperAdapter<IBaseModel> recycleMultiTypeAdapter;
+
+    HomePresenter homePresenter;
+    MyLocationListener myLocationListener;
+
+
+    boolean isLocated;
+    boolean firstLoc;
+
     public HomeFragment() {
         myLocationListener = new MyLocationListener(this);
-        favorableTypeModel = new FavorableTypeModel();
-        bannerTypeBean = new BannerTypeBean();
-        textTypeBean = new TextTypeBean();
-        recommendListTypeModel = new RecommendListTypeModel();
+        favorableTypeModel = new CommonListModel<>();
+//        indTypeModel = new CommonListModel<>();
+        commonListModel = new CommonListModel<>();
+        bannerModel = new CommonListModel<>();
     }
 
     @Override
@@ -88,6 +94,7 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
 
     @Override
     protected void initView(View view) {
+
     }
 
     @Override
@@ -143,16 +150,21 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
 
     @Override
     protected void initData() {
-        mData = new ArrayList<>();
-        recycleMultiTypeAdapter = new RecycleMultiTypeAdapter(getContext(), mData);
-        recycleMultiTypeAdapter.setOnTypeClick(this);
-        initList();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         home_rcv.setLayoutManager(linearLayoutManager);
         home_rcv.setHasFixedSize(false);
         home_rcv.addItemDecoration(new RecycleViewDivider(getContext(),
                 LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(2),
                 ContextCompat.getColor(getContext(), R.color.colorBackground)));
+        MainAdapter<IBaseModel> mainAdapter = new MainAdapter<>(
+                new InflateModel(new Class<?>[]{HomeShopViewHolder.class, View.class}, new Object[]{R.layout.item_sell_home}),
+                commonListModel,
+                this);
+        recycleMultiTypeAdapter = new WrapperAdapter<>(mainAdapter, this);
+        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{BannerTypeViewHolder.class,View.class}, new Object[]{R.layout.item_banner}), bannerModel);
+        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{IndTypeViewHolder.class,View.class}, new Object[]{R.layout.person_todayrec_rcv}));
+        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{GridViewHolder.class,View.class}, new Object[]{R.layout.grid_type_layout}), favorableTypeModel);
+        recycleMultiTypeAdapter.addFooterViews(new InflateModel(new Class[]{FooterHolder.class,View.class}, new Object[]{R.layout.rcv_footer_layout}));
         home_rcv.setAdapter(recycleMultiTypeAdapter);
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -171,7 +183,6 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
 
     @Override
     public LocationService GetMapService() {
-//        progressBar.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setRefreshing(true);
         return InitApplication.getInstance().locationService;
     }
@@ -183,35 +194,22 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        recycleMultiTypeAdapter.startBanner();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        recycleMultiTypeAdapter.stopBanner();
-    }
-
-    @Override
     protected void showFailed() {
     }
 
 
     @Override
     public void showSuccess(Object o) {
-        HomeBean _homeBean = (HomeBean) o;
-
-        bannerTypeBean.setBannerEntityList(_homeBean.getBannerEntityList());
-        favorableTypeModel.setFavorableFoodBeen(_homeBean.getFavorableFoodEntityList());
-        recommendListTypeModel.setRecommendShopBeanEntity(_homeBean.getRecommendShopBeanEntityList());
-        textTypeBean.setTitle(_homeBean.getTextTypeBean().getTitle());
-        recycleMultiTypeAdapter.notifyDataSetChanged();
+        if (o instanceof HomeBean) {
+            HomeBean _homeBean = (HomeBean) o;
+            bannerModel.setRecommendShopBeanEntity(_homeBean.getBannerEntityList());
+            favorableTypeModel.setRecommendShopBeanEntity(_homeBean.getFavorableFoodEntityList());
+            commonListModel.setRecommendShopBeanEntity(_homeBean.getRecommendShopBeanEntityList());
+            recycleMultiTypeAdapter.notifyDataSetChanged();
+        }
         if (swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
     }
-
 
     /*定位显示*/
     @Override
@@ -230,18 +228,6 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
         ToastHelper.getInstance()._toast(s);
     }
 
-    private void initList() {
-//        mData.add(new HeaderTypeModel("Header", R.color.cardview_shadow_start_color));
-        mData.add(bannerTypeBean);
-        mData.add(textTypeBean);
-        favorableTypeModel.setDpGridViewAdapter(new QFoodGridViewAdapter(getContext(),
-                R.layout.item_grid_rcv));
-        mData.add(favorableTypeModel);
-        mData.add(recommendListTypeModel);
-        mData.add(new FooterTypeModel("FooterType", R.color.colorPrimaryDark));
-        recycleMultiTypeAdapter.notifyDataSetChanged();
-    }
-
     private void doSearch() {
         Intent _intent = new Intent(getActivity(), SearchActivity.class);
         _intent.putExtra(AppConstants.KEY_SEARCH_TAG, AppConstants.KEY_RESTAURANT_SEARCH);
@@ -251,36 +237,50 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
 
 
     @Override
-    public void bannerClick(View view, int position, BannerTypeUrlBean.BannerEntity bannerEntity) {
-        Intent intent = new Intent(getContext(), ShopDetailActivity.class);
-        intent.putExtra(AppConstants.KEY_MERCHANT_ID, bannerEntity.getID());
-        intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, bannerEntity.getSrc());
-        startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+    public void onItemClick(View view, int position, IBaseModel item) {
+        if (item == null) {
+            if (view.getId() == R.id.rl_person_order)
+                toPersonOrder();
+            else toRecommend();
+            return;
+        }
+        Object o = item.getEntity().get(0);
+        if (o instanceof BannerTypeUrlBean.BannerEntity) {
+            BannerTypeUrlBean.BannerEntity bannerEntity = (BannerTypeUrlBean.BannerEntity) item.getEntity().get(position);
+            Intent intent = new Intent(getContext(), ShopDetailActivity.class);
+            intent.putExtra(AppConstants.KEY_MERCHANT_ID, bannerEntity.getID());
+            intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, bannerEntity.getSrc());
+            startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+            return;
+        }
+        if (o instanceof FavorableFoodUrlBean.FavorableFoodEntity) {
+            FavorableFoodUrlBean.FavorableFoodEntity favorableFoodEntity = (FavorableFoodUrlBean.FavorableFoodEntity) item.getEntity().get(position);
+            Intent intent = new Intent(getContext(), HotFoodActivity.class);
+            intent.putExtra(AppConstants.KEY_PRODUCT_NAME, favorableFoodEntity.getTitle());
+            startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+            return;
+        }
+        if (o instanceof MerchantUrlBean.MerchantBean) {
+            Intent intent = new Intent(getContext(), ShopDetailActivity.class);
+            MerchantUrlBean.MerchantBean data = (MerchantUrlBean.MerchantBean) item.getEntity().get(position);
+            intent.putExtra(AppConstants.KEY_MERCHANT_ID, data.getID());
+            intent.putExtra(AppConstants.KEY_MERCHANT_NAME, data.getName());
+            intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, data.getPic());
+            startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+
+        }
     }
 
     @Override
-    public void gridItemClick(View view, FavorableFoodUrlBean.FavorableFoodEntity favorableFoodEntity) {
-        Intent intent = new Intent(getContext(), HotFoodActivity.class);
-        intent.putExtra(AppConstants.KEY_PRODUCT_NAME, favorableFoodEntity.getTitle());
-        startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
+    public void onItemLongClick(View view, int position, IBaseModel item) {
+
     }
 
-    @Override
-    public void onItemClickListener(View view, int position, MerchantUrlBean.MerchantBean item) {
-        Intent intent = new Intent(getContext(), ShopDetailActivity.class);
-        intent.putExtra(AppConstants.KEY_MERCHANT_ID, item.getID());
-        intent.putExtra(AppConstants.KEY_MERCHANT_NAME, item.getName());
-        intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, item.getPic());
-        startActivity(intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
-    }
-
-    @Override
-    public void toPersonOrder() {
+    private void toPersonOrder() {
         startActivity(new Intent(getContext(), PersonalOrderActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
-    @Override
-    public void toRecommend() {
+    private void toRecommend() {
         startActivity(new Intent(getContext(), RecommendActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
@@ -288,5 +288,4 @@ public class HomeFragment extends BaseFragment implements RecycleMultiTypeAdapte
     public void onClick() {
         doSearch();
     }
-
 }

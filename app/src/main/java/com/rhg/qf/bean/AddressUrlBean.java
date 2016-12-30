@@ -65,7 +65,7 @@ public class AddressUrlBean {
         this.rows = rows;
     }
 
-    public static class AddressBean implements Parcelable {
+    public static class AddressBean extends BaseAddress {
         public static final Parcelable.Creator<AddressBean> CREATOR = new Creator<AddressBean>() {
             @Override
             public AddressBean createFromParcel(Parcel source) {
@@ -79,30 +79,16 @@ public class AddressUrlBean {
         };
         private String ID;
         private String Client;
-        private String Name;
-        private String Phone;
-        private String Address;
         private String Default;
-        private String Detail;
 
         public AddressBean() {
         }
 
-        public AddressBean(String name, String phone, String address, String detail) {
-            Name = name;
-            Phone = phone;
-            Address = address;
-            Detail = detail;
-        }
 
         public AddressBean(Parcel source) {
             ID = source.readString();
             Client = source.readString();
-            Name = source.readString();
-            Phone = source.readString();
-            Address = source.readString();
             Default = source.readString();
-            Detail = source.readString();
         }
 
         public String getID() {
@@ -121,30 +107,6 @@ public class AddressUrlBean {
             this.Client = Client;
         }
 
-        public String getName() {
-            return Name;
-        }
-
-        public void setName(String Name) {
-            this.Name = Name;
-        }
-
-        public String getPhone() {
-            return Phone;
-        }
-
-        public void setPhone(String Phone) {
-            this.Phone = Phone;
-        }
-
-        public String getAddress() {
-            return Address;
-        }
-
-        public void setAddress(String Address) {
-            this.Address = Address;
-        }
-
         public String getDefault() {
             return Default;
         }
@@ -153,24 +115,12 @@ public class AddressUrlBean {
             this.Default = Default;
         }
 
-        public String getDetail() {
-            return Detail;
-        }
-
-        public void setDetail(String detail) {
-            Detail = detail;
-        }
-
         @Override
         public String toString() {
             return "AddressBean{" +
                     "ID='" + ID + '\'' +
                     ", Client='" + Client + '\'' +
-                    ", Name='" + Name + '\'' +
-                    ", Phone='" + Phone + '\'' +
-                    ", Address='" + Address + '\'' +
                     ", Default='" + Default + '\'' +
-                    ", Detail='" + Detail + '\'' +
                     '}';
         }
 
@@ -183,11 +133,7 @@ public class AddressUrlBean {
         public void writeToParcel(Parcel parcel, int flags) {
             parcel.writeString(ID);
             parcel.writeString(Client);
-            parcel.writeString(Name);
-            parcel.writeString(Phone);
-            parcel.writeString(Address);
             parcel.writeString(Default);
-            parcel.writeString(Detail);
         }
     }
 

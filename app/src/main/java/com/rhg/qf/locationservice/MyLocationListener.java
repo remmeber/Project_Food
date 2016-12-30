@@ -1,5 +1,7 @@
 package com.rhg.qf.locationservice;
 
+import android.util.Log;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.rhg.qf.mvp.model.LocModel;
@@ -13,8 +15,8 @@ import com.rhg.qf.utils.AccountUtil;
  * email：1013773046@qq.com
  */
 public class MyLocationListener implements BDLocationListener {
-    BaseView baseView;
-    LocModel locModel;
+    private BaseView baseView;
+    private LocModel locModel;
 
     public MyLocationListener(BaseView baseView) {
         this.baseView = baseView;

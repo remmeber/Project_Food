@@ -46,7 +46,7 @@ public class OrderDetailModel {
                             newFood.setRName(foodsBean.get(i).getRName());
                             foodsBean.add(i, newFood);
                         }
-                        orderDetailUrlBean.getRows().get(0).setIndex(index);/*目的是设置一个订单中不同商家的位置*/
+//                        foodsBean.setIndex(index);/*目的是设置一个订单中不同商家的位置*/
                         return Observable.just(orderDetailUrlBean.getRows().get(0));
                     }
                 });

@@ -2,7 +2,7 @@ package com.rhg.qf.mvp.presenter;
 
 import android.util.Log;
 
-import com.rhg.qf.bean.NewOrderBackModel;
+import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.mvp.model.NewOrderModel;
 import com.rhg.qf.mvp.view.BaseView;
@@ -29,7 +29,7 @@ public class NewOrderPresenter {
     public void createNewOrder(NewOrderBean newOrderBean) {
         createNewOrderModel.createNewOrder(newOrderBean).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<NewOrderBackModel>() {
+                .subscribe(new Observer<NewOrderBackBean>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -40,11 +40,9 @@ public class NewOrderPresenter {
                     }
 
                     @Override
-                    public void onNext(NewOrderBackModel s) {
+                    public void onNext(NewOrderBackBean s) {
 
                         if (s.getResult() == 0) {
-                            if (s.getRows() == null)
-                                return;
                             createNewOrderView.showData(s);
                         } else
                             createNewOrderView.showData("new_order_error");

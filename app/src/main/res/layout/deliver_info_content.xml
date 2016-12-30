@@ -130,7 +130,7 @@
         android:text="@string/tvSave"
         android:textSize="@dimen/text_big" />
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/bt_exit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,5 +144,5 @@
         android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
         android:text="@string/tvExit"
-        android:textSize="@dimen/text_big" />
+        android:textSize="@dimen/text_big" />-->
 </LinearLayout>

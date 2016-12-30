@@ -1,10 +1,9 @@
 package com.rhg.qf.mvp.presenter;
 
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.mvp.model.MerchantsModel;
 import com.rhg.qf.mvp.view.BaseView;
-
-import java.util.List;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,7 +27,7 @@ public class MerchantsPresenter {
     public void getMerchants(String table, int page) {
         merchantsModel.getMerchants(table, page).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<MerchantUrlBean.MerchantBean>>() {
+                .subscribe(new Observer<CommonListModel<MerchantUrlBean.MerchantBean>>() {
                     @Override
                     public void onCompleted() {
 
@@ -40,7 +39,7 @@ public class MerchantsPresenter {
                     }
 
                     @Override
-                    public void onNext(List<MerchantUrlBean.MerchantBean> merchantBeanList) {
+                    public void onNext(CommonListModel<MerchantUrlBean.MerchantBean> merchantBeanList) {
                         getMerchantsPresenter.showData(merchantBeanList);
                     }
                 });

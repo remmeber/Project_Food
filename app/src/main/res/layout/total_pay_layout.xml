@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+
+    <View
+        android:background="@color/black_deep"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"/>
+
+    <TextView
+        android:id="@+id/total_food_money"
+        android:layout_marginTop="@dimen/margin_little"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_little"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        tools:text="总需支付：dddd" />
+
+    <TextView
+        android:id="@+id/total_deliver_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/total_food_money"
+        android:layout_alignRight="@id/total_food_money"
+        android:layout_below="@id/total_food_money"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorTextOrder"
+        tools:text="跑腿费：dddd" />
+
+    <View
+        android:layout_below="@id/total_deliver_money"
+        android:layout_marginTop="@dimen/margin_little"
+        android:background="@color/black_deep"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"/>
+
+
+</RelativeLayout>
