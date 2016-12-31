@@ -45,15 +45,14 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Explode explode = new Explode();
             explode.setDuration(1000);
             getWindow().setExitTransition(explode);
         }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
+
+
         setContentView(getLayoutResId());
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -102,10 +101,12 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         onGrant();
     }
 
+    /*授权成功回调*/
     public void onGrant() {
 
     }
 
+    /*授权失败回调*/
     public void onDeny(String permission) {
 
     }
