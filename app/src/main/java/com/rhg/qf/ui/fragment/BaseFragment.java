@@ -32,6 +32,8 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment implements BaseView {
     private boolean isViewPrepare = false;
     boolean hasFetchData = false;
+    boolean isLocating = false;
+    boolean isFirstLoad = true;
     //TODO 百度地图
     private LocationService locationService;
     private MyLocationListener mLocationListener;
@@ -87,7 +89,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         if (AppConstants.DEBUG)
             Log.i("RHG", "...........onStart");
         if (getUserVisibleHint() && hasFetchData) {
-            refresh();
+            if (!isFirstLoad)
+                refresh();
+            else isFirstLoad = false;
         }
     }
 
@@ -158,20 +162,25 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     protected void startLoc() {
+        if (!isLocating) {
+            isLocating = true;
+        } else return;
         if ((locationService = GetMapService()) != null) {
             if ((mLocationListener = getLocationListener()) != null) {
                 locationService.registerListener(mLocationListener);
-                locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-                mLocationListener.getLocation(locationService);
-            }else
+//                locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+//                mLocationListener.getLocation(locationService);
+                locationService.start();
+            } else
                 Log.i("RHG", "mLocationListener is null");
 
-        }else
+        } else
             Log.i("RHG", "locationService is null");
     }
 
     public void reStartLocation() {
-        if (locationService == null) {
+        locationService.start();
+        /*if (locationService == null) {
             locationService = GetMapService();
         }
         if (mLocationListener == null) {
@@ -179,7 +188,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         }
         locationService.setLocationOption(locationService.getDefaultLocationClientOption());
         locationService.registerListener(mLocationListener);
-        mLocationListener.getLocation(locationService);
+        mLocationListener.getLocation(locationService);*/
     }
 
     public MyLocationListener getLocationListener() {
@@ -221,6 +230,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
                     showLocSuccess(location_str[3]);
                 if (locationService != null) {
                     locationService.stop();
+//                    locationService.unregisterListener(mLocationListener);
                 }
             } else {
                 showSuccess(_str);
@@ -272,7 +282,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
 
     public abstract void showSuccess(Object o);
-
 
 
 }

@@ -143,12 +143,13 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
     protected void refresh() {
         //firstLoc 必须在startLoc方法调用后置位，在6.0以上的系统中，必须授权后再调用startLoc方法，
         //reStartLocation也必须在startLoc方法调用过一次后才能调用。
+//        startLoc();
         if ("".equals(AccountUtil.getInstance().getLatitude())) {
             isLocated = false;
         }
         if (firstLoc && !isLocated) {
             reStartLocation();
-        } else {/*如果定位过了，直接可以进行数据获取*/
+        } else {//如果定位过了，直接可以进行数据获取
             if (homePresenter == null)
                 homePresenter = new HomePresenter(HomeFragment.this);
             homePresenter.getHomeData(AppConstants.HOME_RESTAURANTS);
@@ -177,7 +178,8 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refresh();
+//                refresh();
+                reStartLocation();
             }
         });
     }
@@ -216,6 +218,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
     @Override
     public void showLocSuccess(String s) {
         isLocated = true;
+
         AccountUtil.getInstance().setLocation(s);
         if (homePresenter == null)
             homePresenter = new HomePresenter(this);

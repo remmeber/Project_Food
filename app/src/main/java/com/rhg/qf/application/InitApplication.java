@@ -80,9 +80,9 @@ public class InitApplication extends MultiDexApplication implements Runnable {
 
     @Override
     public void onCreate() {
-        initBDMap();
         super.onCreate();
         initApplication = this;
+        initBDMap();
         new Thread(this).run();
     }
 

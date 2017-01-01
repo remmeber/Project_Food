@@ -42,6 +42,11 @@
                 <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
         </service>
+        <!-- 百度地图 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="UpBciy8RVrNw0BdUfBuKwFOFaRjX68p8 " />
+        <!-- 百度地图 -->
         <service android:name="com.easemob.chat.EMChatService" />
 
         <activity
@@ -108,8 +113,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ChatActivity"
-            android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.PersonalOrderActivity"
@@ -186,11 +191,6 @@
         <!-- QQ -->
 
 
-        <!-- 百度地图 -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="ijOaztzOP7BulWMvV2ViIgqXMKLeC6UF" />
-        <!-- 百度地图 -->
         <!-- Umeng KEY -->
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
@@ -214,7 +214,7 @@
             android:value="@string/app_name" />
         <!-- Umeng KEY -->
 
-        <activity android:name=".ui.activity.RecommendActivity"/>
+        <activity android:name=".ui.activity.RecommendActivity" />
     </application>
 
 </manifest>

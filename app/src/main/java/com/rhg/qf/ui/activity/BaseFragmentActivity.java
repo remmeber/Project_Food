@@ -162,7 +162,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
     }
 
     public MyLocationListener getLocationListener() {
-        return new MyLocationListener(this);
+        return null;
     }
 
     /*public void getLocation(LocationService locationService, MyLocationListener mLocationListener) {
@@ -171,7 +171,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements B
 
     /*默认不定位，如果需要定位，子类需要重写该方法*/
     public LocationService GetMapService() {
-        return InitApplication.getInstance().locationService;
+        return null;
     }
 
     public void dataReceive(Intent intent) {
