@@ -63,10 +63,6 @@ public class CustomerHelper {
         // 获取EaseUI单例对象，为后边设置做准备
         mEaseUI = EaseUI.getInstance();
 
-        // 初始化设置EaseUI定义的一些提供者
-        setEaseUIProviders();
-        // 全局监听消息方法
-        registerEventListener();
     }
 
     /**
@@ -149,7 +145,7 @@ public class CustomerHelper {
      * 全局的消息监听事件，这里的监听会一直执行，所以要判断一下程序是否在前台运行阶段，
      * 如果在前台就让前台界面的监听去处理消息（比如MainActivity、ChatActivity里的onEvent）
      */
-    private void registerEventListener() {
+    public void registerEventListener() {
         EMEventListener eventListener = new EMEventListener() {
             @Override
             public void onEvent(EMNotifierEvent emNotifierEvent) {

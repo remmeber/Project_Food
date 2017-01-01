@@ -28,6 +28,7 @@ import com.rhg.qf.mvp.presenter.NewOrderPresenter;
 import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.CustomerHelper;
 import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.ToastHelper;
 
@@ -54,6 +55,9 @@ public class ChatActivity extends EaseBaseActivity implements BaseView{
         super.onCreate(arg0);
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
+
+        CustomerHelper.getInstance().setEaseUIProviders();
+        CustomerHelper.getInstance().registerEventListener();
 
         activityInstance = this;
         uname = "QF" + dealUName(AccountUtil.getInstance().getNickName());

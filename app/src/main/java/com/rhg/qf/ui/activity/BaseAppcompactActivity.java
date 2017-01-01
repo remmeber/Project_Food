@@ -45,11 +45,14 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Explode explode = new Explode();
-            explode.setDuration(1000);
-            getWindow().setExitTransition(explode);
+
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+            android.transition.Fade fade = new android.transition.Fade();
+            fade.setDuration(500);
+            getWindow().setEnterTransition(fade);
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
 
 

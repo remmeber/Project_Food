@@ -48,12 +48,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_sent_message.xml"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_activity_baidumap.xml",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_activity_baidumap.xml"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_row_received_picture.xml",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_received_picture.xml"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_activity_baidumap.xml",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_activity_baidumap.xml"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\layout\\ease_row_received_file.xml",

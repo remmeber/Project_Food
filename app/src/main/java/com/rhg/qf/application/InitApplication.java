@@ -7,6 +7,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.easemob.easeui.controller.EaseUI;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LimitedAgeMemoryCache;
@@ -140,6 +141,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         initImageLoader();
         initToast();
         thirdConfig();
+        EaseUI.getInstance().init(this);
         CustomerHelper.getInstance().init(this);
         File file = new File(getFilesDir().getPath() + "/" + fileName);
         if (file.exists()) {

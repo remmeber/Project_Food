@@ -45,7 +45,8 @@
         <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="UpBciy8RVrNw0BdUfBuKwFOFaRjX68p8 " />
+            android:value="UpBciy8RVrNw0BdUfBuKwFOFaRjX68p8" />
+
         <!-- 百度地图 -->
         <service android:name="com.easemob.chat.EMChatService" />
 
