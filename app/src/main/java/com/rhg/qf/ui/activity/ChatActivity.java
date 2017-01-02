@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChatActivity extends EaseBaseActivity implements BaseView{
+public class ChatActivity extends EaseBaseActivity implements BaseView {
     public static ChatActivity activityInstance;
     String toChatUsername;
     String uname;
@@ -56,8 +56,8 @@ public class ChatActivity extends EaseBaseActivity implements BaseView{
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
 
-        CustomerHelper.getInstance().setEaseUIProviders();
-        CustomerHelper.getInstance().registerEventListener();
+/*        CustomerHelper.getInstance().setEaseUIProviders();
+        CustomerHelper.getInstance().registerEventListener();*/
 
         activityInstance = this;
         uname = "QF" + dealUName(AccountUtil.getInstance().getNickName());
@@ -177,7 +177,6 @@ public class ChatActivity extends EaseBaseActivity implements BaseView{
         EMChatManager.getInstance().login(nickName, pwd, new EMCallBack() {
             @Override
             public void onSuccess() {
-                //Log.i("RHG", "登录成功");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -244,6 +243,7 @@ public class ChatActivity extends EaseBaseActivity implements BaseView{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         activityInstance = null;
     }
 
@@ -317,7 +317,6 @@ public class ChatActivity extends EaseBaseActivity implements BaseView{
         _orderBean.setPrice("1");
         return _orderBean;
     }
-
 
 
     private List<NewOrderBean.FoodBean> getFoodList() {

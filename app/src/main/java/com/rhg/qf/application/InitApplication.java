@@ -142,7 +142,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         initToast();
         thirdConfig();
         EaseUI.getInstance().init(this);
-        CustomerHelper.getInstance().init(this);
+//        CustomerHelper.getInstance().init(this);
         File file = new File(getFilesDir().getPath() + "/" + fileName);
         if (file.exists()) {
             try {

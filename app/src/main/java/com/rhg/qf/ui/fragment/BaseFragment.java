@@ -179,8 +179,8 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     public void reStartLocation() {
-        locationService.start();
-        /*if (locationService == null) {
+//        locationService.start();
+        if (locationService == null) {
             locationService = GetMapService();
         }
         if (mLocationListener == null) {
@@ -188,7 +188,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         }
         locationService.setLocationOption(locationService.getDefaultLocationClientOption());
         locationService.registerListener(mLocationListener);
-        mLocationListener.getLocation(locationService);*/
+        mLocationListener.getLocation(locationService);
     }
 
     public MyLocationListener getLocationListener() {
