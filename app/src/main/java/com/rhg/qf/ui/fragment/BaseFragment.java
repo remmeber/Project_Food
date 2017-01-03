@@ -235,7 +235,6 @@ public abstract class BaseFragment<T extends RxPresenter<? extends IView>> exten
         }
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

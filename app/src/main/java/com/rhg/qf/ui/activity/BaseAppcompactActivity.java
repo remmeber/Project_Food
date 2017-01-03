@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Explode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -47,7 +46,7 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             android.transition.Fade fade = new android.transition.Fade();
             fade.setDuration(500);
             getWindow().setEnterTransition(fade);
@@ -86,7 +85,7 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         if (!PermissionsManager.getInstance().hasAllPermissions(this, permissions)) {
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                     permissions, null);
-        }else
+        } else
             onGrant();
     }
 
@@ -114,6 +113,13 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
 
     }
 
+    /*activity从后台切回来时被调用*/
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    /*可见可交互*/
     @Override
     protected void onResume() {
         super.onResume();
@@ -197,6 +203,11 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         return super.onTouchEvent(event);
     }
 
+    /*当activity被透明或者带有dialog样式的activity覆盖时，会调用该方法；单纯dialog覆盖不会调用该方法*/
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     @Override
     protected void onDestroy() {
