@@ -2,9 +2,13 @@ package com.rhg.qf.mvp.presenter;
 
 import com.rhg.qf.mvp.model.UserSignUpModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -24,6 +28,17 @@ public class UserSignUpPresenter {
 
     public void userSignUp(String openid, String unionid, String headimageurl, String nickName) {
         userSignUpModel.userSignUp(openid, unionid, headimageurl, nickName).observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, String>() {
+                    @Override
+                    public String call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<String>() {
                     @Override

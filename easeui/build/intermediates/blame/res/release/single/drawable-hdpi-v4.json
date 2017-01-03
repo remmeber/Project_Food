@@ -24,12 +24,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_settings_normal.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_search_bar_icon_normal.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_search_bar_icon_normal.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_31.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_31.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_search_bar_icon_normal.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_search_bar_icon_normal.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_15.png",
@@ -80,12 +80,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_input_bar_bg_active.9.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_33.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_33.png"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_28.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_28.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_33.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_33.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_chatting_biaoqing_btn_normal.png",
@@ -120,20 +120,20 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_show_head_toast_bg.9.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_input_bar_bg_normal.9.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_input_bar_bg_normal.9.png"
-    },
-    {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_6.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_6.png"
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_dx_checkbox_gray_on.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_dx_checkbox_gray_on.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_34.png",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_34.png"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_dx_checkbox_gray_on.png",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_dx_checkbox_gray_on.png"
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ee_6.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_6.png"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_input_bar_bg_normal.9.png",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_input_bar_bg_normal.9.png"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ease_new_friends_icon.png",

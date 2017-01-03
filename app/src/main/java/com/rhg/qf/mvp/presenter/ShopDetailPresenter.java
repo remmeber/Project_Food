@@ -3,9 +3,13 @@ package com.rhg.qf.mvp.presenter;
 import com.rhg.qf.bean.ShopDetailLocalModel;
 import com.rhg.qf.mvp.model.ShopDetailModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -25,6 +29,17 @@ public class ShopDetailPresenter {
 
     public void getShopDetail(String table, String merchantId) {
         shopDetailModel.getShopDetail(table, merchantId).observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, ShopDetailLocalModel>() {
+                    @Override
+                    public ShopDetailLocalModel call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<ShopDetailLocalModel>() {
                     @Override

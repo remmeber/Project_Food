@@ -13,14 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rhg.qf.application.InitApplication;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
+import com.rhg.qf.mvp.base.IView;
+import com.rhg.qf.mvp.base.RxPresenter;
 import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.utils.NetUtil;
 import com.rhg.qf.utils.ToastHelper;
 
 import butterknife.ButterKnife;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 
 /**
@@ -29,10 +34,11 @@ import butterknife.ButterKnife;
  * time：2016/5/28 16:45
  * email：1013773046@qq.com
  */
-public abstract class BaseFragment extends Fragment implements BaseView {
+public abstract class BaseFragment<T extends RxPresenter<? extends IView>> extends Fragment implements BaseView {
+    protected T presenter;
+
     private boolean isViewPrepare = false;
     boolean hasFetchData = false;
-    boolean isLocating = false;
     boolean isFirstLoad = true;
     //TODO 百度地图
     private LocationService locationService;
@@ -43,7 +49,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public BaseFragment() {
     }
 
-    // TODO: 子类重写该方法，获取数据的统一入口
     public void receiveData(Bundle arguments) {
         if (AppConstants.DEBUG)
             Log.i("RHG", "...........receiveData");
@@ -162,42 +167,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     protected void startLoc() {
-        if (!isLocating) {
-            isLocating = true;
-        } else return;
-        if ((locationService = GetMapService()) != null) {
-            if ((mLocationListener = getLocationListener()) != null) {
-                locationService.registerListener(mLocationListener);
-//                locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-//                mLocationListener.getLocation(locationService);
-                locationService.start();
-            } else
-                Log.i("RHG", "mLocationListener is null");
-
-        } else
-            Log.i("RHG", "locationService is null");
-    }
-
-    public void reStartLocation() {
-//        locationService.start();
         if (locationService == null) {
-            locationService = GetMapService();
+            locationService = InitApplication.getInstance().locationService;
         }
         if (mLocationListener == null) {
-            mLocationListener = getLocationListener();
+            mLocationListener = new MyLocationListener(this);
         }
         locationService.setLocationOption(locationService.getDefaultLocationClientOption());
         locationService.registerListener(mLocationListener);
-        mLocationListener.getLocation(locationService);
-    }
-
-    public MyLocationListener getLocationListener() {
-        return null;
-    }
-
-    /*默认不定位，如果需要定位，子类需要重写该方法*/
-    public LocationService GetMapService() {
-        return null;
+        locationService.start();
     }
 
     /**
@@ -246,18 +224,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void showLocFailed(String s) {
     }
 
-    /*@Override
-    public void onStop() {
-        super.onStop();
-        if (locationService != null) {
-            locationService.unregisterListener(mLocationListener); //注销掉监听
-            locationService.stop(); //停止定位服务
-        }
-    }*/
 
     @Override
     public void onPause() {
         super.onPause();
+
         if (locationService != null) {
             locationService.unregisterListener(mLocationListener); //注销掉监听
             locationService.stop(); //停止定位服务
@@ -268,6 +239,8 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        locationService = null;
+        mLocationListener = null;
         isViewPrepare = false;
         hasFetchData = false;
     }
@@ -278,10 +251,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         ButterKnife.unbind(this);
     }
 
-    protected abstract void showFailed();
+    protected void showFailed(){};
 
 
-    public abstract void showSuccess(Object o);
+    public void showSuccess(Object o) {}
 
 
 }

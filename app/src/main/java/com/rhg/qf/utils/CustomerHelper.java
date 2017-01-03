@@ -84,7 +84,7 @@ public class CustomerHelper {
                 if (message.getFrom().equals(MLSPUtil.get(mContext, "im", ""))) {
                     return "客服: " + ticker;
                 } else {
-                    return message.getFrom() + ": " + ticker;
+                    return "家家美食客服: " + ticker;
                 }
             }
 

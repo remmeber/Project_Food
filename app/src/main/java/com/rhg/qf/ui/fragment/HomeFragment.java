@@ -1,6 +1,7 @@
 package com.rhg.qf.ui.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -9,19 +10,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.MainAdapter;
 import com.rhg.qf.adapter.WrapperAdapter;
 import com.rhg.qf.adapter.viewHolder.BannerTypeViewHolder;
-import com.rhg.qf.adapter.viewHolder.HomeShopViewHolder;
 import com.rhg.qf.adapter.viewHolder.FooterHolder;
 import com.rhg.qf.adapter.viewHolder.GridViewHolder;
+import com.rhg.qf.adapter.viewHolder.HomeShopViewHolder;
 import com.rhg.qf.adapter.viewHolder.IndTypeViewHolder;
-import com.rhg.qf.application.InitApplication;
 import com.rhg.qf.bean.BannerTypeUrlBean;
 import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.FavorableFoodUrlBean;
@@ -31,9 +29,9 @@ import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.impl.OnItemClickListener;
-import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.HomePresenter;
+import com.rhg.qf.mvp.presenter.contact.HomeContact;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.runtimepermissions.PermissionsResultAction;
 import com.rhg.qf.ui.activity.HotFoodActivity;
@@ -46,9 +44,6 @@ import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.RecycleViewDivider;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -58,7 +53,7 @@ import butterknife.OnClick;
  * time：2016/5/28 16:44
  * email：1013773046@qq.com
  */
-public class HomeFragment extends BaseFragment implements OnItemClickListener<IBaseModel> {
+public class HomeFragment extends BaseFragment<HomePresenter> implements OnItemClickListener<IBaseModel>, HomeContact.View<HomeBean> {
     @Bind(R.id.home_recycle)
     RecyclerView home_rcv;
     @Bind(R.id.home_swipe)
@@ -71,7 +66,6 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
 
     WrapperAdapter<IBaseModel> recycleMultiTypeAdapter;
 
-    HomePresenter homePresenter;
     MyLocationListener myLocationListener;
 
 
@@ -81,9 +75,25 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
     public HomeFragment() {
         myLocationListener = new MyLocationListener(this);
         favorableTypeModel = new CommonListModel<>();
-//        indTypeModel = new CommonListModel<>();
         commonListModel = new CommonListModel<>();
         bannerModel = new CommonListModel<>();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (presenter == null) {
+            presenter = new HomePresenter();
+        }
+        presenter.attachView(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (presenter != null) {
+            presenter.detachView();
+        }
     }
 
     @Override
@@ -109,7 +119,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
                         new PermissionsResultAction() {
                             @Override
                             public void onGranted() {
-                                startLoc();
+                                HomeFragment.this.onGrant();
                             }
 
                             @Override
@@ -117,8 +127,10 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
 
                             }
                         });
-            } else
+            } else {
+                swipeRefreshLayout.setRefreshing(true);
                 startLoc();
+            }
         }
     }
 
@@ -135,6 +147,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
 
     @Override
     public void onGrant() {
+        swipeRefreshLayout.setRefreshing(true);
         startLoc();
         firstLoc = true;
     }
@@ -148,11 +161,9 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
             isLocated = false;
         }
         if (firstLoc && !isLocated) {
-            reStartLocation();
+            startLoc();
         } else {//如果定位过了，直接可以进行数据获取
-            if (homePresenter == null)
-                homePresenter = new HomePresenter(HomeFragment.this);
-            homePresenter.getHomeData(AppConstants.HOME_RESTAURANTS);
+            presenter.getHomeData(AppConstants.HOME_RESTAURANTS);
         }
     }
 
@@ -164,65 +175,33 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
         home_rcv.addItemDecoration(new RecycleViewDivider(getContext(),
                 LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(2),
                 ContextCompat.getColor(getContext(), R.color.colorBackground)));
+
         MainAdapter<IBaseModel> mainAdapter = new MainAdapter<>(
                 new InflateModel(new Class<?>[]{HomeShopViewHolder.class, View.class}, new Object[]{R.layout.item_sell_home}),
                 commonListModel,
                 this);
         recycleMultiTypeAdapter = new WrapperAdapter<>(mainAdapter, this);
-        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{BannerTypeViewHolder.class,View.class}, new Object[]{R.layout.item_banner}), bannerModel);
-        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{IndTypeViewHolder.class,View.class}, new Object[]{R.layout.person_todayrec_rcv}));
-        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{GridViewHolder.class,View.class}, new Object[]{R.layout.grid_type_layout}), favorableTypeModel);
-        recycleMultiTypeAdapter.addFooterViews(new InflateModel(new Class[]{FooterHolder.class,View.class}, new Object[]{R.layout.rcv_footer_layout}));
+        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{BannerTypeViewHolder.class, View.class}, new Object[]{R.layout.item_banner}), bannerModel);
+        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{IndTypeViewHolder.class, View.class}, new Object[]{R.layout.person_todayrec_rcv}));
+        recycleMultiTypeAdapter.addHeaderViews(new InflateModel(new Class[]{GridViewHolder.class, View.class}, new Object[]{R.layout.grid_type_layout}), favorableTypeModel);
+        recycleMultiTypeAdapter.addFooterViews(new InflateModel(new Class[]{FooterHolder.class, View.class}, new Object[]{R.layout.rcv_footer_layout}));
         home_rcv.setAdapter(recycleMultiTypeAdapter);
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                refresh();
-                reStartLocation();
+                refresh();
+//                reStartLocation();
             }
         });
-    }
-
-    @Override
-    public LocationService GetMapService() {
-        swipeRefreshLayout.setRefreshing(true);
-        return InitApplication.getInstance().locationService;
-    }
-
-
-    @Override
-    public MyLocationListener getLocationListener() {
-        return myLocationListener;
-    }
-
-    @Override
-    protected void showFailed() {
-    }
-
-
-    @Override
-    public void showSuccess(Object o) {
-        if (o instanceof HomeBean) {
-            HomeBean _homeBean = (HomeBean) o;
-            bannerModel.setRecommendShopBeanEntity(_homeBean.getBannerEntityList());
-            favorableTypeModel.setRecommendShopBeanEntity(_homeBean.getFavorableFoodEntityList());
-            commonListModel.setRecommendShopBeanEntity(_homeBean.getRecommendShopBeanEntityList());
-            recycleMultiTypeAdapter.notifyDataSetChanged();
-        }
-        if (swipeRefreshLayout.isRefreshing())
-            swipeRefreshLayout.setRefreshing(false);
     }
 
     /*定位显示*/
     @Override
     public void showLocSuccess(String s) {
         isLocated = true;
-
         AccountUtil.getInstance().setLocation(s);
-        if (homePresenter == null)
-            homePresenter = new HomePresenter(this);
-        homePresenter.getHomeData(AppConstants.HOME_RESTAURANTS);
+        presenter.getHomeData(AppConstants.HOME_RESTAURANTS);
     }
 
     @Override
@@ -291,5 +270,20 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener<IB
     @OnClick(R.id.tv_home_search)
     public void onClick() {
         doSearch();
+    }
+
+    @Override
+    public void showHomeData(HomeBean data) {
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
+        bannerModel.setRecommendShopBeanEntity(data.getBannerEntityList());
+        favorableTypeModel.setRecommendShopBeanEntity(data.getFavorableFoodEntityList());
+        commonListModel.setRecommendShopBeanEntity(data.getRecommendShopBeanEntityList());
+        recycleMultiTypeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError(String error) {
+
     }
 }

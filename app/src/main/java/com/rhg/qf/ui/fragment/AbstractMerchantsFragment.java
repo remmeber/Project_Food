@@ -60,11 +60,6 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
         getMerchantsOrderBySellNumberPresenter = new MerchantsPresenter(this);
     }
 
-    public void setContext(Context context) {
-        /*if (qFoodMerchantAdapter != null)
-            qFoodMerchantAdapter.setContext(context);*/
-    }
-
     protected abstract int getMerchantsFmType();
 
     @Override
@@ -92,10 +87,6 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if ("".contains(AccountUtil.getInstance().getLongitude())) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("无法定位当前位置");
-                    return;
-                }
                 getMerchantsOrderBySellNumberPresenter.getMerchants(AppConstants.RESTAURANTS, merchantsType);
             }
         });
@@ -137,18 +128,10 @@ public abstract class AbstractMerchantsFragment extends BaseFragment implements 
     public void onItemClick(View view, int position, IBaseModel item) {
         Intent intent = new Intent(getContext(), ShopDetailActivity.class);
         MerchantUrlBean.MerchantBean merchantBean = (MerchantUrlBean.MerchantBean) item.getEntity().get(position);
-        /*目前后台还没有加入这是三个字段*/
-
         intent.putExtra(AppConstants.KEY_MERCHANT_ID, merchantBean.getID());
         intent.putExtra(AppConstants.KEY_MERCHANT_NAME, merchantBean.getName());
         intent.putExtra(AppConstants.KEY_MERCHANT_LOGO, merchantBean.getPic());
         startActivityForResult(intent, 1, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
-        /*Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-        intent.putExtra("productId","20160518");
-        intent.putExtra("productName","黄焖鸡米饭");
-        intent.putExtra("goodsPrice","￥:90");
-        startActivity(intent);*/
-
     }
 
     @Override

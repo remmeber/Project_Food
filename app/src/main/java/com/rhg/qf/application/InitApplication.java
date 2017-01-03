@@ -7,7 +7,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.easemob.easeui.controller.EaseUI;
+import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LimitedAgeMemoryCache;
@@ -119,19 +119,26 @@ public class InitApplication extends MultiDexApplication implements Runnable {
     private void initImageLoader() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.ic_pic_failed)
-                .bitmapConfig(Bitmap.Config.ARGB_8888)
-                .cacheInMemory(true).build();
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+                .build();
 
         MemoryCache memoryCache = new LimitedAgeMemoryCache(new LruMemoryCache(4 * 1024 * 1024), 15 * 60);
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions)
+                .memoryCacheExtraOptions(320, 480)
                 .memoryCache(memoryCache)
+                .diskCacheFileCount(100)
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCache(new LimitedAgeDiskCache(getCacheDir(), 15 * 60))
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .writeDebugLogs()
                 .tasksProcessingOrder(QueueProcessingType.LIFO).build();
+
         ImageLoader.getInstance().init(config);
     }
 
@@ -141,14 +148,14 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         initImageLoader();
         initToast();
         thirdConfig();
-        EaseUI.getInstance().init(this);
-//        CustomerHelper.getInstance().init(this);
+//        EaseUI.getInstance().init(this);
+        CustomerHelper.getInstance().init(this);
         File file = new File(getFilesDir().getPath() + "/" + fileName);
         if (file.exists()) {
             try {
                 FileInputStream fileInputStream = new FileInputStream(file);
                 ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                int len = -1;
+                int len ;
                 byte[] b = new byte[1024];
                 while ((len = fileInputStream.read(b)) != -1) {
                     bo.write(b, 0, len);

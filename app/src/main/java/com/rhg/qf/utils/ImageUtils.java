@@ -20,12 +20,15 @@ import java.io.IOException;
  * email：1013773046@qq.com
  */
 public class ImageUtils {
+//    static List<String> imgs = new ArrayList<>();
+
     public static void showImage(String uri, ImageView imageView) {
-        ImageLoader.getInstance().displayImage(uri, imageView, new ImageSize(400, 300));
+        ImageLoader.getInstance().displayImage(uri, imageView, new ImageSize(320, 480));
     }
 
     public static void clearCache() {
         ImageLoader.getInstance().clearMemoryCache();
+        ImageLoader.getInstance().clearDiskCache();
     }
 
 

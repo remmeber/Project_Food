@@ -5,11 +5,16 @@ import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.mvp.model.GetAddressModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
 
 import java.util.List;
 
+import javax.net.ssl.SSLHandshakeException;
+
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -30,7 +35,18 @@ public class GetAddressPresenter {
     public void getAddress(String Table) {
         getAddressModel.getAddress(Table).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<List<BaseAddress>>() {
+                .onErrorReturn(new Func1<Throwable, List<BaseAddress>>() {
+                    @Override
+                    public List<BaseAddress> call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
+                .subscribe(new Subscriber<List<BaseAddress>>() {
                     @Override
                     public void onCompleted() {
 

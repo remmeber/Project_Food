@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="64dp"
-        android:layout_marginEnd="@dimen/fab_dimen"
-        android:layout_marginRight="@dimen/fab_dimen"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         app:srcCompat="@drawable/order" />
 
 </android.support.design.widget.CoordinatorLayout>

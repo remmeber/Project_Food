@@ -30,7 +30,6 @@ public class HomeModel {
         QFoodApiService qFoodApiService = QFoodApiMamager.getInstant().getQFoodApiService();
         String y = AccountUtil.getInstance().getLongitude();
         String x = AccountUtil.getInstance().getLatitude();
-        Log.i("RHG", "MODEL");
         return Observable.zip(
                 qFoodApiService.getBannerUrl(AppConstants.HEAD_ROW),
                 qFoodApiService.getFavorableFood(AppConstants.HEAD_HOT),

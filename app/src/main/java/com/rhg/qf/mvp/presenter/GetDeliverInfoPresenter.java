@@ -4,9 +4,14 @@ import com.rhg.qf.bean.DeliverInfoBean;
 import com.rhg.qf.mvp.model.GetDeliverInfoModel;
 import com.rhg.qf.mvp.model.PerfectDeliverInfoModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -27,7 +32,18 @@ public class GetDeliverInfoPresenter {
     public void getDeliverInfo(String deliverTable) {
         getDeliverInfoModel.getDeliverInfo(deliverTable).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<DeliverInfoBean.InfoBean>() {
+                .onErrorReturn(new Func1<Throwable, DeliverInfoBean.InfoBean>() {
+                    @Override
+                    public DeliverInfoBean.InfoBean call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
+                .subscribe(new Subscriber<DeliverInfoBean.InfoBean>() {
                     @Override
                     public void onCompleted() {
 

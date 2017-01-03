@@ -56,8 +56,8 @@ public class ChatActivity extends EaseBaseActivity implements BaseView {
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
 
-/*        CustomerHelper.getInstance().setEaseUIProviders();
-        CustomerHelper.getInstance().registerEventListener();*/
+        CustomerHelper.getInstance().setEaseUIProviders();
+        CustomerHelper.getInstance().registerEventListener();
 
         activityInstance = this;
         uname = "QF" + dealUName(AccountUtil.getInstance().getNickName());

@@ -378,7 +378,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     /*TODO 登录*/
     private void doLogin() {
-        DialogUtil.showDialog(getContext(), "登陆中...");
+        DialogUtil.showDialog(getContext(), "登录中...");
         if (signUtil == null)
             signUtil = new UmengUtil(getActivity());
         signUtil.SignIn(SHARE_MEDIA.WEIXIN, new SignInListener() {

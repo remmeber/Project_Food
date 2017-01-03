@@ -1,12 +1,15 @@
 package com.rhg.qf.mvp.presenter;
 
 import com.rhg.qf.bean.CommonListModel;
+import com.rhg.qf.bean.HomeBean;
 import com.rhg.qf.bean.MerchantUrlBean;
 import com.rhg.qf.mvp.model.MerchantsModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -26,6 +29,17 @@ public class MerchantsPresenter {
 
     public void getMerchants(String table, int page) {
         merchantsModel.getMerchants(table, page).observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, CommonListModel<MerchantUrlBean.MerchantBean>>() {
+                    @Override
+                    public CommonListModel<MerchantUrlBean.MerchantBean> call(Throwable throwable) {
+                        if (throwable.getClass().getName().contains("RuntimeException")) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable.getClass().getName().contains("SSLHandshakeException")) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<CommonListModel<MerchantUrlBean.MerchantBean>>() {
                     @Override

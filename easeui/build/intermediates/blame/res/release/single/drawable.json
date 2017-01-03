@@ -12,12 +12,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable\\ease_chat_takepic_selector.xml"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_chat_press_speak_btn.xml",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable\\ease_chat_press_speak_btn.xml"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_btn_blue_pressed_shape.xml",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable\\ease_btn_blue_pressed_shape.xml"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_chat_press_speak_btn.xml",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\drawable\\ease_chat_press_speak_btn.xml"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\release\\drawable\\ease_chatfrom_bg.xml",

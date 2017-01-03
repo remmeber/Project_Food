@@ -8,7 +8,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * desc:
+ * desc: 未使用
  * author：remember
  * time：2016/7/11 2:11
  * email：1013773046@qq.com
