@@ -1,6 +1,7 @@
 package com.rhg.qf.ui.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,7 +41,6 @@ import com.rhg.qf.mvp.presenter.UserSignUpPresenter;
 import com.rhg.qf.mvp.presenter.contact.GoodsDetailContact;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.third.UmengUtil;
-import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DecimalUtil;
 import com.rhg.qf.utils.ShoppingCartUtil;
@@ -421,7 +421,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
                     return;
                 }
                 if (!AccountUtil.getInstance().hasUserAccount()) {
-                    signInDialogShow("当前用户未登录，请登录！");
+                    DialogShow("温馨提示", "当前用户未登录，请登录!", "登录", "取消");
                 } else {
                     /*todo 调用获取默认地址接口*/
                     if (getAddressPresenter == null)
@@ -432,24 +432,40 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         }
     }
 
-    private void signInDialogShow(String content) {
-        final UIAlertView delDialog = new UIAlertView(this, "温馨提示", content,
-                "加入购物车", "登录并购买");
-        delDialog.show();
-        delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                       @Override
-                                       public void doLeft() {
-                                           delDialog.dismiss();
-                                       }
-
-                                       @Override
-                                       public void doRight() {
-                                           doLogin();
-                                           delDialog.dismiss();
-                                       }
-                                   }
-        );
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            dialog.dismiss();
+            doLogin();
+        } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+            dialog.dismiss();
+        }
     }
+
+    /*AlertDialog finalAd;
+    private void DialogShow(String content) {
+        if (finalAd != null) {
+            finalAd.show();
+            return;
+        }
+        finalAd = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle("温馨提示")
+                .setMessage(content)
+                .setPositiveButton("登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        doLogin();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }*/
 
     private void doLogin() {
         if (signUtil == null)

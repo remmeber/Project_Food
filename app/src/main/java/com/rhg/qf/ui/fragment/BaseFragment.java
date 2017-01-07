@@ -3,6 +3,7 @@ package com.rhg.qf.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.base.IView;
 import com.rhg.qf.mvp.base.RxPresenter;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 import com.rhg.qf.utils.NetUtil;
 import com.rhg.qf.utils.ToastHelper;
 
@@ -44,7 +46,7 @@ public abstract class BaseFragment<T extends RxPresenter<? extends IView>> exten
     private LocationService locationService;
     private MyLocationListener mLocationListener;
     protected View view;
-    protected Activity mActivity;
+    protected BaseAppcompactActivity mActivity;
 
     public BaseFragment() {
     }
@@ -114,7 +116,7 @@ public abstract class BaseFragment<T extends RxPresenter<? extends IView>> exten
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (Activity) context;
+        mActivity = (BaseAppcompactActivity) context;
     }
 
     @Override
@@ -256,4 +258,7 @@ public abstract class BaseFragment<T extends RxPresenter<? extends IView>> exten
     public void showSuccess(Object o) {}
 
 
+    public void onClick(DialogInterface dialog, int which) {
+
+    }
 }

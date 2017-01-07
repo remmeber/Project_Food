@@ -21,6 +21,7 @@ import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.AddOrUpdateAddressPresenter;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
+import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.RegexUtils;
 import com.rhg.qf.utils.ToastHelper;
 
@@ -124,6 +125,8 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     @Override
     public void showSuccess(Object s) {
 //        setResult(resultCode, new Intent().putExtra(AppConstants.KEY_ADDRESS, addressBean));
+        if (DialogUtil.isShow())
+            DialogUtil.cancelDialog();
         Intent intent = new Intent();
         BaseAddress baseAddress = new BaseAddress();
         baseAddress.setAddress(addNewAddressContactsContent.getText().toString());
@@ -175,7 +178,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                     ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.contactAddress_Null));
                     break;
                 }
-
+                DialogUtil.showDialog(this, "修改中...");
                 if (addOrUpdateAddress == null)
                     addOrUpdateAddress = new AddOrUpdateAddressPresenter(this);
                 addOrUpdateAddress.addOrUpdateAddress(addressId, addNewAddressContactPersonContent.getText().toString(),

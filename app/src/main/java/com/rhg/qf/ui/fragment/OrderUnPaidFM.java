@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.fragment;
 
+import android.content.DialogInterface;
 import android.view.View;
 
 import com.rhg.qf.bean.CommonListModel;
@@ -17,6 +18,7 @@ import com.rhg.qf.utils.ToastHelper;
  */
 public class OrderUnPaidFM extends AbstractOrderFragment {
     ModifyOrderPresenter modifyOrderPresenter;
+    String orderId;
 
     @Override
     protected int getFmTag() {
@@ -25,7 +27,8 @@ public class OrderUnPaidFM extends AbstractOrderFragment {
 
     @Override
     public void onItemLongClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> item) {
-        showDelDialog(item.getEntity().get(position).getID(), String.format("订单 %s 将被删除!", item.getEntity().get(position).getID()));
+        orderId = item.getEntity().get(position).getID();
+        mActivity.DialogShow(String.format("订单 %s 将被删除!", item.getEntity().get(position).getID()));
     }
 
     private void drawBack(String orderId) {
@@ -45,22 +48,14 @@ public class OrderUnPaidFM extends AbstractOrderFragment {
         }
     }
 
-    private void showDelDialog(final String orderId, final String content) {
-        final UIAlertView delDialog = new UIAlertView(getContext(), "温馨提示", content,
-                "取消", "确定");
-        delDialog.show();
-        delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                       @Override
-                                       public void doLeft() {
-                                           delDialog.dismiss();
-                                       }
-
-                                       @Override
-                                       public void doRight() {
-                                           delDialog.dismiss();
-                                           drawBack(orderId);
-                                       }
-                                   }
-        );
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        if (which == DialogInterface.BUTTON_NEGATIVE) {
+            return;
+        }
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            drawBack(orderId);
+        }
     }
 }

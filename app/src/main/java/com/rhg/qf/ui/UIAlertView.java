@@ -21,7 +21,7 @@ public class UIAlertView extends BaseDialogView {
 
     public UIAlertView(Context context, String title, String message,
                        String buttonLeftText, String buttonRightText) {
-        super(context, R.layout.ui_alert_view);
+        super(context);
         this.title = title;
         this.message = message;
         this.buttonLeftText = buttonLeftText;

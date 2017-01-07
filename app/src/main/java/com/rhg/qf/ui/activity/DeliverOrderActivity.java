@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -26,7 +27,6 @@ import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.DeliverOrderPresenter;
 import com.rhg.qf.mvp.presenter.ModifyOrderPresenter;
-import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DecimalUtil;
 import com.rhg.qf.utils.SizeUtil;
@@ -60,7 +60,6 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements OnIt
     SwipeRefreshLayout commonSwipe;
     DeliverOrderPresenter getDeliverOrder;/*获取跑腿员订单接口*/
     ModifyOrderPresenter modifyOrderPresenter;/*修改跑腿员订单接口*/
-    UIAlertView delDialog;
     int pos;
     private CommonListModel<DeliverOrderUrlBean.DeliverOrderBean> deliverOrderBeanList = new CommonListModel<>();
     private MainAdapter<CommonListModel<DeliverOrderUrlBean.DeliverOrderBean>> deliverOrderItemAdapter;
@@ -152,7 +151,7 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements OnIt
             case R.id.bt_order_snatch:
                 btOrderSnatch.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
                 btOrderProgress.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-                showDelDialog("正在改造，敬请期待");
+                DialogShow("正在改造，敬请期待");
                 break;
             case R.id.bt_order_progress:
                 btOrderProgress.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
@@ -200,28 +199,12 @@ public class DeliverOrderActivity extends BaseAppcompactActivity implements OnIt
 
     }*/
 
-    private void showDelDialog(final String content) {
-        if (delDialog == null) {
-            delDialog = new UIAlertView(this, "温馨提示", content,
-                    "", "知道啦");
-            delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                           @Override
-                                           public void doLeft() {
-                                           }
-
-                                           @Override
-                                           public void doRight() {
-                                               delDialog.dismiss();
-                                               btOrderProgress.setBackgroundColor(ContextCompat.getColor(DeliverOrderActivity.this, R.color.colorBlueNormal));
-                                               btOrderSnatch.setBackgroundColor(ContextCompat.getColor(DeliverOrderActivity.this, R.color.white));
-
-                                           }
-                                       }
-            );
-        }
-        delDialog.show();
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        btOrderProgress.setBackgroundColor(ContextCompat.getColor(DeliverOrderActivity.this, R.color.colorBlueNormal));
+        btOrderSnatch.setBackgroundColor(ContextCompat.getColor(DeliverOrderActivity.this, R.color.white));
     }
-
 
     @Override
     protected void onDestroy() {

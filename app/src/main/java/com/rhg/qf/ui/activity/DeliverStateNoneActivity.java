@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,7 +40,6 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
     String orderId;
     DeliverStatePresenter getDeliverStatePresenter;
     ModifyOrderPresenter modifyOrderPresenter;
-    UIAlertView delDialog;
 
     @Override
     public void dataReceive(Intent intent) {
@@ -66,8 +66,6 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
         rbDeliverService.setIsIndicator(false);
         rbMouthFeel.setIsIndicator(false);
         modifyOrderPresenter = new ModifyOrderPresenter(this);
-        delDialog = new UIAlertView(this, "温馨提示", "请在收到货后再确认收货!",
-                "未收到货", "已收货");
     }
 
     @Override
@@ -120,7 +118,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
                 if (foodDeliverProgress.getState() == LineProgress.STATE_CENTER) {
                     ToastHelper.getInstance().displayToastWithQuickClose("跑腿员努力为您送货中！");
                 }
-                dialogShow();
+                DialogShow("温馨提示", "请在收到货后再确认收货!", "未收到货", "已收货");
                 break;
             case R.id.bt_finish:
 //                final String mouthFeelRate = String.format(Locale.ENGLISH, "%.2f", getRate(rbMouthFeel));
@@ -131,7 +129,7 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
                         ToastHelper.getInstance()._toast("感谢您的评论"/*"口感评分：" + mouthFeelRate +
                                 ",送货服务：" + deliverServiceRate*/);
                     }
-                },1000);
+                }, 1000);
                 break;
         }
     }
@@ -141,24 +139,13 @@ public class DeliverStateNoneActivity extends BaseAppcompactActivity {
         return rateBar.getStarRating();
     }
 
-    private void dialogShow() {
-        if (delDialog != null) {
-            delDialog.show();
-            delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                           @Override
-                                           public void doLeft() {
-                                               delDialog.dismiss();
-                                           }
 
-                                           @Override
-                                           public void doRight() {
-                                               delDialog.dismiss();
-                                               modifyOrderPresenter.modifyUserOrDeliverOrderState(orderId,
-                                                       AppConstants.ORDER_FINISH);/*1表示已完成*/
-                                           }
-                                       }
-            );
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            modifyOrderPresenter.modifyUserOrDeliverOrderState(orderId,
+                    AppConstants.ORDER_FINISH);/*1表示已完成*/
         }
     }
-
 }

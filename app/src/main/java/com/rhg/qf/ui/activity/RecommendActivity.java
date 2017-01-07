@@ -18,7 +18,7 @@ import com.rhg.qf.ui.fragment.BySellNumberFm;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class RecommendActivity extends BaseFragmentActivity {
+public class RecommendActivity extends BaseAppcompactActivity {
 
     @Bind(R.id.tb_left_iv)
     ImageView tbLeftIv;
@@ -34,8 +34,10 @@ public class RecommendActivity extends BaseFragmentActivity {
         return R.layout.recommend_layout;
     }
 
+
     @Override
-    protected void initView(View view) {
+    protected void initData() {
+
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         tbCenterTv.setText("今日推荐");
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
@@ -45,21 +47,6 @@ public class RecommendActivity extends BaseFragmentActivity {
         Fragment fm = new BySellNumberFm();
         ft.add(R.id.fm_list, fm, fm.getClass().getName());
         ft.commitAllowingStateLoss();
-    }
-
-    @Override
-    protected void initData(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void showSuccess(Object s) {
-
-    }
-
-    @Override
-    protected void showError(Object s) {
-
     }
 
 

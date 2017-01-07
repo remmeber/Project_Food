@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -40,11 +41,12 @@ import butterknife.OnClick;
  * time：2016/5/28 16:49
  * email：1013773046@qq.com
  */
-public class ShoppingCartFragment extends BaseFragment {
+public class ShoppingCartFragment extends BaseFragment implements com.rhg.qf.adapter.QFoodShoppingCartExplAdapter.DataChangeListener {
     List<ShoppingCartBean> shoppingCartBeanList;
     QFoodShoppingCartExplAdapter QFoodShoppingCartExplAdapter;
     boolean isLogin;
-
+    int childPos;
+    int parentPos;
     @Bind(R.id.tb_center_tv)
     TextView tbCenterTV;
     @Bind(R.id.tb_right_ll)
@@ -193,7 +195,7 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
             }
         });
-        QFoodShoppingCartExplAdapter = new QFoodShoppingCartExplAdapter(getContext());
+        QFoodShoppingCartExplAdapter = new QFoodShoppingCartExplAdapter(mActivity);
         listShoppingCart.setAdapter(QFoodShoppingCartExplAdapter);
         listShoppingCart.setGroupIndicator(null);
         listShoppingCart.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -202,28 +204,22 @@ public class ShoppingCartFragment extends BaseFragment {
                 return true;
             }
         });
-        QFoodShoppingCartExplAdapter.setDataChangeListener(new QFoodShoppingCartExplAdapter.DataChangeListener() {
+        QFoodShoppingCartExplAdapter.setOnClickListener(new QFoodShoppingCartExplAdapter.ClickListener() {
             @Override
-            public void onDataChange(String CountMoney) {
-                if (shoppingCartBeanList.size() == 0) {
-                    showEmpty(true, isLogin ? getString(R.string.emptyCart) : getString(R.string.pleaseSignInAsUser));
-                } else
-                    showEmpty(false, null);
-                String countMoney = String.format(getResources().getString(R.string.countMoney), CountMoney);
-                tvCountMoney.setText(countMoney);
+            public void OnParentClick(int parent) {
+
             }
 
             @Override
-            public void removeData(String merchantId, String foodId) {
-                /*if (modifyOrderPresenter == null)
-                    modifyOrderPresenter = new ModifyOrderPresenter(ShoppingCartFragment.this);
-                Log.i("RHG", "Id: " + Id);
-                modifyOrderPresenter.modifyUserOrDeliverOrderState(Id*//*订单号*//*,
-                        *//*0:退单，1,：完成*//*AppConstants.ORDER_WITHDRAW);*/
-                ShoppingCartUtil.delGood(merchantId, foodId);
-
+            public void OnChildClick(int parent, int child, int action) {
+                childPos = child;
+                parentPos = parent;
+                if (action == DELETE) {
+                    mActivity.DialogShow("确认删除该商品吗?");
+                }
             }
         });
+        QFoodShoppingCartExplAdapter.setDataChangeListener(this);
         updateListView();
     }
 
@@ -314,7 +310,7 @@ public class ShoppingCartFragment extends BaseFragment {
         payModel.setDetail(addressBean.getDetail());
         ArrayList<PayModel.PayBean> payBeen = ShoppingCartUtil.getSelectGoods(shoppingCartBeanList);
         payModel.setPayBeanList(payBeen);
-        intent.putExtra(AppConstants.KEY_PARCELABLE,payModel);
+        intent.putExtra(AppConstants.KEY_PARCELABLE, payModel);
         startActivity(intent);
     }
 
@@ -332,5 +328,54 @@ public class ShoppingCartFragment extends BaseFragment {
                     ToastHelper.getInstance().displayToastWithQuickClose("亲，请选择商品！");
                 break;
         }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        if (which == DialogInterface.BUTTON_NEGATIVE) {
+            return;
+        }
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            delGoods(parentPos, childPos, shoppingCartBeanList.get(parentPos).getMerID(), shoppingCartBeanList.get(parentPos).getGoods().get(childPos).getGoodsID());
+            String[] infos = ShoppingCartUtil.getShoppingCount(shoppingCartBeanList);
+            this.onDataChange(infos[1]);
+            QFoodShoppingCartExplAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 删除商品
+     *
+     * @param groupPosition
+     * @param childPosition
+     */
+    private void delGoods(int groupPosition, int childPosition, String merchantId, String foodId) {
+        this.removeData(merchantId, foodId);
+        shoppingCartBeanList.get(groupPosition).getGoods().remove(childPosition);
+        if (shoppingCartBeanList.get(groupPosition).getGoods().size() == 0) {
+            shoppingCartBeanList.remove(groupPosition);
+        }
+    }
+
+    @Override
+    public void onDataChange(String CountMoney) {
+        if (shoppingCartBeanList.size() == 0) {
+            showEmpty(true, isLogin ? getString(R.string.emptyCart) : getString(R.string.pleaseSignInAsUser));
+        } else
+            showEmpty(false, null);
+        String countMoney = String.format(getResources().getString(R.string.countMoney), CountMoney);
+        tvCountMoney.setText(countMoney);
+    }
+
+    @Override
+    public void removeData(String merchantId, String foodId) {
+
+                /*if (modifyOrderPresenter == null)
+                    modifyOrderPresenter = new ModifyOrderPresenter(ShoppingCartFragment.this);
+                Log.i("RHG", "Id: " + Id);
+                modifyOrderPresenter.modifyUserOrDeliverOrderState(Id*//*订单号*//*,
+                        *//*0:退单，1,：完成*//*AppConstants.ORDER_WITHDRAW);*/
+        ShoppingCartUtil.delGood(merchantId, foodId);
     }
 }

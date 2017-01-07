@@ -18,7 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rhg.qf.R;
 import com.rhg.qf.locationservice.LocationService;
-import com.rhg.qf.ui.activity.BaseFragmentActivity;
+import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 import com.rhg.qf.unexpected.UnExpected;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.CustomerHelper;
@@ -48,7 +48,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
     private static InitApplication initApplication;
     public LocationService locationService;
     public Vibrator mVibrator;
-    private HashMap<String, WeakReference<BaseFragmentActivity>> activityList = new HashMap<>();
+    private HashMap<String, WeakReference<BaseAppcompactActivity>> activityList = new HashMap<>();
 
     public static InitApplication getInstance() {
         if (initApplication == null)
@@ -56,7 +56,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         return initApplication;
     }
 
-    public void removeActivity(BaseFragmentActivity activity) {
+    public void removeActivity(BaseAppcompactActivity activity) {
         if (null != activity) {
             Log.i("RHG", "********* remove Activity " + activity.getClass().getName());
             activityList.remove(activity.getClass().getName());
@@ -69,7 +69,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
 
     public void exit() {
         for (String key : activityList.keySet()) {
-            WeakReference<BaseFragmentActivity> activity = activityList.get(key);
+            WeakReference<BaseAppcompactActivity> activity = activityList.get(key);
             if (activity != null && activity.get() != null) {
                 Log.i("RHG", "********* Exit " + activity.get().getClass().getSimpleName());
                 activity.get().finish();

@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,11 +19,9 @@ import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.IBaseModel;
 import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.DeleteItemListener;
 import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.AddOrUpdateAddressPresenter;
 import com.rhg.qf.mvp.presenter.GetAddressPresenter;
-import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AddressUtil;
 import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
@@ -46,6 +45,8 @@ public class AddressActivity extends BaseAppcompactActivity implements OnItemCli
     private static final int MODIFY = 1;
     private static final String CHOOSE = "1";
     private static final String UNCHOOSE = "0";
+    private int dialogTag = -1;
+    private int pos = -1;
     @Bind(R.id.tb_center_tv)
     TextView tbCenterTv;
     @Bind(R.id.tb_left_iv)
@@ -194,40 +195,6 @@ public class AddressActivity extends BaseAppcompactActivity implements OnItemCli
         return _addressBean;
     }
 
-    private void showDelDialog(final int position, final String content, final int tag) {
-        final UIAlertView delDialog = new UIAlertView(this, "温馨提示", content,
-                "取消", "确定");
-        delDialog.show();
-        delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                       @Override
-                                       public void doLeft() {
-                                           delDialog.dismiss();
-                                       }
-
-                                       @Override
-                                       public void doRight() {
-                                           delDialog.dismiss();
-                                           if (tag == DELETE) {
-                                               addOrUpdateAddressPresenter
-                                                       .addOrUpdateAddress(addressBeanList.getEntity().get(position).getID(),
-                                                               null, null, null, null, AppConstants.DELETE_ADDRESS);
-                                           } else {
-                                               AddressUrlBean.AddressBean _addressBean = addressBeanList.getEntity().get(position);
-                                               Intent _intent = new Intent(AddressActivity.this, AddOrNewAddressActivity.class);
-                                               _intent.putExtra(AppConstants.KEY_ADDRESS, _addressBean);
-                                               startActivityForResult(_intent, AppConstants.BACK_WITH_UPDATE);
-                                           }
-                                          /* new Handler().postDelayed(new Runnable() {
-                                               @Override
-                                               public void run() {
-                                                   delDialog.dismiss();
-                                               }
-                                           }, 500);*/
-                                       }
-                                   }
-        );
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -238,7 +205,9 @@ public class AddressActivity extends BaseAppcompactActivity implements OnItemCli
     public void onItemClick(View view, int position, CommonListModel<AddressUrlBean.AddressBean> item) {
         switch (view.getId()) {
             case R.id.holder:
-                showDelDialog(position, "确定要删除选中的地址?", DELETE);
+                dialogTag = DELETE;
+                pos = position;
+                DialogShow("确定要删除选中的地址?");
                 break;
             case R.id.rl_address:
                 if (position != lastPosition) {
@@ -255,6 +224,34 @@ public class AddressActivity extends BaseAppcompactActivity implements OnItemCli
     @Override
     public void onItemLongClick(View view, int position, CommonListModel<AddressUrlBean.AddressBean> item) {
         longClickPosition = position;
-        showDelDialog(position, getResources().getString(R.string.sure2Modify), MODIFY);
+        dialogTag = MODIFY;
+        pos = position;
+        DialogShow(getString(R.string.sure2Modify));
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        if (which == DialogInterface.BUTTON_NEGATIVE) {
+            return;
+        }
+        switch (dialogTag) {
+            case DELETE:
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    addOrUpdateAddressPresenter
+                            .addOrUpdateAddress(addressBeanList.getEntity().get(pos).getID(),
+                                    null, null, null, null, AppConstants.DELETE_ADDRESS);
+                }
+                break;
+            case MODIFY:
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    AddressUrlBean.AddressBean _addressBean = addressBeanList.getEntity().get(pos);
+                    AddressUrlBean.AddressBean addressBean = new AddressUrlBean.AddressBean();
+                    Intent _intent = new Intent(AddressActivity.this, AddOrNewAddressActivity.class);
+                    _intent.putExtra(AppConstants.KEY_ADDRESS, _addressBean);
+                    startActivityForResult(_intent, AppConstants.BACK_WITH_UPDATE);
+                }
+                break;
+        }
     }
 }

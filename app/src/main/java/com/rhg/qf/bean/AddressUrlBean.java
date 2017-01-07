@@ -66,7 +66,34 @@ public class AddressUrlBean {
     }
 
     public static class AddressBean extends BaseAddress {
-        public static final Parcelable.Creator<AddressBean> CREATOR = new Creator<AddressBean>() {
+        private String ID;
+        private String Client;
+        private String Default;
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeString(this.ID);
+            dest.writeString(this.Client);
+            dest.writeString(this.Default);
+        }
+
+        public AddressBean() {
+        }
+
+        protected AddressBean(Parcel in) {
+            super(in);
+            this.ID = in.readString();
+            this.Client = in.readString();
+            this.Default = in.readString();
+        }
+
+        public static final Creator<AddressBean> CREATOR = new Creator<AddressBean>() {
             @Override
             public AddressBean createFromParcel(Parcel source) {
                 return new AddressBean(source);
@@ -77,19 +104,6 @@ public class AddressUrlBean {
                 return new AddressBean[size];
             }
         };
-        private String ID;
-        private String Client;
-        private String Default;
-
-        public AddressBean() {
-        }
-
-
-        public AddressBean(Parcel source) {
-            ID = source.readString();
-            Client = source.readString();
-            Default = source.readString();
-        }
 
         public String getID() {
             return ID;
@@ -103,37 +117,16 @@ public class AddressUrlBean {
             return Client;
         }
 
-        public void setClient(String Client) {
-            this.Client = Client;
+        public void setClient(String client) {
+            Client = client;
         }
 
         public String getDefault() {
             return Default;
         }
 
-        public void setDefault(String Default) {
-            this.Default = Default;
-        }
-
-        @Override
-        public String toString() {
-            return "AddressBean{" +
-                    "ID='" + ID + '\'' +
-                    ", Client='" + Client + '\'' +
-                    ", Default='" + Default + '\'' +
-                    '}';
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel parcel, int flags) {
-            parcel.writeString(ID);
-            parcel.writeString(Client);
-            parcel.writeString(Default);
+        public void setDefault(String aDefault) {
+            Default = aDefault;
         }
     }
 

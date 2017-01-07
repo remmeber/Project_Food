@@ -30,7 +30,7 @@ import butterknife.OnClick;
  * time：2016/5/28 16:15
  * email：1013773046@qq.com
  */
-public class ShopDetailActivity extends BaseFragmentActivity {
+public class ShopDetailActivity extends BaseAppcompactActivity {
 
     @Bind(R.id.iv_shop_detail_logo)
     ImageView ivShopLogo;
@@ -74,18 +74,9 @@ public class ShopDetailActivity extends BaseFragmentActivity {
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);//隐藏屏幕下方的虚拟导航栏
     }
 
-    @Override()
-    protected int getLayoutResId() {
-        return R.layout.shop_detail_layout;
-    }
-
-
     @Override
-    protected void initView(View view) {
-    }
+    protected void initData() {
 
-    @Override
-    protected void initData(Bundle savedInstanceState) {
         tbCenterTv.setText("店铺详情");
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.chevron_left_black));
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
@@ -108,15 +99,11 @@ public class ShopDetailActivity extends BaseFragmentActivity {
         slidingTabLayout.setViewPager(viewPager);
     }
 
-    @Override
-    protected void showSuccess(Object s) {
-
+    @Override()
+    protected int getLayoutResId() {
+        return R.layout.shop_detail_layout;
     }
 
-    @Override
-    protected void showError(Object s) {
-
-    }
 
     @OnClick(R.id.tb_left_iv)
     public void onClick(View v) {

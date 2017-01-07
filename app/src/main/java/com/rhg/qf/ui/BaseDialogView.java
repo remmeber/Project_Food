@@ -3,6 +3,7 @@ package com.rhg.qf.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,56 +20,30 @@ import com.rhg.qf.R;
  *email 1013773046@qq.com
  */
 
-public abstract class BaseDialogView extends Dialog {
+public abstract class BaseDialogView extends AlertDialog {
 
     private Context context;
     private boolean cancelable;
     private int resId;
     private UIAlertView.ClickListenerInterface clickListenerInterface;
 
-    BaseDialogView(Context context, int resId) {
-        super(context, R.style.MyDialogStyle);
-        this.cancelable = false;
-        this.context = context;
-        this.resId = resId;
+    BaseDialogView(Context context) {
+        this(context, false);
     }
 
-    BaseDialogView(Context context, int resId, boolean cancelable) {
-        super(context, R.style.MyDialogStyle);
+    BaseDialogView(Context context,boolean cancelable) {
+        super(context);
         this.context = context;
         this.cancelable = cancelable;
-        this.resId = resId;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCancelable(cancelable);
-        /*ViewGroup decorView = (ViewGroup)((BaseAppcompactActivity)context).getWindow().getDecorView();
-        decorView.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(resId,decorView);*/
-        /*ViewGroup viewGroup = (ViewGroup) ((ViewGroup) ((BaseAppcompactActivity) context).findViewById(android.R.id.content)).getChildAt(0);
-        ViewGroup viewParent = (ViewGroup) viewGroup.getParent();
-        viewParent.removeView(viewGroup);*/
-        /*for (int i = 0; ; i++) {
-            if (viewGroup.getParent() != null)
-                viewGroup = (ViewGroup) viewGroup.getParent();
-            else {
-                Log.i("RHG", "Depth:" + i + 1);
-                break;
-            }
-        }*/
-//        Log.i("RHG","parent is : "+viewParent.getParent().getParent());
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(resId,null);
         initView(view);
-//        viewParent.addView(view);
-//        initView(viewParent);
-      /*  LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(resId,viewParent,true);
-        initView(view);*/
-//        viewGroup.addView(view);
     }
 
     protected void initView(View view) {

@@ -48,18 +48,6 @@ public class BaseAddress implements Parcelable {
         this.Detail = in.readString();
     }
 
-    public static final Creator<BaseAddress> CREATOR = new Creator<BaseAddress>() {
-        @Override
-        public BaseAddress createFromParcel(Parcel source) {
-            return new BaseAddress(source);
-        }
-
-        @Override
-        public BaseAddress[] newArray(int size) {
-            return new BaseAddress[size];
-        }
-    };
-
     public String getName() {
         return Name;
     }

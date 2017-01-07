@@ -21,11 +21,15 @@ import com.rhg.qf.utils.ToastHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseFragmentActivity implements BaseView
-{
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class MainActivity extends BaseAppcompactActivity implements BaseView {
     FragmentController fragmentController;
-    BottomNavigationBar bottomNavigation;
     long first = 0L;
+
+    @Bind(R.id.bottom_navigation)
+    BottomNavigationBar bottomNavigation;
 
 
     @Override
@@ -34,13 +38,18 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
     }
 
     @Override
-    protected void initView(View view) {
-        bottomNavigation = (BottomNavigationBar) findViewById(R.id.bottom_navigation);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        fragmentController.getCurrentFM().onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    public void hideNavigationBar(View decorView) {
+//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+    }
 
+    @Override
+    protected void initData() {
         bottomNavigation.setMode(BottomNavigationBar.MODE_CLASSIC);
         bottomNavigation.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         bottomNavigation
@@ -77,28 +86,6 @@ public class MainActivity extends BaseFragmentActivity implements BaseView
         fragments.add(new ShoppingCartFragment());
         fragmentController = new FragmentController(getSupportFragmentManager(),
                 fragments, R.id.content_fragment);
-
-        //-----------------------------------------------------------------------------------------
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        fragmentController.getCurrentFM().onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    /*数据回调*/
-    @Override
-    protected void showSuccess(Object s) {
-    }
-
-    @Override
-    protected void showError(Object s) {
-    }
-
-    @Override
-    public void hideNavigationBar(View decorView) {
-//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
     @Override

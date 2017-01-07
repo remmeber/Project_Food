@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.rhg.qf.impl.SignInListener;
 import com.rhg.qf.mvp.presenter.UserSignInPresenter;
 import com.rhg.qf.mvp.presenter.UserSignUpPresenter;
 import com.rhg.qf.third.UmengUtil;
-import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.NetUtil;
@@ -116,35 +116,23 @@ public class PersonalOrderActivity extends BaseAppcompactActivity {
                     ToastHelper.getInstance()._toast("网络未连接");
                 }
                 if (!AccountUtil.getInstance().hasUserAccount()) {
-                    signInDialogShow("登录后才能享受自主点单哦！");
+                    DialogShow("温馨提示", "登录后才能享受自主点单哦!", "登录", "取消");
                     return;
                 }
                 startActivity(new Intent(this, ChatActivity.class)
                         .putExtra(EaseConstant.EXTRA_USER_ID, AppConstants.CUSTOMER_SERVER));
-
-//                getAddress();
                 break;
         }
     }
 
-
-    private void signInDialogShow(String content) {
-        final UIAlertView delDialog = new UIAlertView(this, "温馨提示", content,
-                "取消", "登录");
-        delDialog.show();
-        delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                       @Override
-                                       public void doLeft() {
-                                           delDialog.dismiss();
-                                       }
-
-                                       @Override
-                                       public void doRight() {
-                                           doLogin();
-                                           delDialog.dismiss();
-                                       }
-                                   }
-        );
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            dialog.dismiss();
+            doLogin();
+        } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+            dialog.dismiss();
+        }
     }
 
 
