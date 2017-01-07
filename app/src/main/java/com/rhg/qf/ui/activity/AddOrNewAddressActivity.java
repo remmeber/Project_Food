@@ -68,7 +68,6 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
             addNewAddressContactAddressContent.setText(_address.getAddress());
             if (_address.getDetail() != null)
                 addNewAddressContentDetail.setText(_address.getDetail());
-
         }
     }
 
@@ -186,7 +185,6 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                         addNewAddressContactAddressContent.getText().toString(),
                         addNewAddressContentDetail.getText().toString(),
                         null);
-                /*AddressUtil.insertAddress(addressBean);*/
                 break;
             case R.id.add_new_address_location:
             case R.id.add_new_address_contact_address_content:

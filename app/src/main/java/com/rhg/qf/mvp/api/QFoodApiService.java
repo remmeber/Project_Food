@@ -160,6 +160,7 @@ public interface QFoodApiService {
                                        @Field("Name") String name,
                                        @Field("Phone") String phone,
                                        @Field("Address") String address,
+                                       @Field("Detail") String detail,
                                        @Field("Pwd") String pwd);
 
     /*删除地址*/

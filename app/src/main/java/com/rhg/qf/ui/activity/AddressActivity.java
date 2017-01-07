@@ -238,15 +238,13 @@ public class AddressActivity extends BaseAppcompactActivity implements OnItemCli
         switch (dialogTag) {
             case DELETE:
                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                    addOrUpdateAddressPresenter
-                            .addOrUpdateAddress(addressBeanList.getEntity().get(pos).getID(),
+                    addOrUpdateAddressPresenter.addOrUpdateAddress(addressBeanList.getEntity().get(pos).getID(),
                                     null, null, null, null, AppConstants.DELETE_ADDRESS);
                 }
                 break;
             case MODIFY:
                 if (which == DialogInterface.BUTTON_POSITIVE) {
                     AddressUrlBean.AddressBean _addressBean = addressBeanList.getEntity().get(pos);
-                    AddressUrlBean.AddressBean addressBean = new AddressUrlBean.AddressBean();
                     Intent _intent = new Intent(AddressActivity.this, AddOrNewAddressActivity.class);
                     _intent.putExtra(AppConstants.KEY_ADDRESS, _addressBean);
                     startActivityForResult(_intent, AppConstants.BACK_WITH_UPDATE);

@@ -33,7 +33,7 @@ public class AddressModel {
                         addressId);
         } else/*修改地址*/
             _address = QFoodApiMamager.getInstant().getQFoodApiService().updateAddress(userName, addressId,
-                    user, phone, address.concat(detail), pwd);
+                    user, phone, address,detail, pwd);
         return _address.flatMap(new Func1<BaseBean, Observable<String>>() {
             @Override
             public Observable<String> call(final BaseBean baseBean) {
