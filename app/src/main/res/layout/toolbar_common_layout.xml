@@ -4,7 +4,7 @@
     android:id="@+id/fl_tab"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    tools:background="?colorAccent"
+    tools:background="@color/colorBlueNormal"
     tools:ignore="contentDescription">
 
     <ImageView

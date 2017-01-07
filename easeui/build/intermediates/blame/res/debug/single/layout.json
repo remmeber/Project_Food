@@ -1,11 +1,11 @@
 [
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_row_received_message.xml",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_received_message.xml"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_chat_message_list.xml",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_chat_message_list.xml"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_row_received_message.xml",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_received_message.xml"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_commom_back_btn.xml",
@@ -36,12 +36,12 @@
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_alert_dialog.xml"
     },
     {
-        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_row_received_voice_call.xml",
-        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_received_voice_call.xml"
-    },
-    {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_row_received_bigexpression.xml",
         "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_received_bigexpression.xml"
+    },
+    {
+        "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_row_received_voice_call.xml",
+        "source": "D:\\AndroidWorkSpace\\QF\\easeui\\src\\main\\res\\layout\\ease_row_received_voice_call.xml"
     },
     {
         "merged": "D:\\AndroidWorkSpace\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\layout\\ease_activity_show_big_image.xml",

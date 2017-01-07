@@ -24,9 +24,10 @@
     <string name="pleaseSignInAsUser">请登录</string>
     <string name="pleaseSignInAsDeliver">"请登录跑腿员"</string>
     <string name="deliverSignUp">注册</string>
+    <string name="deliverOrderGrab">抢单</string>
     <string name="deliverAndAddrModify">修改</string>
-    <string name="addrInfo">我的地址</string>
-    <string name="custome">常用</string>
+    <string name="addressManage">地址管理</string>
+    <string name="custom">常用</string>
     <string name="add">添加</string>
     <string name="modifyHeader">修改头像</string>
     <string name="userSignIn">请点击登录</string>
@@ -126,7 +127,7 @@
     <string name="recommendation">推荐理由:\n%s</string>
     <string name="iWantEat">我想吃&#8230;</string>
     <string name="submit">提交</string>
-    <string name="personalOrder">自主点餐</string>
+    <string name="personalOrder">跑腿服务</string>
     <string name="startOrder">开始点餐</string>
     <string name="goOrder">GO!</string>
     <!--自主点餐-->
@@ -140,5 +141,8 @@
     <string name="completeRegister">完成注册</string>
     <string name="agreement">协议</string>
     <!--register-->
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="warmInform">温馨提示</string>
 
 </resources>

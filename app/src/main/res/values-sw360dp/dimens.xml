@@ -10,4 +10,5 @@
     <dimen name="food_image_size">60dp</dimen>
     <dimen name="text_little_small">12sp</dimen>
     <dimen name="text_small">10sp</dimen>
+    <dimen name="margin_small">16dp</dimen>
 </resources>

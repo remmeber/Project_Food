@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/status_bar_height"
     android:elevation="@dimen/margin_little"
-    tools:background="?colorAccent"
+    tools:background="@color/colorBlueNormal"
     tools:ignore="contentDescription">
 
     <ImageView

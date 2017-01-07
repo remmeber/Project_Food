@@ -31,7 +31,7 @@ import butterknife.OnClick;
  * time：2016/5/28 16:14
  * email：1013773046@qq.com
  */
-public class OrderListActivity extends BaseFragmentActivity {
+public class OrderListActivity extends BaseAppcompactActivity {
     @Bind(R.id.tb_center_tv)
     TextView tbCenterTv;
     @Bind(R.id.tb_left_iv)
@@ -46,18 +46,7 @@ public class OrderListActivity extends BaseFragmentActivity {
     int vpFlag = -1;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.myorder_layout;
-    }
-
-    @Override
-    public void dataReceive(Intent intent) {
-        if (intent != null)
-            vpFlag = intent.getIntExtra(AppConstants.KEY_ORDER_TAG, -1);
-    }
-
-    @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initData() {
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         flTab.setBackgroundResource(R.color.colorBlueNormal);
         tbCenterTv.setText(getResources().getString(R.string.myOrder));
@@ -70,24 +59,22 @@ public class OrderListActivity extends BaseFragmentActivity {
                 AppConstants.ORDER_TITLES);
         vpMyorder.setAdapter(qFoodVpAdapter);
         vpMyorder.setOffscreenPageLimit(3);
-        vpMyorder.setCurrentItem(vpFlag, false);
         stlMyorder.setViewPager(vpMyorder);
         stlMyorder.setCurrentTab(vpFlag);
+        stlMyorder.notifyDataSetChanged();
     }
 
     @Override
-    protected void initView(View view) {
+    protected int getLayoutResId() {
+        return R.layout.myorder_layout;
     }
 
     @Override
-    protected void showSuccess(Object s) {
-
+    public void dataReceive(Intent intent) {
+        if (intent != null)
+            vpFlag = intent.getIntExtra(AppConstants.KEY_ORDER_TAG, -1);
     }
 
-    @Override
-    protected void showError(Object s) {
-
-    }
 
     @OnClick(R.id.tb_left_iv)
     public void onClick() {
