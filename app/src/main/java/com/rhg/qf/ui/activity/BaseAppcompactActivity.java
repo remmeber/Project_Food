@@ -126,11 +126,12 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
 
     protected void startLoc() {
         if (!isLocating) {
-            isLocating = true;
             if ((locationService = GetMapService()) != null) {
                 if ((mLocationListener = getLocationListener()) != null) {
+                    isLocating = true;
                     locationService.registerListener(mLocationListener);
                     locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+//                    locationService.start();
                     mLocationListener.getLocation(locationService);
                 }
             }

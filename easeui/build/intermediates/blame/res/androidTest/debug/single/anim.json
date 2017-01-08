@@ -36,12 +36,12 @@
         "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_right.xml"
     },
     {
-        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\head_in.xml",
-        "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\anim\\head_in.xml"
-    },
-    {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\voice_to_icon.xml",
         "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\anim\\voice_to_icon.xml"
+    },
+    {
+        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\head_in.xml",
+        "source": "E:\\QF\\easeui\\build\\intermediates\\bundles\\debug\\res\\anim\\head_in.xml"
     },
     {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\push_top_in2.xml",

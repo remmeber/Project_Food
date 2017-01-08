@@ -200,12 +200,12 @@
         "source": "E:\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_32.png"
     },
     {
-        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_16.png",
-        "source": "E:\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_16.png"
-    },
-    {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_ic_launcher.png",
         "source": "E:\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ease_ic_launcher.png"
+    },
+    {
+        "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ee_16.png",
+        "source": "E:\\QF\\easeui\\src\\main\\res\\drawable-hdpi\\ee_16.png"
     },
     {
         "merged": "E:\\QF\\easeui\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ease_default_avatar.png",
