@@ -9,7 +9,7 @@
     <color name="colorBlueLight">#5542B4D9</color>
     <color name="colorBlueMedium">#AA42B4D9</color>
     <color name="colorBlueNormal">#FF42B4D9</color>
-    <color name="colorYellowNormal">#FFC602</color>
+    <color name="colorYellowNormal">#ffc602</color>
     <color name="colorYellowLight">#55FFC602</color>
     <color name="colorToolbarGreen">#8DC73F</color>
     <color name="colorState">#BACC64</color>
@@ -30,7 +30,10 @@
     <color name="white">#FFFFFF</color>
     <color name="white_light">#00FFFFFF</color>
     <color name="tabUnSelectColor">#797979</color>
+    <color name="text_profile">#333333</color>
     <color name="black">#AA000000</color>
     <color name="searchShadow">#80000000</color>
 
+
+    <color name="app_secondary_accent">#1A000000</color>
 </resources>

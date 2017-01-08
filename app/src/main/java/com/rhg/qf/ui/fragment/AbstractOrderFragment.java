@@ -10,19 +10,20 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.rhg.qf.R;
-import com.rhg.qf.adapter.QFoodOrderAdapter;
+import com.rhg.qf.adapter.MainAdapter;
+import com.rhg.qf.adapter.viewHolder.OrderViewHolder;
+import com.rhg.qf.bean.CommonListModel;
+import com.rhg.qf.bean.IBaseModel;
+import com.rhg.qf.bean.InflateModel;
 import com.rhg.qf.bean.OrderUrlBean;
 import com.rhg.qf.constants.AppConstants;
-import com.rhg.qf.impl.RcvItemClickListener;
+import com.rhg.qf.impl.OnItemClickListener;
 import com.rhg.qf.mvp.presenter.OrdersPresenter;
 import com.rhg.qf.ui.activity.OrderDetailActivity;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DecimalUtil;
 import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.widget.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 
@@ -32,7 +33,7 @@ import butterknife.Bind;
  * time：2016/5/28 16:42
  * email：1013773046@qq.com
  */
-public abstract class AbstractOrderFragment extends BaseFragment implements RcvItemClickListener<OrderUrlBean.OrderBean> {
+public abstract class AbstractOrderFragment extends BaseFragment implements OnItemClickListener<CommonListModel<OrderUrlBean.OrderBean>> {
     @Bind(R.id.common_recycle)
     RecyclerView commonRecycle;
     @Bind(R.id.common_refresh)
@@ -40,8 +41,8 @@ public abstract class AbstractOrderFragment extends BaseFragment implements RcvI
     @Bind(R.id.common_swipe)
     SwipeRefreshLayout commonSwipe;
 
-    QFoodOrderAdapter qFoodOrderAdapter;
-    List<OrderUrlBean.OrderBean> orderBeanList = new ArrayList<>();
+    MainAdapter<CommonListModel<OrderUrlBean.OrderBean>> qFoodOrderAdapter;
+    CommonListModel<OrderUrlBean.OrderBean> orderBeanList = new CommonListModel<>();
     OrdersPresenter getOrdersPresenter;
     String userId;
     int style;
@@ -85,15 +86,17 @@ public abstract class AbstractOrderFragment extends BaseFragment implements RcvI
 
     @Override
     protected void initData() {
-        qFoodOrderAdapter = new QFoodOrderAdapter(getContext(), orderBeanList);
-        qFoodOrderAdapter.setOnRcvItemClickListener(this);
+        qFoodOrderAdapter = new MainAdapter<>(
+                new InflateModel(new Class<?>[]{OrderViewHolder.class, View.class}, new Object[]{R.layout.item_order}),
+                orderBeanList,
+                this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         commonRecycle.setLayoutManager(linearLayoutManager);
         commonRecycle.setHasFixedSize(true);
         commonRecycle.setAdapter(qFoodOrderAdapter);
         commonRecycle.addItemDecoration(new RecycleViewDivider(getContext(),
-                LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(5),
-                ContextCompat.getColor(getContext(), R.color.colorGrayLight)));
+                LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(2),
+                ContextCompat.getColor(getContext(), R.color.white_light)));
         commonSwipe.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
         commonSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -112,30 +115,35 @@ public abstract class AbstractOrderFragment extends BaseFragment implements RcvI
 
     @Override
     public void showSuccess(Object o) {
+        if (o instanceof String) {
+        }
+        if (o instanceof IBaseModel) {
+            orderBeanList.setRecommendShopBeanEntity(((IBaseModel) o).getEntity());
+            qFoodOrderAdapter.notifyDataSetChanged();
+
+        }
         if (commonSwipe.isRefreshing())
             commonSwipe.setRefreshing(false);
-        qFoodOrderAdapter.setmData((List<OrderUrlBean.OrderBean>) o);
         if (commonRefresh.getVisibility() == View.VISIBLE)
             commonRefresh.setVisibility(View.GONE);
     }
 
     @Override
-    public void onItemClickListener(View view, int position, OrderUrlBean.OrderBean item) {
+    public void onItemClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> orderBeantModel) {
+        OrderUrlBean.OrderBean item = orderBeantModel.getEntity().get(position);
         Intent _intent = new Intent(getContext(), OrderDetailActivity.class);
         _intent.putExtra(AppConstants.KEY_ORDER_ID, item.getID());
+        _intent.putExtra(AppConstants.KEY_PRODUCT_LOGO, item.getPic());
         _intent.putExtra(AppConstants.KEY_PRODUCT_PRICE, DecimalUtil.addWithScale(item.getPrice(), item.getFee(), 2));
         _intent.putExtra(AppConstants.KEY_MERCHANT_NAME, item.getRName());
         _intent.putExtra(AppConstants.KEY_ORDER_TAG, style);
         startActivity(_intent, ActivityOptionsCompat.makeScaleUpAnimation(view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight()).toBundle());
     }
 
+    @Override
+    public void onItemLongClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> item) {
+
+    }
+
     protected abstract int getFmTag();
-
-
-    /*@Override
-    public void itemClick(View v, int position) {
-//        ToastHelper.getInstance()._toast("item " + position + "is click.");
-        Intent intent = new Intent(getContext(), PayActivity.class);
-        startActivity(intent);
-    }*/
 }

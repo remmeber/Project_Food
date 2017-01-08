@@ -79,11 +79,7 @@ public class ShoppingCartWithNumber extends FrameLayout {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initView(Context context) {
         setWillNotDraw(false);
-        setBackground(context.getResources().getDrawable(R.drawable.ic_shopping_cart_green));
-        /*iv_goodsCart = new ImageView(context);
-        iv_goodsCart.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_shopping_cart_green));
-        addView(iv_goodsCart);*/
-//        ImageUtils.TintFill(iv_goodsCart, iv_goodsCart.getDrawable(), backColor);
+        setBackgroundResource(R.drawable.ic_shopping_cart_blue);
     }
 
 

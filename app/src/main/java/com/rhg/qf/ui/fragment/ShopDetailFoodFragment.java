@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.rhg.qf.R;
+import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.ShopDetailLocalModel;
 import com.rhg.qf.bean.ShopDetailUrlBean;
 import com.rhg.qf.constants.AppConstants;
@@ -98,6 +99,7 @@ public class ShopDetailFoodFragment extends BaseFragment implements RefreshListe
                     fragment = ((FoodTypeFragment) fragments.get(i));
                 if (!fragment.hasListener())
                     fragment.setRefreshListener(this);
+                CommonListModel<ShopDetailUrlBean.ShopDetailBean> _shopDetailBeanModel = new CommonListModel<>();
                 List<ShopDetailUrlBean.ShopDetailBean> _shopDetailBeanList = new ArrayList<>();
                 for (int j = start + 1; j < shopDetailLocalModel.getShopDetailBean().size(); j++) {
                     if (shopDetailLocalModel.getShopDetailBean().get(j).getVariety()
@@ -109,7 +111,8 @@ public class ShopDetailFoodFragment extends BaseFragment implements RefreshListe
                         break;
                     }
                 }
-                fragment.setShopDetailBeanList(_shopDetailBeanList);
+                _shopDetailBeanModel.setRecommendShopBeanEntity(_shopDetailBeanList);
+                fragment.setShopDetailBeanList(_shopDetailBeanModel);
                 if (i >= fragments.size())
                     fragmentController.addFm(fragment);
             }

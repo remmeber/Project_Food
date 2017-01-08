@@ -7,7 +7,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
+import com.rhg.qf.application.InitApplication;
+import com.rhg.qf.bean.CommonListModel;
+import com.rhg.qf.bean.HotFoodUrlBean;
+import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.widget.MyRatingBar;
+
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,7 +24,7 @@ import butterknife.ButterKnife;
  *time 2016/7/7 21:44
  *email 1013773046@qq.com
  */
-public class HotFoodViewHolder extends RecyclerView.ViewHolder {
+public class HotFoodViewHolder extends BaseVH<CommonListModel<HotFoodUrlBean.HotFoodBean>> {
     @Bind(R.id.hot_sell_merchant_name)
     public TextView hotSellMerchantName;
     @Bind(R.id.hot_sell_food_image)
@@ -41,6 +47,37 @@ public class HotFoodViewHolder extends RecyclerView.ViewHolder {
     public HotFoodViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
+    }
+
+    @Override
+    public void convert(RecyclerView.ViewHolder VH, final int position, final CommonListModel<HotFoodUrlBean.HotFoodBean> hotFoodBeanCommonListModel) {
+        if (hotFoodBeanCommonListModel == null)
+            return;
+        if (hotFoodBeanCommonListModel.getEntity() == null)
+            return;
+        HotFoodUrlBean.HotFoodBean hotFoodBean = hotFoodBeanCommonListModel.getEntity().get(position);
+        hotSellLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClick != null)
+                    onClick.onItemClick(hotSellLl, position, hotFoodBeanCommonListModel);
+            }
+        });
+        hotSellMerchantName.setText(hotFoodBean.getRName());
+        ImageUtils.showImage(hotFoodBean.getPic(),
+                hotSellFoodImage);
+        /*hotFoodViewHolder.hotSellFoodImage.setImageDrawable(
+                context.getResources().getDrawable(R.drawable.recommend_default_icon_1));*/
+        hotSellFoodName.setText(hotFoodBean.getFName());
+        hotSellDeliverRequire.setText(String.format(Locale.ENGLISH,
+                InitApplication.getInstance().getResources().getString(R.string.tvDeliverRequire), hotFoodBean.getDelivery()));
+        hotSellDeliverMoney.setText(String.format(Locale.ENGLISH,
+                InitApplication.getInstance().getResources().getString(R.string.tvDeliverFee), hotFoodBean.getFee()));
+        hotSellRatingBar.setStarRating(Float.parseFloat(hotFoodBean.getStars()));
+//        hotFoodViewHolder.hotSellDeliverDistance.setText(hotFoodBean.getDistance());
+        hotSellTotalMoney.setText(String.format(
+                InitApplication.getInstance().getResources().getString(R.string.countMoney), hotFoodBean.getPrice()
+        ));
     }
 
 }

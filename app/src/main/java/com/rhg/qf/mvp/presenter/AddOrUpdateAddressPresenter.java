@@ -2,9 +2,14 @@ package com.rhg.qf.mvp.presenter;
 
 import com.rhg.qf.mvp.model.AddressModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -26,8 +31,19 @@ public class AddOrUpdateAddressPresenter {
                                    String opt) {
         addAddressModel.addOrUpdateAddress(addressId, user, phone, address, detail, opt)
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, String>() {
+                    @Override
+                    public String call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<String>() {
+                .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
 

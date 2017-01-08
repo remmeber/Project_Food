@@ -6,9 +6,13 @@ import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
 import com.rhg.qf.mvp.model.NewOrderModel;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -29,6 +33,17 @@ public class NewOrderPresenter {
     public void createNewOrder(NewOrderBean newOrderBean) {
         createNewOrderModel.createNewOrder(newOrderBean).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .onErrorReturn(new Func1<Throwable, NewOrderBackBean>() {
+                    @Override
+                    public NewOrderBackBean call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
                 .subscribe(new Observer<NewOrderBackBean>() {
                     @Override
                     public void onCompleted() {
@@ -41,12 +56,11 @@ public class NewOrderPresenter {
 
                     @Override
                     public void onNext(NewOrderBackBean s) {
+
                         if (s.getResult() == 0) {
-                            if (s.getFee() == null)
-                                s.setFee("0");
                             createNewOrderView.showData(s);
                         } else
-                            createNewOrderView.showData("error");
+                            createNewOrderView.showData("new_order_error");
                     }
                 });
     }

@@ -44,7 +44,7 @@ public class MerchantUrlBean {
         this.rows = rows;
     }
 
-    public static class MerchantBean {
+    public static class MerchantBean implements IBaseBean {
 
         private String ID;
         private String Name;

@@ -53,7 +53,7 @@ public class AccountUtil {
         return getSP().getString(key, "");
     }
 
-    public boolean hasAccount() {
+    public boolean hasUserAccount() {
         return !TextUtils.isEmpty(getStringByKey(AppConstants.SP_USER_ID));
     }
 
@@ -73,13 +73,15 @@ public class AccountUtil {
         editor.putString(AppConstants.SP_USER_NAME, account.getCName());
         editor.putString(AppConstants.KEY_OR_SP_PHONE, account.getPhonenumber());
         editor.putString(AppConstants.SP_HEAD_IMAGE, account.getPic());
+        editor.putString(AppConstants.SP_PASSWORD, account.getPwd());
+        editor.putString(AppConstants.SP_NICKNAME, account.getPersonId());
         editor.apply();
     }
 
-    public void deleteAccount() {
+    /*退出跑腿员账户*/
+    public void deleteDeliverAccount() {
         SharedPreferences.Editor editor = getEditor();
-        editor.clear();
-        editor.apply();
+        editor.remove(AppConstants.SP_DELIVER_ID).remove(AppConstants.SP_DELIVER_ORDER_NUM).apply();
     }
 
     public String getUserID() {
@@ -97,6 +99,15 @@ public class AccountUtil {
     public void setDeliverID(String deliverID) {
         putStringByKey(AppConstants.SP_DELIVER_ID, deliverID);
     }
+
+    public String getDeliverOrderNum() {
+        return getStringByKey(AppConstants.SP_DELIVER_ORDER_NUM);
+    }
+
+    public void setDeliverOrderNum(String num) {
+        putStringByKey(AppConstants.SP_DELIVER_ORDER_NUM, num);
+    }
+
 
     public String getUserName() {
         return getStringByKey(AppConstants.SP_USER_NAME);

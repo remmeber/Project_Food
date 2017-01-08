@@ -3,16 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl_tab"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/status_bar_height"
     android:elevation="@dimen/margin_little"
-    tools:background="?colorAccent"
+    tools:background="@color/colorBlueNormal"
     tools:ignore="contentDescription">
 
     <ImageView
         android:id="@+id/tb_left_iv"
         android:layout_width="wrap_content"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/btn_gray_light_style"
+        android:background="?android:selectableItemBackgroundBorderless"
         android:paddingLeft="@dimen/margin_small"
         android:paddingRight="@dimen/margin_small"
         tools:src="@drawable/ic_chevron_left_black" />
@@ -39,7 +40,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/margin_little"
-            android:layout_marginRight="@dimen/margin_little"
             android:gravity="center_vertical"
             android:textSize="@dimen/text_medium"
             tools:text="修改" />
@@ -51,14 +51,11 @@
         android:layout_height="38dp"
         android:layout_gravity="end"
         android:layout_marginEnd="@dimen/margin_little"
-        android:layout_marginLeft="@dimen/margin_huge"
-        android:layout_marginRight="@dimen/margin_little"
         android:layout_marginStart="@dimen/margin_huge"
         android:layout_marginTop="10dp"
         android:background="@null"
         android:drawableEnd="@drawable/ic_search_black"
         android:drawablePadding="@dimen/margin_little"
-        android:drawableRight="@drawable/ic_search_black"
         android:imeOptions="actionDone"
         android:inputType="text"
         android:paddingLeft="5dp"

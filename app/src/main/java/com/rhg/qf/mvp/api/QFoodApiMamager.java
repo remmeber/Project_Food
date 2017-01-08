@@ -45,7 +45,7 @@ public class QFoodApiMamager {
                     ToastHelper.getInstance()._toast("no network");
                     return null;
                 }
-                Request request = chain.request().newBuilder().addHeader("Cache-Control", String.format(Locale.ENGLISH,"max-age=%d", 60)).build();
+                Request request = chain.request().newBuilder().addHeader("Cache-Control", String.format(Locale.ENGLISH, "max-age=%d", 60)).build();
                 return chain.proceed(request);
             }
         };
@@ -54,6 +54,7 @@ public class QFoodApiMamager {
                 .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .readTimeout(5000, TimeUnit.MILLISECONDS)
                 .connectTimeout(5000, TimeUnit.MILLISECONDS)
+                .retryOnConnectionFailure(true)
                 .writeTimeout(5000, TimeUnit.MILLISECONDS).build();
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

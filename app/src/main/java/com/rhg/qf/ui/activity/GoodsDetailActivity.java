@@ -1,6 +1,7 @@
 package com.rhg.qf.ui.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +19,15 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.viewHolder.BannerImageHolder;
 import com.rhg.qf.application.InitApplication;
-import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.bean.FoodInfoBean;
 import com.rhg.qf.bean.GoodsDetailUrlBean;
+import com.rhg.qf.bean.IBaseModel;
 import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.bean.ShareModel;
 import com.rhg.qf.bean.ShoppingCartBean;
 import com.rhg.qf.bean.SignInBackBean;
+import com.rhg.qf.bean.UserBean;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.datebase.AccountDao;
 import com.rhg.qf.impl.ShareListener;
@@ -38,7 +41,6 @@ import com.rhg.qf.mvp.presenter.UserSignUpPresenter;
 import com.rhg.qf.mvp.presenter.contact.GoodsDetailContact;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.third.UmengUtil;
-import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DecimalUtil;
 import com.rhg.qf.utils.ShoppingCartUtil;
@@ -104,7 +106,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     String openid;
     String unionid;
     String headImageUrl;
-    AddressUrlBean.AddressBean addressBean;
+    BaseAddress addressBean;
 
     private boolean isNeedLoc;
     private String location;
@@ -190,6 +192,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         } else
             tbRightTv.setText(location);
         tbCenterTv.setText(getResources().getString(R.string.goodsDetail));
+        etNum.setFocusable(false);
         // 获取本地数据库的购物车数量
         AccountDao accountDao = AccountDao.getInstance();
         if (accountDao.isExist(ShoppingCartBean.KEY_MERCHANT_ID, merchantId) &&
@@ -202,6 +205,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             etNum.setText("0");
             ivAddToShoppingCart.setNum("0");
         }
+        accountDao = null;
         ivBanner.startTurning(2000);
         ivBanner.setPageIndicator(AppConstants.IMAGE_INDICTORS);
     }
@@ -235,7 +239,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     }
 
     @Override
-    protected void showSuccess(Object o) {
+    public void showSuccess(Object o) {
         if (o instanceof GoodsDetailUrlBean.GoodsDetailBean) {
             GoodsDetailUrlBean.GoodsDetailBean _bean = (GoodsDetailUrlBean.GoodsDetailBean) o;
             bindData(_bean);
@@ -257,28 +261,41 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         if (o instanceof SignInBackBean.UserInfoBean) {
             ToastHelper.getInstance().displayToastWithQuickClose("登录成功");
             SignInBackBean.UserInfoBean _data = (SignInBackBean.UserInfoBean) o;
-            AccountUtil.getInstance().setUserID(_data.getID());
+            UserBean.User user = new UserBean.User();
+            user.setID(_data.getID());
+            user.setPic(_data.getPic());
+            user.setPhonenumber(_data.getPhonenumber());
+            user.setCName(_data.getCName());
+            user.setPersonId(nickName);/**/
+            user.setPwd(_data.getPwd());
+            AccountUtil.getInstance().saveAccount(user);
+            /*AccountUtil.getInstance().setUserID(_data.getID());
             AccountUtil.getInstance().setHeadImageUrl(_data.getPic());
             AccountUtil.getInstance().setPhoneNumber(_data.getPhonenumber());
             AccountUtil.getInstance().setUserName(_data.getCName());
             AccountUtil.getInstance().setNickName(nickName);
-            AccountUtil.getInstance().setPwd(_data.getPwd());
+            AccountUtil.getInstance().setPwd(_data.getPwd());*/
             if (getAddressPresenter == null)
                 getAddressPresenter = new GetAddressPresenter(this);
             getAddressPresenter.getAddress(AppConstants.TABLE_DEFAULT_ADDRESS);
             return;
         }
-        if (o instanceof AddressUrlBean.AddressBean) {
-            addressBean = (AddressUrlBean.AddressBean) o;
+        if (o instanceof IBaseModel) {
+            if (((IBaseModel) o).getEntity().size() == 0) {
+                Intent intent = new Intent(this, AddressActivity.class);
+                intent.setAction(AppConstants.ADDRESS_DEFAULT);
+                startActivityForResult(intent, 0);
+                return;
+            }
+
+            addressBean = (BaseAddress) ((IBaseModel) o).getEntity().get(0);
             createOrderAndToPay(addressBean);
         }
-        if (addressBean == null)
-            startActivityForResult(new Intent(this, AddOrNewAddressActivity.class), 0);
 
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 
@@ -286,13 +303,17 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 0) {
+        if (resultCode == 100) {
             if (data == null) {
                 ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单");
-            } else {
-                addressBean = data.getParcelableExtra("return");
-                createOrderAndToPay(addressBean);
+                return;
             }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单，请填写详细地址");
+                return;
+            }
+            createOrderAndToPay(addressBean);
         }
     }
 
@@ -348,7 +369,6 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
                 String foodNum = DecimalUtil.add(etNum.getText().toString(), "1");
                 etNum.setText(foodNum);
                 ivAddToShoppingCart.setNum(foodNum);
-                //TODO 需要更新购物车数据库的数据
                 if (isExitInDB) {
                     ShoppingCartUtil.updateGoodsNumber(merchantId, foodId, foodNum);
                 } else {
@@ -374,7 +394,7 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             case R.id.ivShare:
                 UmengUtil umengUtil = new UmengUtil(this);
                 UMImage imageMedia = new UMImage(this, image);
-                ShareModel shareModel = new ShareModel("黄焖鸡米饭", "好吃", imageMedia);
+                ShareModel shareModel = new ShareModel(tvGoodsName.getText().toString(), tvDescriptionContent.getText().toString(), imageMedia);
                 umengUtil.Share(shareModel, new ShareListener() {
                     @Override
                     public void shareSuccess(String message) {
@@ -400,8 +420,8 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
                     ToastHelper.getInstance().displayToastWithQuickClose("未选择商品数量");
                     return;
                 }
-                if (!AccountUtil.getInstance().hasAccount()) {
-                    signInDialogShow("当前用户未登录，请登录！");
+                if (!AccountUtil.getInstance().hasUserAccount()) {
+                    DialogShow("温馨提示", "当前用户未登录，请登录!", "登录", "取消");
                 } else {
                     /*todo 调用获取默认地址接口*/
                     if (getAddressPresenter == null)
@@ -412,27 +432,41 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         }
     }
 
-    private void signInDialogShow(String content) {
-        final UIAlertView delDialog = new UIAlertView(this, "温馨提示", content,
-                "加入购物车", "登录并购买");
-        delDialog.show();
-        delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                       @Override
-                                       public void doLeft() {
-                                           delDialog.dismiss();
-                                       }
-
-                                       @Override
-                                       public void doRight() {
-                                           doLogin();
-                                           delDialog.dismiss();
-                                       }
-                                   }
-        );
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            dialog.dismiss();
+            doLogin();
+        } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+            dialog.dismiss();
+        }
     }
 
+    /*AlertDialog finalAd;
+    private void DialogShow(String content) {
+        if (finalAd != null) {
+            finalAd.show();
+            return;
+        }
+        finalAd = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle("温馨提示")
+                .setMessage(content)
+                .setPositiveButton("登录", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        doLogin();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }*/
 
-    /*TODO 登录*/
     private void doLogin() {
         if (signUtil == null)
             signUtil = new UmengUtil(this);
@@ -456,13 +490,14 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
         });
     }
 
-    private void createOrderAndToPay(AddressUrlBean.AddressBean addressBean) {
+    private void createOrderAndToPay(BaseAddress addressBean) {
         Intent intent = new Intent(GoodsDetailActivity.this,
                 PayActivity.class);
         PayModel payModel = new PayModel();
-        payModel.setReceiver(addressBean.getName());
+        payModel.setName(addressBean.getName());
         payModel.setPhone(addressBean.getPhone());
-        payModel.setAddress(addressBean.getAddress().concat(addressBean.getDetail()));
+        payModel.setAddress(addressBean.getAddress());
+        payModel.setDetail(addressBean.getDetail());
         ArrayList<PayModel.PayBean> payBeen = new ArrayList<>();
         PayModel.PayBean _pay = new PayModel.PayBean();
         _pay.setMerchantName(merchantName);
@@ -504,19 +539,4 @@ public class GoodsDetailActivity extends BaseAppcompactActivity<GoodsDetailPrese
             commonRefresh.setVisibility(View.GONE);
     }
 
-
-    /* @Override
-    public void showGoodsDetail(GoodsDetailUrlBean.GoodsDetailBean goodsDetail) {
-
-    }
-
-    @Override
-    public void setPresenter(GoodsDetailContact.Presenter presenter) {
-
-    }
-
-    @Override
-    public void showError(String error) {
-
-    }*/
 }

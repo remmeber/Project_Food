@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/margin_small"
-        android:src="@mipmap/deliver" />
+        android:src="@mipmap/driver_big_9" />
 
     <com.rhg.qf.widget.LineProgress
         android:id="@+id/food_receive_progress"

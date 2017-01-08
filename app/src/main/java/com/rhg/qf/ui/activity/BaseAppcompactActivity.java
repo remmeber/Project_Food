@@ -1,26 +1,29 @@
 package com.rhg.qf.ui.activity;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Explode;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.rhg.qf.R;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.base.IView;
 import com.rhg.qf.mvp.base.RxPresenter;
 import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
+import com.rhg.qf.ui.fragment.BaseFragment;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.KeyBoardUtil;
 
@@ -32,7 +35,7 @@ import butterknife.ButterKnife;
  *time 2016/7/7 10:36
  *email 1013773046@qq.com
  */
-public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IView>> extends AppCompatActivity implements BaseView {
+public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IView>> extends AppCompatActivity implements BaseView, DialogInterface.OnClickListener {
 
     protected T presenter;
 
@@ -43,14 +46,19 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     protected View decorView;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        Explode explode = new Explode();
-        explode.setDuration(1000);
-        getWindow().setExitTransition(explode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            android.transition.Fade fade = new android.transition.Fade();
+            fade.setDuration(500);
+            getWindow().setEnterTransition(fade);
+        }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
+
+
         setContentView(getLayoutResId());
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -81,7 +89,8 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         if (!PermissionsManager.getInstance().hasAllPermissions(this, permissions)) {
             PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
                     permissions, null);
-        }
+        } else
+            onGrant();
     }
 
 
@@ -98,14 +107,23 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         onGrant();
     }
 
+    /*授权成功回调*/
     public void onGrant() {
 
     }
 
+    /*授权失败回调*/
     public void onDeny(String permission) {
 
     }
 
+    /*activity从后台切回来时被调用*/
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    /*可见可交互*/
     @Override
     protected void onResume() {
         super.onResume();
@@ -190,12 +208,17 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
         return super.onTouchEvent(event);
     }
 
+    /*当activity被透明或者带有dialog样式的activity覆盖时，会调用该方法；单纯dialog覆盖不会调用该方法*/
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     @Override
     protected void onDestroy() {
         ImageUtils.clearCache();
         super.onDestroy();
-        ButterKnife.bind(this);
+        ButterKnife.unbind(this);
         if (locationService != null) {
             locationService.stop();
             locationService.unregisterListener(mLocationListener);
@@ -231,7 +254,32 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
             return;
         }
         showSuccess(o);
+    }
 
+    AlertDialog finalAd;
+
+    public void DialogShow(String content) {
+        DialogShow(getString(R.string.warmInform), content, getString(R.string.sure), getString(R.string.cancel));
+    }
+
+    protected void DialogShow(String title, String content, String positive, String negative) {
+        if (finalAd != null) {
+            finalAd.show();
+            return;
+        }
+        finalAd = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle(title)
+                .setMessage(content)
+                .setPositiveButton(positive, this)
+                .setNegativeButton(negative, this).show();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        for (int i = 0;i<getSupportFragmentManager().getFragments().size();i++) {
+            ((BaseFragment) getSupportFragmentManager().getFragments().get(i)).onClick(dialog, which);
+        }
     }
 
     public void showLocSuccess(String s) {
@@ -240,8 +288,10 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
     public void showLocFailed(String s) {
     }
 
-    protected abstract void showSuccess(Object s);
+    public void showSuccess(Object s) {
+    }
 
-    protected abstract void showError(Object s);
+    public void showError(Object s) {
+    }
 
 }

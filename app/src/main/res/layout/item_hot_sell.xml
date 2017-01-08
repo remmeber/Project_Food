@@ -5,7 +5,7 @@
     android:id="@+id/hot_sell_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/btn_gray_light_style"
+    android:background="?android:selectableItemBackground"
     android:orientation="vertical"
     tools:ignore="contentDescription">
 
@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_shop_green" />
+            android:src="@drawable/ic_shop_blue" />
 
         <TextView
             android:id="@+id/hot_sell_merchant_name"
@@ -133,7 +133,7 @@
             app:star_hollow="@drawable/ic_star_gray"
             app:star_max="5"
             app:star_rating="0"
-            app:star_solid="@drawable/ic_star_green"
+            app:star_solid="@drawable/ic_star_blue"
             app:star_width="@dimen/material_size_medium" />
 
         <TextView

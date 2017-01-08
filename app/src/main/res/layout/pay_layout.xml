@@ -6,22 +6,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/toolbar_common_layout"
-        android:layout_width="match_parent"
-        android:layout_height="65dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/margin_little"
-        android:background="@color/colorInActive" />
-
-    <include layout="@layout/item_receiver_info" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorInActive" />
+        layout="@layout/toolbar_common_layout" />
 
     <RelativeLayout
         android:layout_width="match_parent"

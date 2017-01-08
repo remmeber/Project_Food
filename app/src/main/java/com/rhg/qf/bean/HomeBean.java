@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class HomeBean {
     List<BannerTypeUrlBean.BannerEntity> bannerEntityList;
-    TextTypeBean textTypeBean;
+    List<String> indTypeModel;
     List<FavorableFoodUrlBean.FavorableFoodEntity> favorableFoodEntityList;
     List<MerchantUrlBean.MerchantBean> recommendShopBeanEntityList;
 
@@ -22,12 +22,12 @@ public class HomeBean {
         this.bannerEntityList = bannerEntityList;
     }
 
-    public TextTypeBean getTextTypeBean() {
-        return textTypeBean;
+    public List<String> getIndTypeModel() {
+        return indTypeModel;
     }
 
-    public void setTextTypeBean(TextTypeBean textTypeBean) {
-        this.textTypeBean = textTypeBean;
+    public void setIndTypeModel(List<String> indTypeModel) {
+        this.indTypeModel = indTypeModel;
     }
 
     public List<FavorableFoodUrlBean.FavorableFoodEntity> getFavorableFoodEntityList() {

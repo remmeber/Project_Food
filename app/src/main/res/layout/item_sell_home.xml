@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_home_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:id="@+id/home_seller_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_shop_blue" />
+
+        <TextView
+            android:id="@+id/home_seller_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_toEndOf="@id/home_seller_icon"
+            android:layout_toRightOf="@id/home_seller_icon"
+            android:gravity="center_vertical"
+            android:minHeight="0dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="dddddddd" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:id="@+id/home_seller_image"
+            android:layout_width="@dimen/food_image_size"
+            android:layout_height="@dimen/food_image_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_pic_failed" />
+
+        <TextView
+            android:id="@+id/home_food_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/home_seller_image"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/home_seller_image"
+            android:layout_toRightOf="@+id/home_seller_image"
+            android:background="@drawable/tv_search_bg"
+            android:gravity="center"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            android:typeface="serif"
+            tools:text="西餐" />
+
+        <TextView
+            android:id="@+id/tv_home_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toEndOf="@id/home_food_type"
+            android:layout_toLeftOf="@+id/tv_home_distance"
+            android:layout_toRightOf="@id/home_food_type"
+            android:layout_toStartOf="@+id/tv_home_distance"
+            android:maxWidth="150dp"
+            android:textColor="@color/colorYellowNormal"
+            android:textSize="@dimen/text_little_small"
+            android:typeface="sans"
+            tools:text="推荐理由\n好吃好吃好吃好吃好吃好吃好吃好吃好吃好吃好吃好吃好吃好吃好吃" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_chevron_right_blue" />
+
+        <TextView
+            android:id="@+id/tv_home_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/home_seller_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorTextOrder"
+            android:textSize="@dimen/text_small"
+            tools:text="距离30m" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white" />
+
+</LinearLayout>

@@ -1,7 +1,12 @@
 package com.rhg.qf.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +20,12 @@ import com.rhg.qf.impl.SignInListener;
 import com.rhg.qf.mvp.presenter.UserSignInPresenter;
 import com.rhg.qf.mvp.presenter.UserSignUpPresenter;
 import com.rhg.qf.third.UmengUtil;
-import com.rhg.qf.ui.activity.AddOrNewAddressActivity;
 import com.rhg.qf.ui.activity.AddressActivity;
 import com.rhg.qf.ui.activity.DeliverInfoActivity;
 import com.rhg.qf.ui.activity.DeliverOrderActivity;
 import com.rhg.qf.ui.activity.OrderListActivity;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
@@ -35,27 +40,30 @@ import java.util.Map;
  * email：1013773046@qq.com
  */
 public class MyFragment extends BaseFragment implements View.OnClickListener {
+    private static final int ORDER_WAIT_PAY = 0;
+    private static final int ORDER_DELIVERING = 1;
+    private static final int ORDER_COMPLETE = 2;
+    private static final int LOGIN = 3;
+    private static final int LOG_OUT = 4;
+    private static final int ORDER_GRAB = 5;
 
     ImageView userHeader;
     TextView userName;
     //TODO-------------------------------我的订单栏---------------------------------------------
-    TextView myInfo;
-    ImageView myForward;
-    TextView myPay;
-    TextView myCancel;
-    TextView myComplete;
+    TextView myOrder;
+    ImageView orderForward;
+    TextView orderUnPay;
+    TextView orderDelivering;
+    TextView orderComplete;
     //TODO---------------------------------我是跑腿员-------------------------------------------
-    TextView workerInfo;
-    ImageView workerForward;
-    TextView workerSignIn;
-    TextView workerSignUp;
-    TextView workerModify;
+    TextView deliverInfo;
+    ImageView deliverForward;
+    TextView deliverLogIn;
+    TextView deliverOrderGrab;
+    TextView deliverLogOut;
+    private TextView deliverOrderNum;
     //TODO---------------------------------我的地址-------------------------------------------
-    TextView addressInfo;
     ImageView addressForward;
-    TextView addressCustome;
-    TextView addressAdd;
-    TextView addressModify;
 
     boolean isSignIn;
     UmengUtil signUtil = null;
@@ -68,34 +76,37 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.user_profile_layout;
+        return R.layout.user_profile_layout_new;
     }
 
     @Override
     protected void initView(View view) {
-//        flTAB = (FrameLayout) view.findViewById(R.id.fl_tab);
+        (view.findViewById(R.id.tb_left_iv)).setVisibility(View.GONE);
+        ((TextView) view.findViewById(R.id.tb_center_tv)).setText(getString(R.string.User));
+        (view.findViewById(R.id.tb_right_ll)).setVisibility(View.GONE);
+        (view.findViewById(R.id.fl_tab)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
 
         userHeader = (ImageView) view.findViewById(R.id.userHeader);
         userName = (TextView) view.findViewById(R.id.userName);
 
         //TODO-------------------------------我的订单栏---------------------------------------------
-        myInfo = (TextView) getViewById(view, R.id.profileOrder, R.id.profileInfo);
-        myForward = (ImageView) getViewById(view, R.id.profileOrder, R.id.profileForward);
-        myPay = (TextView) getViewById(view, R.id.profileOrder, R.id.profileDealleft);
-        myCancel = (TextView) getViewById(view, R.id.profileOrder, R.id.profileDealcenter);
-        myComplete = (TextView) getViewById(view, R.id.profileOrder, R.id.profileDealright);
+        myOrder = (TextView) getViewById(view, R.id.order_layout, R.id.tv_profile);
+        orderForward = (ImageView) getViewById(view, R.id.order_layout, R.id.iv_profile_forward);
+        orderUnPay = (TextView) getViewById(view, R.id.order_layout, R.id.tv_profile_left);
+        orderDelivering = (TextView) getViewById(view, R.id.order_layout, R.id.tv_profile_center);
+        orderComplete = (TextView) getViewById(view, R.id.order_layout, R.id.tv_profile_right);
+        TextView orderAll = (TextView) getViewById(view, R.id.order_layout, R.id.tv_profile_subText);
+        orderAll.setText("所有订单");
+
         //TODO---------------------------------我是跑腿员-------------------------------------------
-        workerInfo = (TextView) getViewById(view, R.id.profileWorker, R.id.profileInfo);
-        workerForward = (ImageView) getViewById(view, R.id.profileWorker, R.id.profileForward);
-        workerSignIn = (TextView) getViewById(view, R.id.profileWorker, R.id.profileDealleft);
-        workerSignUp = (TextView) getViewById(view, R.id.profileWorker, R.id.profileDealcenter);
-        workerModify = (TextView) getViewById(view, R.id.profileWorker, R.id.profileDealright);
+        deliverInfo = (TextView) getViewById(view, R.id.deliver_layout, R.id.tv_profile);
+        deliverForward = (ImageView) getViewById(view, R.id.deliver_layout, R.id.iv_profile_forward);
+        deliverLogIn = (TextView) getViewById(view, R.id.deliver_layout, R.id.tv_profile_left);
+        deliverLogOut = (TextView) getViewById(view, R.id.deliver_layout, R.id.tv_profile_center);
+        deliverOrderGrab = (TextView) getViewById(view, R.id.deliver_layout, R.id.tv_profile_right);
+        deliverOrderNum = (TextView) getViewById(view, R.id.deliver_layout, R.id.tv_profile_subText);
         //TODO---------------------------------我的地址-------------------------------------------
-        addressInfo = (TextView) getViewById(view, R.id.profileAddress, R.id.profileInfo);
-        addressForward = (ImageView) getViewById(view, R.id.profileAddress, R.id.profileForward);
-        addressCustome = (TextView) getViewById(view, R.id.profileAddress, R.id.profileDealleft);
-        addressAdd = (TextView) getViewById(view, R.id.profileAddress, R.id.profileDealcenter);
-        addressModify = (TextView) getViewById(view, R.id.profileAddress, R.id.profileDealright);
+        addressForward = (ImageView) view.findViewById(R.id.address_forward);
     }
 
     @Override
@@ -106,72 +117,92 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         userName.setTag(R.id.userName);
         userName.setOnClickListener(this);
 
-        myInfo.setText(R.string.myOrder);
+        myOrder.setText(R.string.myOrder);
 
-        myForward.setOnClickListener(this);
-        myForward.setTag(R.id.profileInfo);
+        orderForward.setOnClickListener(this);
+        orderForward.setTag(R.id.order_layout);
 
-        myPay.setText(R.string.orderUnPaid);
-        myPay.setOnClickListener(this);
-        myPay.setTag(0);
+        orderUnPay.setText(R.string.orderUnPaid);
+        orderUnPay.setOnClickListener(this);
+        orderUnPay.setTag(ORDER_WAIT_PAY);
 
-        myCancel.setText(R.string.cancel);
-        myCancel.setOnClickListener(this);
-        myCancel.setTag(1);
+        orderDelivering.setText(R.string.orderDelivering);
+        orderDelivering.setOnClickListener(this);
+        orderDelivering.setTag(ORDER_DELIVERING);
 
-        myComplete.setText(R.string.orderComplete);
-        myComplete.setOnClickListener(this);
-        myComplete.setTag(2);
+        orderComplete.setText(R.string.orderComplete);
+        orderComplete.setOnClickListener(this);
+        orderComplete.setTag(ORDER_COMPLETE);
 
-        workerInfo.setText(R.string.workerInfo);
+        deliverInfo.setText(R.string.workerInfo);
         //setTextSize()有两种方法，没有unit参数的方法，默认使用sp为单位的数值进行设置字体大小。
-        workerInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, SizeUtil.sp2px(15));
+//        deliverInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX, SizeUtil.sp2px(15));
+        setDeliverInfo();
 
-        workerForward.setOnClickListener(this);
-        workerForward.setTag(R.id.profileWorker);
+        deliverForward.setOnClickListener(this);
+        deliverForward.setTag(R.id.deliver_layout);
 
-        workerSignIn.setText(R.string.workerSignIn);
-        workerSignIn.setOnClickListener(this);
-        workerSignIn.setTag(3);
+        deliverLogIn.setText(R.string.workerSignIn);
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_login);
+        deliverLogIn.setCompoundDrawablesWithIntrinsicBounds(null,drawable , null, null);
+        deliverLogIn.setOnClickListener(this);
+        deliverLogIn.setTag(LOGIN);
 
-        workerSignUp.setText(R.string.wokerSignUp);
-        workerSignUp.setOnClickListener(this);
-        workerSignUp.setTag(4);
+        deliverLogOut.setText(R.string.tvExit);
+        deliverLogOut.setOnClickListener(this);
+        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_logout);
+        deliverLogOut.setCompoundDrawablesWithIntrinsicBounds(null, drawable , null, null);
+        deliverLogOut.setTag(LOG_OUT);
 
-        workerModify.setText(R.string.wokerAndAddrModify);
-        workerModify.setOnClickListener(this);
-        workerModify.setTag(5);
+        deliverOrderGrab.setText(R.string.deliverOrderGrab);
+        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_grab_order);
+        deliverOrderGrab.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+        deliverOrderGrab.setOnClickListener(this);
+        deliverOrderGrab.setTag(ORDER_GRAB);
 
-        addressInfo.setText(R.string.addrInfo);
 
         addressForward.setOnClickListener(this);
-        addressForward.setTag(R.id.profileAddress);
+        addressForward.setTag(R.id.address_forward);
 
-        addressCustome.setText(R.string.custome);
-        addressCustome.setOnClickListener(this);
-        addressCustome.setTag(6);
+    }
 
-        addressAdd.setText(R.string.add);
-        addressAdd.setOnClickListener(this);
-        addressAdd.setTag(7);
 
-        addressModify.setText(R.string.wokerAndAddrModify);
-        addressModify.setOnClickListener(this);
-        addressModify.setTag(8);
+    private void setDeliverInfo() {
+        if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
+            deliverOrderNum.setText("跑腿员未登录!");
+            deliverOrderNum.setTextColor(Color.BLACK);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                deliverOrderNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.number_bg_gray));
+            }
+        } else {
+            setDeliverOrderNum(AccountUtil.getInstance().getDeliverOrderNum());
+        }
+    }
+
+    private void setDeliverOrderNum(String num) {
+        if (num.equals("0") | TextUtils.isEmpty(num))
+            deliverOrderNum.setText("您当前未接单");
+        else
+            deliverOrderNum.setText(String.format("您已经接%s单", num));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            deliverOrderNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.number_bg_blue));
+        }
     }
 
     private void checkAccount() {
-        if (AccountUtil.getInstance().hasAccount()) {
+        if (AccountUtil.getInstance().hasUserAccount()) {
+            isSignIn = true;
             userName.setText(AccountUtil.getInstance().getNickName());
             userName.setClickable(false);
-            ImageUtils.showImage(AccountUtil.getInstance().getHeadImageUrl(),
-                    userHeader);
-            isSignIn = true;
+            ImageUtils.showImage(AccountUtil.getInstance().getHeadImageUrl(), userHeader);
         } else {
-            userName.setText("请登录");
-            userName.setClickable(true);
             isSignIn = false;
+            userName.setText(R.string.pleaseSignInAsUser);
+            userName.setClickable(true);
             userHeader.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_camera_with_circle));
+        }
+        if (isSignIn) {
+            setDeliverInfo();
         }
     }
 
@@ -183,7 +214,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(hasFetchData)
+        if (hasFetchData)
             refresh();
     }
 
@@ -199,19 +230,20 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void showSuccess(Object o) {
-        if (o == null) {/*没有登录成功*/
-            ToastHelper.getInstance()._toast("注册");
+        if (o == null) {/*没有登录*/
+//            ToastHelper.getInstance()._toast("注册");
             if (userSignUpPresenter == null)
                 userSignUpPresenter = new UserSignUpPresenter(this);
             userSignUpPresenter.userSignUp(openid, unionid, headImageUrl, nickName);
+            return;
         }
         if (o instanceof String) {
             ToastHelper.getInstance()._toast((o).toString());
             if (userSignInPresenter != null)
                 userSignInPresenter.userSignIn(AppConstants.TABLE_CLIENT, openid, unionid);
+            return;
         }
         if (o instanceof SignInBackBean.UserInfoBean) {
-            ToastHelper.getInstance()._toast("登录成功");
             userName.setClickable(false);
             isSignIn = true;
             SignInBackBean.UserInfoBean _data = (SignInBackBean.UserInfoBean) o;
@@ -223,6 +255,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             AccountUtil.getInstance().setPwd(_data.getPwd());
             userName.setText(nickName);
             ImageLoader.getInstance().displayImage(_data.getPic(), userHeader);
+            DialogUtil.cancelDialog();
         }
     }
 
@@ -230,49 +263,52 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         Intent intent = new Intent();
         switch ((int) v.getTag()) {
-            case R.id.profileInfo://TODO 我的订单右箭头
+            case R.id.order_layout://TODO 我的订单右箭头
                 if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
-                    break;
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
+                    return;
                 }
                 intent.setClass(getContext(), OrderListActivity.class);
                 intent.putExtra(AppConstants.KEY_ORDER_TAG, 0);
                 startActivity(intent);
                 break;
-            case R.id.profileWorker://TODO 我是跑腿员右箭头
-//                if (isSignIn)
+            case R.id.deliver_layout://TODO 我是跑腿员右箭头
                 if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
                     break;
+                }
+                if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsDeliver));
+                    return;
                 }
 
-                intent.setClass(getContext(), /*DeliverInfoActivity*/DeliverOrderActivity.class);
+                intent.setClass(getContext(), DeliverOrderActivity.class);
                 startActivity(intent);
-                /*else
-                    ToastHelper.getInstance()._toast("请登录");*/
                 break;
-            /*case R.id.userHeader://TODO 更改头像
-                if (modifyHeadImageDialog == null) {
-                    modifyHeadImageDialog = new ModifyHeadImageDialog(getContext());
-                    modifyHeadImageDialog.setChoosePicListener(this);
+            case R.id.address_forward:
+                /*获取所有地址*/
+                if (!isSignIn) {
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
+                    break;
                 }
-                modifyHeadImageDialog.show();
-                break;*/
-            case R.id.userName://TODO 点击登录
+                intent.setClass(getActivity(), AddressActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.userName:
                 doLogin();
                 break;
-            case 0://TODO 待付款
+            case ORDER_WAIT_PAY:
                 if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
                     break;
                 }
                 intent.setClass(getContext(), OrderListActivity.class);
                 intent.putExtra(AppConstants.KEY_ORDER_TAG, 0);
                 startActivity(intent);
                 break;
-            case 1://TODO  取消
+            case ORDER_DELIVERING:
                 if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
                     break;
                 }
                 intent.setClass(getContext(), OrderListActivity.class);
@@ -280,9 +316,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent);
 
                 break;
-            case 2://TODO 已完成
+            case ORDER_COMPLETE:
                 if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
                     break;
                 }
                 intent.setClass(getContext(), OrderListActivity.class);
@@ -290,38 +326,25 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent);
 
                 break;
-            case 3://TODO 登录
-//                doLogin();
-                break;
-            case 4://TODO 注册
-//                startActivity(new Intent(getContext(), DeliverRegisterActivity.class));
-                break;
-            case 5://TODO 修改
+            case LOGIN:
                 if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
+                    ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.pleaseSignInAsUser));
                     break;
                 }
                 intent.setClass(getContext(), DeliverInfoActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.profileAddress://TODO 我的地址右箭头
-            case 6://TODO 常用
-            case 8://TODO 修改
-                /*获取所有地址*/
-                if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
-                    break;
+            case LOG_OUT:
+                if (TextUtils.isEmpty(AccountUtil.getInstance().getDeliverID())) {
+                    ToastHelper.getInstance().displayToastWithQuickClose("跑腿员未登录！");
+                    return;
                 }
-                intent.setClass(getActivity(), AddressActivity.class);
-                startActivity(intent);
+                AccountUtil.getInstance().deleteDeliverAccount();
+                checkAccount();
                 break;
-            case 7://TODO 添加
-                if (!isSignIn) {
-                    ToastHelper.getInstance().displayToastWithQuickClose("请登录");
-                    break;
-                }
-                intent.setClass(getActivity(), AddOrNewAddressActivity.class);
-                startActivity(intent);
+            case ORDER_GRAB:
+                ToastHelper.getInstance().displayToastWithQuickClose("抢单功能暂未开通！");
+//                startActivity(new Intent(getContext(), DeliverRegisterActivity.class));
                 break;
         }
     }
@@ -334,6 +357,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     /*TODO 登录*/
     private void doLogin() {
+        DialogUtil.showDialog(getContext(), "登录中...");
         if (signUtil == null)
             signUtil = new UmengUtil(getActivity());
         signUtil.SignIn(SHARE_MEDIA.WEIXIN, new SignInListener() {
@@ -347,15 +371,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                     userSignInPresenter = new UserSignInPresenter(MyFragment.this);
                 userSignInPresenter.userSignIn(AppConstants.TABLE_CLIENT,
                         openid, unionid);
-                /*userName.setText(infoMap.get(AppConstants.USERNAME_QQ));
-                ImageLoader.getInstance().displayImage(infoMap.get(AppConstants.PROFILE_IMAGE_QQ),
-                        userHeader);
-                signUtil.setActivity(null);*/
             }
 
             @Override
             public void signFail(String errorMessage) {
-//                ToastHelper.getInstance()._toast(errorMessage);
             }
         });
     }

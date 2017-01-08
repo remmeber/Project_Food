@@ -16,11 +16,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
-<<<<<<< HEAD
- * desc:自主点餐
-=======
  * desc:自主点餐 TODO 目前未使用
->>>>>>> 2726e02649fdc377b34571a59019133563595479
  * author：remember
  * time：2016/6/22 14:41
  * email：1013773046@qq.com
@@ -52,7 +48,7 @@ public class OrderChatActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
         if (s instanceof String) {
             ToastHelper.getInstance()._toast(s.toString());
             etUserInput.setText("");
@@ -60,7 +56,7 @@ public class OrderChatActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
 
     }
 

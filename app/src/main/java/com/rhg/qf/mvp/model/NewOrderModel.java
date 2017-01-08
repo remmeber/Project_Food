@@ -1,7 +1,5 @@
 package com.rhg.qf.mvp.model;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.rhg.qf.bean.NewOrderBackBean;
 import com.rhg.qf.bean.NewOrderBean;
@@ -31,15 +29,14 @@ public class NewOrderModel {
             mapList.add(foodMap);
         }
         String food = new Gson().toJson(mapList);
-        String X = AccountUtil.getInstance().getLongitude();
-        String Y = AccountUtil.getInstance().getLatitude();
-//        Log.i("RHG", "orderbean: " + newOrderBean + "X: " + X + "Y: " + Y);
+        String Y = AccountUtil.getInstance().getLongitude();
+        String X = AccountUtil.getInstance().getLatitude();
         return QFoodApiMamager.getInstant().getQFoodApiService().createOrder(newOrderBean.getAddress(),
                 newOrderBean.getClient(), newOrderBean.getReceiver(), newOrderBean.getPhone(),
-                newOrderBean.getPrice(), X, Y, food)/*
-                .create(new Observable.OnSubscribe<NewOrderBackBean>() {
+                newOrderBean.getPrice(), Y, X, food)/*
+                .create(new Observable.OnSubscribe<NewOrderBackModel>() {
                     @Override
-                    public void call(Subscriber<? super NewOrderBackBean> subscriber) {
+                    public void call(Subscriber<? super NewOrderBackModel> subscriber) {
                         Log.i("RHG", newOrderBackBean.toString());
                         if (newOrderBackBean.getResult() == 0)
                             subscriber.onNext(newOrderBackBean.getMsg());

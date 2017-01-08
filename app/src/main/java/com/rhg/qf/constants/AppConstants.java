@@ -14,8 +14,8 @@ public class AppConstants {
     public static boolean DEBUG = false;
     public static final String f_Path = Environment.getExternalStorageDirectory() + "/QFood";
 
-    public static final int[] IMAGE_INDICTORS = new int[]{R.drawable.ic_page_indicator,
-            R.drawable.ic_page_indicator_focused};
+    public static final int[] IMAGE_INDICTORS = new int[]{R.drawable.ic_page_indicator_9,
+            R.drawable.ic_page_indicator_focused_9};
     public static final String[] SHOP_DETAIL_TITLES = new String[]{"菜品", "店铺详情"};
     public static final String[] SELL_TITLES = new String[]{"按销量", "按距离", "按评分"};
     public static final String[] ORDER_TITLES = new String[]{"待付款", "进行中", "已完成", "已退款"};
@@ -35,6 +35,7 @@ public class AppConstants {
     public static final String SP_HEAD_IMAGE = "sp_head_image";
     public static final String SP_USER_ID = "user_id";
     public static final String SP_DELIVER_ID = "deliver_id";
+    public static final String SP_DELIVER_ORDER_NUM = "deliver_order_num";
     public static final String SP_USER_NAME = "user_name";
     public static final String SP_PASSWORD = "password";
     public static final String SP_NICKNAME = "nickname";
@@ -65,6 +66,7 @@ public class AppConstants {
     public static final String KEY_MERCHANT_ID = "merchant_id";
     public static final String KEY_PRODUCT_ID = "product_id";
     public static final String KEY_ORDER_ID = "order_id";
+    public static final String KEY_PRODUCT_LOGO = "product_logo";
     public static final String KEY_MERCHANT_LOGO = "merchant_logo";
     public static final String KEY_PRODUCT_PRICE = "product_price";
     public static final String KEY_OR_SP_PHONE = "phone";
@@ -134,6 +136,7 @@ public class AppConstants {
     public static final String TABLE_ORDER = "order";
     public static final String ADDRESS_TABLE = "address";
     public static final String DELIVER_ORDER = "deliverorder";
+    public static final String DELIVER_ORDER_NUMBER = "deliverOrderNumber";
     public static final String DELIVER = "deliver";
     public static final String MERCHANT_INFO = "restaurantdetail";
     public static final String ORDER_DETAIL = "orderdetail";
@@ -148,6 +151,7 @@ public class AppConstants {
     public static final String UPDATE_ORDER_WAIT = "UPdateorderwait";//修改已经接单接口
 
     public static final String CUSTOMER_SERVER = "deliciouscs";
+    public static final String HXKEY = "shareddelicious#shareddelicious";
 
 
 }

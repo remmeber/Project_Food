@@ -10,46 +10,33 @@
         android:id="@+id/grid_imageView"
         android:layout_width="@dimen/header_image_size"
         android:layout_height="@dimen/header_image_size"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="@dimen/margin_little"
-        android:layout_marginTop="@dimen/margin_little"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         tools:src="@drawable/ic_pic_failed" />
 
     <ImageView
         android:id="@+id/iv_top"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/relativeLayout"
-        android:layout_toStartOf="@+id/relativeLayout"
-        android:src="@drawable/top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/grid_imageView"
+        android:layout_alignRight="@+id/grid_imageView"
+        android:layout_gravity="end"
+        android:src="@mipmap/top_9"
         android:visibility="gone"
         tools:ignore="contentDescription" />
 
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <TextView
+        android:id="@+id/grid_title"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/header_image_size"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_toEndOf="@id/grid_imageView"
-        android:layout_toRightOf="@id/grid_imageView"
-        android:background="@drawable/bg_blue_white"
-        android:paddingLeft="@dimen/margin_little"
-        android:paddingRight="@dimen/margin_little">
-
-        <TextView
-            android:id="@+id/grid_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:ems="1"
-            android:textSize="@dimen/text_little_small"
-            tools:text="黄焖鸡米饭" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/grid_imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_little"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        tools:text="黄焖鸡米饭" />
 
 
 </RelativeLayout>

@@ -15,8 +15,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorInActive" />
+            android:layout_height="0.1dp"
+            android:background="@color/black" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_little"
                 android:text="@string/contactUser"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_medium" />
@@ -43,26 +43,26 @@
                 android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/margin_huge"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_little"
                 android:layout_toEndOf="@id/add_new_address_contact_person"
                 android:layout_toRightOf="@id/add_new_address_contact_person"
                 android:background="@null"
                 android:hint="必填"
                 android:imeOptions="actionNext"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/colorSearchHint"
                 android:textSize="@dimen/text_medium" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.1dp"
                 android:layout_alignEnd="@id/add_new_address_contact_person_content"
                 android:layout_alignLeft="@id/add_new_address_contact_person"
                 android:layout_alignRight="@id/add_new_address_contact_person_content"
                 android:layout_alignStart="@id/add_new_address_contact_person"
                 android:layout_below="@id/add_new_address_contact_person"
                 android:layout_marginTop="@dimen/margin_little"
-                android:background="@color/colorInActive" />
+                android:background="@color/black" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_little"
                 android:text="@string/contacts"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_medium" />
@@ -90,26 +90,26 @@
                 android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/margin_huge"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_little"
                 android:layout_toEndOf="@id/add_new_address_contacts"
                 android:layout_toRightOf="@id/add_new_address_contacts"
                 android:background="@null"
                 android:hint="必填"
                 android:imeOptions="actionNext"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textColorHint="@color/colorSearchHint"
                 android:textSize="@dimen/text_medium" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.1dp"
                 android:layout_alignEnd="@id/add_new_address_contacts_content"
                 android:layout_alignLeft="@id/add_new_address_contacts"
                 android:layout_alignRight="@id/add_new_address_contacts_content"
                 android:layout_alignStart="@id/add_new_address_contacts"
                 android:layout_below="@id/add_new_address_contacts"
                 android:layout_marginTop="@dimen/margin_little"
-                android:background="@color/colorInActive" />
+                android:background="@color/black" />
         </RelativeLayout>
 
 
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_little"
                 android:text="@string/contactAddress"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_medium" />
@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_huge"
                 android:layout_marginStart="@dimen/margin_huge"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_little"
                 android:layout_toEndOf="@id/add_new_address_contact_address"
                 android:layout_toLeftOf="@+id/add_new_address_location"
                 android:layout_toRightOf="@id/add_new_address_contact_address"
@@ -158,14 +158,14 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.1dp"
                 android:layout_alignEnd="@id/add_new_address_location"
                 android:layout_alignLeft="@id/add_new_address_contact_address"
                 android:layout_alignRight="@id/add_new_address_location"
                 android:layout_alignStart="@id/add_new_address_contact_address"
                 android:layout_below="@id/add_new_address_contact_address"
                 android:layout_marginTop="@dimen/margin_little"
-                android:background="@color/colorInActive" />
+                android:background="@color/black" />
         </RelativeLayout>
 
         <EditText
@@ -173,19 +173,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_little"
+            android:layout_marginTop="@dimen/margin_little"
             android:background="@null"
             android:hint="@string/contactAddressDetail"
             android:imeOptions="actionDone"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColorHint="@color/colorSearchHint"
             android:textSize="@dimen/text_medium" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorInActive" />
+            android:layout_height="0.1dp"
+            android:background="@color/black" />
     </LinearLayout>
 
     <TextView

@@ -17,7 +17,7 @@ import rx.functions.Func1;
 public class AddressModel {
     public Observable<String> addOrUpdateAddress(String addressId, String user,
                                                  String phone, final String address,
-                                                 String detail, String opt) {
+                                                 String detail, final String opt) {
         String userName = AccountUtil.getInstance().getUserName();
         String pwd = AccountUtil.getInstance().getPwd();
         Observable<BaseBean> _address;
@@ -33,7 +33,7 @@ public class AddressModel {
                         addressId);
         } else/*修改地址*/
             _address = QFoodApiMamager.getInstant().getQFoodApiService().updateAddress(userName, addressId,
-                    user, phone, address.concat(detail), pwd);
+                    user, phone, address,detail, pwd);
         return _address.flatMap(new Func1<BaseBean, Observable<String>>() {
             @Override
             public Observable<String> call(final BaseBean baseBean) {

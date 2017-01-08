@@ -7,30 +7,42 @@ package com.rhg.qf.bean;
  *email 1013773046@qq.com
  */
 
+import java.util.List;
+
 public class NewOrderBackBean extends BaseBean {
-    private String fee;
-    private String price;
+        private String RId;
+        private String fee;
+        private String price;
 
-    public String getFee() {
-        return fee;
-    }
+        public String getRId() {
+            return RId;
+        }
 
-    public void setFee(String fee) {
-        this.fee = fee;
-    }
+        public void setRId(String RId) {
+            this.RId = RId;
+        }
 
-    public String getPrice() {
-        return price;
-    }
+        public String getFee() {
+            return fee;
+        }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
+        public void setFee(String fee) {
+            this.fee = fee;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
+        }
 
     @Override
     public String toString() {
-        return super.toString()+"NewOrderBackBean{" +
-                "fee='" + fee + '\'' +
+        return "NewOrderBackBean{" +
+                "RId='" + RId + '\'' +
+                ", fee='" + fee + '\'' +
                 ", price='" + price + '\'' +
                 '}';
     }

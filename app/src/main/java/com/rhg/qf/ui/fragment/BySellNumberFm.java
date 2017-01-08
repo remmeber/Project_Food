@@ -14,4 +14,5 @@ public class BySellNumberFm extends AbstractMerchantsFragment {
     protected int getMerchantsFmType() {
         return AppConstants.MERCHANT_SELLNUMBER;
     }
+
 }

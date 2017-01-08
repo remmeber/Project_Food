@@ -7,9 +7,14 @@ import com.rhg.qf.mvp.base.RxPresenter;
 import com.rhg.qf.mvp.model.GoodsDetailModel;
 import com.rhg.qf.mvp.presenter.contact.GoodsDetailContact;
 import com.rhg.qf.mvp.view.BaseView;
+import com.rhg.qf.utils.ToastHelper;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -20,8 +25,6 @@ import rx.schedulers.Schedulers;
  */
 public class GoodsDetailPresenter extends RxPresenter<GoodsDetailContact.View<GoodsDetailUrlBean.GoodsDetailBean>> {
 
-    BaseView baseView;
-
     GoodsDetailModel goodsDetailModel;
 
     /*public GoodsDetailPresenter(BaseView baseView) {
@@ -30,14 +33,24 @@ public class GoodsDetailPresenter extends RxPresenter<GoodsDetailContact.View<Go
     }*/
 
     public GoodsDetailPresenter(/*GoodsDetailContact.View<GoodsDetailUrlBean.GoodsDetailBean> view*/) {
-//        this.view = view;
         goodsDetailModel = new GoodsDetailModel();
     }
 
     public void getGoodsInfo(String foodmessage, String foodId) {
         addSubscription(goodsDetailModel.getGoodsDetail(foodmessage, foodId).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<GoodsDetailUrlBean.GoodsDetailBean>() {
+                .onErrorReturn(new Func1<Throwable, GoodsDetailUrlBean.GoodsDetailBean>() {
+                    @Override
+                    public GoodsDetailUrlBean.GoodsDetailBean call(Throwable throwable) {
+                        if (throwable instanceof RuntimeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                        } else if (throwable instanceof SSLHandshakeException) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                        }
+                        return null;
+                    }
+                })
+                .subscribe(new Subscriber<GoodsDetailUrlBean.GoodsDetailBean>() {
                     @Override
                     public void onCompleted() {
 

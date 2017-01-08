@@ -1,18 +1,17 @@
 package com.rhg.qf.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rhg.qf.R;
 import com.rhg.qf.bean.ShoppingCartBean;
 import com.rhg.qf.ui.UIAlertView;
+import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.ShoppingCartUtil;
 
@@ -26,8 +25,9 @@ import java.util.List;
  */
 public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
     List<ShoppingCartBean> mData;
-    Context context;
+    BaseAppcompactActivity context;
     private DataChangeListener onDataChangeListener;
+    private ClickListener onClickListener;
 
     //TODO--------------------------购物车事件监听--------------------------------------------------
     View.OnClickListener ShortCartListener = new View.OnClickListener() {
@@ -87,7 +87,7 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
     };
 
 
-    public QFoodShoppingCartExplAdapter(Context context) {
+    public QFoodShoppingCartExplAdapter(BaseAppcompactActivity context) {
         this.context = context;
     }
 
@@ -200,7 +200,9 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
         childViewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDelDialog(groupPosition, childPosition);
+                if (onClickListener != null) {
+                    onClickListener.OnChildClick(groupPosition, childPosition, ClickListener.DELETE);
+                }
             }
         });
         return itemView;
@@ -209,49 +211,6 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
-    }
-
-    /**
-     * 删除弹框
-     *
-     * @param groupPosition
-     * @param childPosition
-     */
-    private void showDelDialog(final int groupPosition, final int childPosition) {
-        final String productID = mData.get(groupPosition).getGoods().get(childPosition).getGoodsID();
-        final UIAlertView delDialog = new UIAlertView(context, "温馨提示", "确认删除该商品吗?",
-                "取消", "确定");
-        delDialog.show();
-        delDialog.setClicklistener(new UIAlertView.ClickListenerInterface() {
-                                       @Override
-                                       public void doLeft() {
-                                           delDialog.dismiss();
-                                       }
-
-                                       @Override
-                                       public void doRight() {
-                                           delGoods(groupPosition, childPosition, ((ShoppingCartBean) getGroup(groupPosition)).getMerID(), productID);
-                                           setDataChange();
-                                           notifyDataSetChanged();
-                                           delDialog.dismiss();
-                                       }
-                                   }
-        );
-    }
-
-    /**
-     * 删除商品
-     *
-     * @param groupPosition
-     * @param childPosition
-     */
-    private void delGoods(int groupPosition, int childPosition, String merchantId, String foodId) {
-        onDataChangeListener.removeData(merchantId, foodId);
-        mData.get(groupPosition).getGoods().remove(childPosition);
-        if (mData.get(groupPosition).getGoods().size() == 0) {
-            mData.remove(groupPosition);
-        }
-        notifyDataSetChanged();
     }
 
     private void setDataChange() {
@@ -264,19 +223,38 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
         this.onDataChangeListener = onDataChangeListener;
     }
 
+    public void setOnClickListener(ClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     public interface DataChangeListener {
         void onDataChange(String CountMoney);
 
         void removeData(String merchantId, String foodId);
     }
 
-    class GroupViewHolder {
+    public interface ClickListener {
+        int DELETE = 1;
+
+        void OnParentClick(int parent);
+
+        /**
+         * 子布局列表的点击回调
+         *
+         * @param parent 子布局所在的父布局的位置
+         * @param child  子布局所在的位置
+         * @param action 点击子布局回调的操作方法
+         */
+        void OnChildClick(int parent, int child, int action);
+    }
+
+    private class GroupViewHolder {
         ImageView btGroupCheck;
         TextView tvShopName;
         ImageView btForwardShop;
     }
 
-    class ChildViewHolder {
+    private class ChildViewHolder {
         RelativeLayout rlChild;
         /*商品选中*/
         ImageView btGoodsCheck;
@@ -293,7 +271,7 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
         /*商品数量*/
         TextView goodsCount;
         /*删除*/
-        LinearLayout delete;
+        RelativeLayout delete;
 
         ChildViewHolder(View view) {
             rlChild = (RelativeLayout) view.findViewById(R.id.rl_child);
@@ -304,7 +282,7 @@ public class QFoodShoppingCartExplAdapter extends BaseExpandableListAdapter {
             btReduceNum = (ImageView) view.findViewById(R.id.ivReduce);
             btAddNum = (ImageView) view.findViewById(R.id.ivAdd);
             goodsCount = (TextView) view.findViewById(R.id.etNum);
-            delete = (LinearLayout) view.findViewById(R.id.lldelete);
+            delete = (RelativeLayout) view.findViewById(R.id.lldelete);
             goodsCount.setFocusable(false);
         }
     }

@@ -17,14 +17,12 @@ import java.util.List;
  *time 2016/10/20 14:15
  *email 1013773046@qq.com
  */
-public class DeliverInfoBean extends BaseBean{
+public class DeliverInfoBean extends BaseBean {
 
     /**
      * total : 1
      * rows : [{"ID":"10","DName":"快递员1","PersonId":"1234567890002456","Phonenumber":"1383838438","Pwd":"123456","Area":"嵊州不知道哪里","ClientID":"10"}]
      */
-
-    private int total;
     /**
      * ID : 10
      * DName : 快递员1
@@ -38,14 +36,6 @@ public class DeliverInfoBean extends BaseBean{
     @SerializedName("rows")
     private List<InfoBean> DeliverInfo;
 
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
     public List<InfoBean> getDeliverInfo() {
         return DeliverInfo;
     }
@@ -53,7 +43,6 @@ public class DeliverInfoBean extends BaseBean{
     public void setDeliverInfo(List<InfoBean> DeliverInfo) {
         this.DeliverInfo = DeliverInfo;
     }
-
     public static class InfoBean {
         private String ID;
         private String DName;
@@ -62,6 +51,16 @@ public class DeliverInfoBean extends BaseBean{
         private String Pwd;
         private String Area;
         private String ClientID;
+        private String deliverOrderNum;
+
+        public String getDeliverOrderNum() {
+            return deliverOrderNum;
+        }
+
+        public void setDeliverOrderNum(String deliverOrderNum) {
+            this.deliverOrderNum = deliverOrderNum;
+        }
+
 
         public String getID() {
             return ID;
@@ -131,13 +130,5 @@ public class DeliverInfoBean extends BaseBean{
                     ", ClientID='" + ClientID + '\'' +
                     '}';
         }
-    }
-
-    @Override
-    public String toString() {
-        return "DeliverInfoBean{" +
-                "total=" + total +
-                ", DeliverInfo=" + DeliverInfo +
-                '}';
     }
 }

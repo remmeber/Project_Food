@@ -137,6 +137,7 @@ public class OrderDetailUrlBean {
             private String FName;
             private String Price;
             private String Num;
+            private String RName;
 
             public String getFName() {
                 return FName;
@@ -162,12 +163,22 @@ public class OrderDetailUrlBean {
                 this.Num = Num;
             }
 
+            public String getRName() {
+                return RName;
+            }
+
+            public void setRName(String RName) {
+                this.RName = RName;
+            }
+
+
             @Override
             public String toString() {
                 return "FoodsBean{" +
                         "FName='" + FName + '\'' +
                         ", Price='" + Price + '\'' +
                         ", Num='" + Num + '\'' +
+                        ", RName='" + RName + '\'' +
                         '}';
             }
         }

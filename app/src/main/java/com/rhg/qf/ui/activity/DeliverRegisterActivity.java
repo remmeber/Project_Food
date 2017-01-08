@@ -24,7 +24,7 @@ import butterknife.OnClick;
  *time 2016/7/6 22:04
  *email 1013773046@qq.com
  */
-public class DeliverRegisterActivity extends BaseFragmentActivity {
+public class DeliverRegisterActivity extends BaseAppcompactActivity {
 
     @Bind(R.id.tb_center_tv)
     TextView tbCenterTv;
@@ -52,12 +52,7 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void initView(View view) {
-
-    }
-
-    @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initData() {
         countTimer = new MyCountDownTimer(60000, 1000, btCheckNumber);
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
@@ -89,16 +84,6 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
         });*/
     }
 
-    @Override
-    protected void showSuccess(Object s) {
-
-    }
-
-    @Override
-    protected void showError(Object s) {
-
-    }
-
     @OnClick({R.id.tb_left_iv, R.id.bt_check_number, R.id.complete_register, R.id.tv_after_read_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -120,11 +105,11 @@ public class DeliverRegisterActivity extends BaseFragmentActivity {
             case R.id.tv_after_read_agreement:
                 if (!isChecked) {
                     isChecked = true;
-                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_check_green),
+                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_check_blue),
                             null, null, null);
                 } else {
                     isChecked = false;
-                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_green),
+                    tvAfterReadAgreement.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.ic_uncheck_blue),
                             null, null, null);
                 }
                 break;

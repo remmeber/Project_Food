@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_header"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
-    android:background="@drawable/btn_gray_light_style"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
     android:orientation="vertical">
 
     <ImageView
@@ -15,46 +15,40 @@
         tools:ignore="contentDescription"
         tools:src="@drawable/ic_pic_failed" />
 
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-
-        android:background="@color/colorInActive" />-->
-
     <RelativeLayout
         android:id="@+id/ll_header_seller_name"
         android:layout_width="match_parent"
-        android:layout_height="22dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_little"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp">
 
         <ImageView
-            android:id="@+id/headersellerIcon"
+            android:id="@+id/header_seller_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_shop_green"
+            android:src="@drawable/ic_shop_blue"
             tools:ignore="contentDescription" />
 
         <TextView
-            android:id="@+id/headerstorename"
+            android:id="@+id/header_seller_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
-            android:layout_toEndOf="@id/headersellerIcon"
-            android:layout_toRightOf="@id/headersellerIcon"
+            android:layout_toEndOf="@id/header_seller_icon"
+            android:layout_toRightOf="@id/header_seller_icon"
             android:gravity="center_vertical"
             android:minHeight="0dp"
-            android:textSize="@dimen/text_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             tools:text="dddd" />
 
         <ImageView
-            android:id="@+id/headerForward"
+            android:id="@+id/header_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -63,17 +57,6 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_chevron_right_blue"
             tools:ignore="contentDescription" />
-
-        <!--<View
-            android:id="@+id/headerline"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@drawable/virtual_line"
-            android:visibility="gone"
-            android:layerType="software" />-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -84,45 +67,39 @@
         android:layout_marginTop="6dp">
 
         <TextView
-            android:id="@+id/headerdemandmoney"
+            android:id="@+id/header_demand_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="@dimen/text_small"
+            android:layout_centerVertical="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="bbbbbb" />
 
         <TextView
-            android:id="@+id/headerdelivermoney"
+            android:id="@+id/header_deliver_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_big"
             android:layout_marginStart="@dimen/margin_big"
-            android:layout_toEndOf="@id/headerdemandmoney"
-            android:layout_toRightOf="@id/headerdemandmoney"
-            android:textSize="@dimen/text_small"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/header_demand_money"
+            android:layout_toRightOf="@id/header_demand_money"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="aaaaaa" />
 
         <TextView
-            android:id="@+id/headerdistanceText"
+            android:id="@+id/header_distance_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:textSize="@dimen/text_small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="aaaaaa" />
 
     </RelativeLayout>
-
-
-    <!--</RelativeLayout>-->
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/colorInActive" />-->
 
 </LinearLayout>

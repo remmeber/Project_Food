@@ -23,6 +23,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ import com.easemob.easeui.widget.EaseChatInputMenu.ChatInputMenuListener;
 import com.easemob.easeui.widget.EaseChatMessageList;
 import com.easemob.easeui.widget.EaseVoiceRecorderView;
 import com.easemob.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallback;
+import com.easemob.easeui.widget.chatrow.EaseChatRow;
 import com.easemob.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
@@ -70,7 +72,7 @@ import java.util.List;
  * <br/>
  * 参数传入示例可查看demo里的ChatActivity
  */
-public class EaseChatFragment extends EaseBaseFragment implements EMEventListener {
+public class EaseChatFragment extends EaseBaseFragment implements EMEventListener{
     protected static final String TAG = "EaseChatFragment";
     protected static final int REQUEST_CODE_MAP = 1;
     protected static final int REQUEST_CODE_CAMERA = 2;
@@ -175,8 +177,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
         });
 
         swipeRefreshLayout = messageList.getSwipeRefreshLayout();
-        swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
-                R.color.holo_orange_light, R.color.holo_red_light);
+        swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright);
 
         inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -235,6 +236,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
         });
 
         setRefreshLayoutListener();
+//        setChatFragmentListener(this);
 
         // show forward message if the message is not null
         String forward_msg_id = getArguments().getString("forward_msg_id");
@@ -685,13 +687,13 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
 
             @Override
             public void onError(int i, String s) {
-                Log.i("RHG", "onError:"+s);
+                Log.i("RHG", "onError:" + s);
 
             }
 
             @Override
             public void onProgress(int i, String s) {
-                Log.i("RHG", "onProgress:"+s);
+                Log.i("RHG", "onProgress:" + s);
 
             }
         });
@@ -738,7 +740,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
                 return;
-
             }
             sendImageMessage(file.getAbsolutePath());
         }
@@ -770,12 +771,12 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
         }
         File file = new File(filePath);
         if (file == null || !file.exists()) {
-            Toast.makeText(getActivity(), R.string.File_does_not_exist, 0).show();
+            Toast.makeText(getActivity(), R.string.File_does_not_exist, Toast.LENGTH_SHORT).show();
             return;
         }
         //大于10M不让发送
         if (file.length() > 10 * 1024 * 1024) {
-            Toast.makeText(getActivity(), R.string.The_file_is_not_greater_than_10_m, 0).show();
+            Toast.makeText(getActivity(), R.string.The_file_is_not_greater_than_10_m, Toast.LENGTH_SHORT).show();
             return;
         }
         sendFileMessage(filePath);
@@ -786,7 +787,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
      */
     protected void selectPicFromCamera() {
         if (!EaseCommonUtils.isExitsSdcard()) {
-            Toast.makeText(getActivity(), R.string.sd_card_does_not_exist, 0).show();
+            Toast.makeText(getActivity(), R.string.sd_card_does_not_exist, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -839,7 +840,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
         if (chatType == EaseConstant.CHATTYPE_GROUP) {
             EMGroup group = EMGroupManager.getInstance().getGroup(toChatUsername);
             if (group == null) {
-                Toast.makeText(getActivity(), R.string.gorup_not_found, 0).show();
+                Toast.makeText(getActivity(), R.string.gorup_not_found, Toast.LENGTH_SHORT).show();
                 return;
             }
             if (chatFragmentListener != null) {
@@ -914,7 +915,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
 
                 public void run() {
                     if (toChatUsername.equals(groupId)) {
-                        Toast.makeText(getActivity(), R.string.you_are_group, 1).show();
+                        Toast.makeText(getActivity(), R.string.you_are_group, Toast.LENGTH_LONG).show();
                         getActivity().finish();
                     }
                 }
@@ -926,8 +927,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
             // 群组解散正好在此页面，提示群组被解散，并finish此页面
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    if (toChatUsername.equals(groupId)) {
-                        Toast.makeText(getActivity(), R.string.the_current_group, 1).show();
+                    if (toChatUsername.equals(groupId)){
+                        Toast.makeText(getActivity(), R.string.the_current_group, Toast.LENGTH_LONG).show();
                         getActivity().finish();
                     }
                 }
@@ -987,6 +988,4 @@ public class EaseChatFragment extends EaseBaseFragment implements EMEventListene
          */
         EaseCustomChatRowProvider onSetCustomChatRowProvider();
     }
-
-
 }

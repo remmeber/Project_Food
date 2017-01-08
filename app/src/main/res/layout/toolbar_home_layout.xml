@@ -57,8 +57,8 @@
         android:layout_toRightOf="@id/home_tl_left_rl"
         android:layout_toStartOf="@+id/home_tl_right_ll"
         android:background="@drawable/tv_search_bg"
-        android:drawableEnd="@drawable/ic_search_green"
-        android:drawableRight="@drawable/ic_search_green"
+        android:drawableEnd="@drawable/ic_search_blue"
+        android:drawableRight="@drawable/ic_search_blue"
         android:gravity="center_vertical"
         android:hint="@string/searchHint"
         android:paddingLeft="@dimen/margin_little"
@@ -74,6 +74,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
-        android:orientation="vertical"
-        android:src="@mipmap/ic_diy_order" />
+        android:orientation="vertical" />
 </RelativeLayout>

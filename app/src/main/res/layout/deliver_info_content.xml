@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="true"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -51,7 +49,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:imeOptions="actionNext"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textSize="@dimen/text_big"
             tools:hint="真实姓名" />
     </android.support.design.widget.TextInputLayout>
@@ -71,7 +69,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:imeOptions="actionNext"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textSize="@dimen/text_big"
             tools:hint="身份证号" />
     </android.support.design.widget.TextInputLayout>
@@ -109,7 +107,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:imeOptions="actionDone"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textSize="@dimen/text_big"
             tools:hint="配送区域" />
 
@@ -129,10 +127,10 @@
         android:gravity="center"
         android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
-        android:text="保存"
+        android:text="@string/tvSave"
         android:textSize="@dimen/text_big" />
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/bt_exit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -141,10 +139,10 @@
         android:layout_marginRight="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="@dimen/margin_small"
-        android:background="@drawable/btn_gray_style"
+        android:background="?android:selectableItemBackground"
         android:gravity="center"
         android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
-        android:text="退出账号"
-        android:textSize="@dimen/text_big" />
+        android:text="@string/tvExit"
+        android:textSize="@dimen/text_big" />-->
 </LinearLayout>

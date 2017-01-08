@@ -7,7 +7,7 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.easemob.easeui.controller.EaseUI;
+import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LimitedAgeMemoryCache;
@@ -18,11 +18,17 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rhg.qf.R;
 import com.rhg.qf.locationservice.LocationService;
-import com.rhg.qf.ui.activity.BaseFragmentActivity;
+import com.rhg.qf.ui.activity.BaseAppcompactActivity;
+import com.rhg.qf.unexpected.UnExpected;
 import com.rhg.qf.utils.AccountUtil;
+import com.rhg.qf.utils.CustomerHelper;
 import com.rhg.qf.utils.ToastHelper;
 import com.umeng.socialize.PlatformConfig;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
@@ -37,12 +43,12 @@ public class InitApplication extends MultiDexApplication implements Runnable {
     public final static String QQKEY = "MdCq3ttlP0xlAPIg";
     public final static String WXID = "wxb066167618e700e6";/*已签名*/
     public final static String WXKEY = "1673bb821a7bd0e1aac602d1f5f85ed7";/*已签名*/
+
+    public final static String fileName = "Log.txt";
     private static InitApplication initApplication;
     public LocationService locationService;
     public Vibrator mVibrator;
-    private HashMap<String, WeakReference<BaseFragmentActivity>> activityList = new HashMap<String, WeakReference<BaseFragmentActivity>>();
-//    private HashMap<String, WeakReference<Object>> objectList = new HashMap<>();
-
+    private HashMap<String, WeakReference<BaseAppcompactActivity>> activityList = new HashMap<>();
 
     public static InitApplication getInstance() {
         if (initApplication == null)
@@ -50,29 +56,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         return initApplication;
     }
 
-    /*public void addObject(Object object) {
-        if (null != object) {
-            Log.i("RHG", "********* add Object " + object.getClass().getName());
-            objectList.put(object.getClass().getName(), new WeakReference<>(object));
-
-        }
-    }
-
-    public void removeObject(Object object) {
-        if (null != object) {
-            Log.i("RHG", "********* remove Activity " + object.getClass().getName());
-            objectList.remove(object.getClass().getName());
-        }
-    }
-
-    public void addActivity(BaseFragmentActivity activity) {
-        if (null != activity) {
-            Log.i("RHG", "********* add Activity " + activity.getClass().getName());
-            activityList.put(activity.getClass().getName(), new WeakReference<>(activity));
-        }
-    }*/
-
-    public void removeActivity(BaseFragmentActivity activity) {
+    public void removeActivity(BaseAppcompactActivity activity) {
         if (null != activity) {
             Log.i("RHG", "********* remove Activity " + activity.getClass().getName());
             activityList.remove(activity.getClass().getName());
@@ -85,7 +69,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
 
     public void exit() {
         for (String key : activityList.keySet()) {
-            WeakReference<BaseFragmentActivity> activity = activityList.get(key);
+            WeakReference<BaseAppcompactActivity> activity = activityList.get(key);
             if (activity != null && activity.get() != null) {
                 Log.i("RHG", "********* Exit " + activity.get().getClass().getSimpleName());
                 activity.get().finish();
@@ -97,9 +81,9 @@ public class InitApplication extends MultiDexApplication implements Runnable {
 
     @Override
     public void onCreate() {
-        initBDMap();
         super.onCreate();
         initApplication = this;
+        initBDMap();
         new Thread(this).run();
     }
 
@@ -135,19 +119,26 @@ public class InitApplication extends MultiDexApplication implements Runnable {
     private void initImageLoader() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().
                 showImageForEmptyUri(R.drawable.ic_pic_failed)
-                .bitmapConfig(Bitmap.Config.ARGB_8888)
-                .cacheInMemory(true).build();
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+                .build();
 
         MemoryCache memoryCache = new LimitedAgeMemoryCache(new LruMemoryCache(4 * 1024 * 1024), 15 * 60);
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .defaultDisplayImageOptions(defaultOptions)
+                .memoryCacheExtraOptions(320, 480)
                 .memoryCache(memoryCache)
+                .diskCacheFileCount(100)
+                .diskCacheSize(50 * 1024 * 1024)
+                .diskCache(new LimitedAgeDiskCache(getCacheDir(), 15 * 60))
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .writeDebugLogs()
                 .tasksProcessingOrder(QueueProcessingType.LIFO).build();
+
         ImageLoader.getInstance().init(config);
     }
 
@@ -157,6 +148,28 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         initImageLoader();
         initToast();
         thirdConfig();
-        EaseUI.getInstance().init(this);
+//        EaseUI.getInstance().init(this);
+        CustomerHelper.getInstance().init(this);
+        File file = new File(getFilesDir().getPath() + "/" + fileName);
+        if (file.exists()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                int len ;
+                byte[] b = new byte[1024];
+                while ((len = fileInputStream.read(b)) != -1) {
+                    bo.write(b, 0, len);
+                }
+                //TODO 将异常信息传到服务端
+                Log.i("RHG", bo.toString());
+
+                fileInputStream.close();
+                bo.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            file.delete();
+        }
+        new UnExpected(getApplicationContext());
     }
 }

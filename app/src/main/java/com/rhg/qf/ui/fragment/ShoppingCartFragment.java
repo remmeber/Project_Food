@@ -1,5 +1,6 @@
 package com.rhg.qf.ui.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,13 +13,14 @@ import android.widget.TextView;
 
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.QFoodShoppingCartExplAdapter;
-import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.bean.FoodInfoBean;
+import com.rhg.qf.bean.IBaseModel;
 import com.rhg.qf.bean.PayModel;
 import com.rhg.qf.bean.ShoppingCartBean;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.mvp.presenter.GetAddressPresenter;
-import com.rhg.qf.mvp.presenter.ModifyOrderPresenter;
+import com.rhg.qf.ui.activity.AddressActivity;
 import com.rhg.qf.ui.activity.PayActivity;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.ShoppingCartUtil;
@@ -39,19 +41,20 @@ import butterknife.OnClick;
  * time：2016/5/28 16:49
  * email：1013773046@qq.com
  */
-public class ShoppingCartFragment extends BaseFragment {
+public class ShoppingCartFragment extends BaseFragment implements com.rhg.qf.adapter.QFoodShoppingCartExplAdapter.DataChangeListener {
     List<ShoppingCartBean> shoppingCartBeanList;
-    List<ShoppingCartBean.Goods> goodsList;
     QFoodShoppingCartExplAdapter QFoodShoppingCartExplAdapter;
-    ModifyOrderPresenter modifyOrderPresenter;
-//    OrdersPresenter getOrdersPresenter;
-
+    boolean isLogin;
+    int childPos;
+    int parentPos;
     @Bind(R.id.tb_center_tv)
     TextView tbCenterTV;
     @Bind(R.id.tb_right_ll)
     LinearLayout tbRight;
     @Bind(R.id.fl_tab)
     FrameLayout fl_tab;
+    @Bind(R.id.tv_shopping_cart_ind)
+    TextView tvShoppingCartInd;
     @Bind(R.id.rl_shopping_cart_empty)
     RelativeLayout rlShoppingCartEmpty;
     @Bind(R.id.list_shopping_cart)
@@ -65,28 +68,11 @@ public class ShoppingCartFragment extends BaseFragment {
     @Bind(R.id.rl_shopping_cart_pay)
     RelativeLayout rlShoppingCartPay;
     private GetAddressPresenter getAddressPresenter;
-    private String userId;
+    private BaseAddress addressBean;
     //-----------------根据需求创建相应的presenter----------------------------------------------------
 
     public ShoppingCartFragment() {
         shoppingCartBeanList = new ArrayList<>();
-        /*for (int i = 0; i < 6; i++) {
-            ShoppingCartBean shoppingCartBean = new ShoppingCartBean();
-            shoppingCartBean.setMerchantName("iiiii");
-            shoppingCartBean.setMerID("2015051800");
-            goodsList = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                ShoppingCartBean.Goods goods = new ShoppingCartBean.Goods();
-                goods.setGoodsLogoUrl(R.drawable.recommend_default_icon_1);
-                goods.setGoodsName("" + j);
-                goods.setPrice("" + j * 2);
-                goods.setProductID("20160518");
-                goods.setNumber("1");
-                goodsList.add(goods);
-            }
-            shoppingCartBean.setGoods(goodsList);
-            shoppingCartBeanList.add(shoppingCartBean);
-        }*/
     }
 
     //----------------------------------------------------------------------------------------------
@@ -99,28 +85,28 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-//        getOrdersPresenter = new OrdersPresenter(this);
-        if (AccountUtil.getInstance().hasAccount()) {
-//            userId = AccountUtil.getInstance().getUserID();
-//            getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
+        if (AccountUtil.getInstance().hasUserAccount()) {
+            isLogin = true;
             List<FoodInfoBean> foodInfoBeanList = ShoppingCartUtil.getAllProductID();
-//            Log.i("RHG", foodInfoBean.toString());
-            Collections.sort(foodInfoBeanList, new Comparator<FoodInfoBean>() {
-                @Override
-                public int compare(FoodInfoBean o1, FoodInfoBean o2) {
-                    return o1.getMerchantId().compareTo(o2.getMerchantId());
-                }
-            });
 
             setData(foodInfoBeanList);
         } else {
-            ToastHelper.getInstance()._toast("当前用户未登录");
+            ToastHelper.getInstance().displayToastWithQuickClose("当前用户未登录");
+            isLogin = false;
             shoppingCartBeanList.clear();
             updateListView();
         }
     }
 
     private void setData(List<FoodInfoBean> foodInfoBeanList) {
+        if (listShoppingCart.hasExpandState())
+            listShoppingCart.close();
+        Collections.sort(foodInfoBeanList, new Comparator<FoodInfoBean>() {
+            @Override
+            public int compare(FoodInfoBean o1, FoodInfoBean o2) {
+                return o1.getMerchantId().compareTo(o2.getMerchantId());
+            }
+        });
         shoppingCartBeanList.clear();
         String lastMerchantId = "-1";
         String newMerchantId;
@@ -152,18 +138,9 @@ public class ShoppingCartFragment extends BaseFragment {
                 shoppingCartBeanList.add(shoppingCartBean);
                 lastMerchantId = newMerchantId;
             }
-//            ShoppingCartUtil.addGoodToCart(orderBean.getID(), orderBean.getRName());
         }
         updateListView();
     }
-
-/*    @Override
-    public void onStart() {
-        if(hasFetchData){
-
-        }
-        super.onStart();
-    }*/
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -179,33 +156,19 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     protected void refresh() {
         super.refresh();
-        if (AccountUtil.getInstance().hasAccount()) {
-            userId = AccountUtil.getInstance().getUserID();
+        if (AccountUtil.getInstance().hasUserAccount()) {
+            isLogin = true;
+//            userId = AccountUtil.getInstance().getUserID();
 //            getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
             List<FoodInfoBean> foodInfoBeanList = ShoppingCartUtil.getAllProductID();
             setData(foodInfoBeanList);
         } else {
             ToastHelper.getInstance()._toast("当前用户未登录");
+            isLogin = false;
             shoppingCartBeanList.clear();
             updateListView();
         }
     }
-
-    /*  @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isViewPrepare) {
-            Log.i("RHG", isVisibleToUser + "");
-            getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
-        }
-    }*/
-
-/*    *//*Fragment被activity覆盖后，重新显示出来时调用的方法*//*
-    @Override
-    public void onStart() {
-        super.onStart();
-        this.setUserVisibleHint(true);
-    }*/
 
     @Override
     protected void initView(View view) {
@@ -220,17 +183,19 @@ public class ShoppingCartFragment extends BaseFragment {
         srlShoppingCart.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (AccountUtil.getInstance().hasAccount()) {
-                    userId = AccountUtil.getInstance().getUserID();
+                if (AccountUtil.getInstance().hasUserAccount()) {
+                    isLogin = false;
+//                    userId = AccountUtil.getInstance().getUserID();
 //                    getOrdersPresenter.getOrders(AppConstants.TABLE_ORDER, userId, AppConstants.USER_ORDER_UNPAID);
                     List<FoodInfoBean> foodInfoBeanList = ShoppingCartUtil.getAllProductID();
                     setData(foodInfoBeanList);
                 } else {
-                    ToastHelper.getInstance()._toast("当前用户未登录");
+                    ToastHelper.getInstance().displayToastWithQuickClose("当前用户未登录");
+                    isLogin = false;
                 }
             }
         });
-        QFoodShoppingCartExplAdapter = new QFoodShoppingCartExplAdapter(getContext());
+        QFoodShoppingCartExplAdapter = new QFoodShoppingCartExplAdapter(mActivity);
         listShoppingCart.setAdapter(QFoodShoppingCartExplAdapter);
         listShoppingCart.setGroupIndicator(null);
         listShoppingCart.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -239,28 +204,22 @@ public class ShoppingCartFragment extends BaseFragment {
                 return true;
             }
         });
-        QFoodShoppingCartExplAdapter.setDataChangeListener(new QFoodShoppingCartExplAdapter.DataChangeListener() {
+        QFoodShoppingCartExplAdapter.setOnClickListener(new QFoodShoppingCartExplAdapter.ClickListener() {
             @Override
-            public void onDataChange(String CountMoney) {
-                if (shoppingCartBeanList.size() == 0) {
-                    showEmpty(true);
-                } else
-                    showEmpty(false);
-                String countMoney = String.format(getResources().getString(R.string.countMoney), CountMoney);
-                tvCountMoney.setText(countMoney);
+            public void OnParentClick(int parent) {
+
             }
 
             @Override
-            public void removeData(String merchantId, String foodId) {
-                /*if (modifyOrderPresenter == null)
-                    modifyOrderPresenter = new ModifyOrderPresenter(ShoppingCartFragment.this);
-                Log.i("RHG", "Id: " + Id);
-                modifyOrderPresenter.modifyUserOrDeliverOrderState(Id*//*订单号*//*,
-                        *//*0:退单，1,：完成*//*AppConstants.ORDER_WITHDRAW);*/
-                ShoppingCartUtil.delGood(merchantId, foodId);
-
+            public void OnChildClick(int parent, int child, int action) {
+                childPos = child;
+                parentPos = parent;
+                if (action == DELETE) {
+                    mActivity.DialogShow("确认删除该商品吗?");
+                }
             }
         });
+        QFoodShoppingCartExplAdapter.setDataChangeListener(this);
         updateListView();
     }
 
@@ -271,11 +230,13 @@ public class ShoppingCartFragment extends BaseFragment {
         srlShoppingCart.setRefreshing(false);
     }
 
-    private void showEmpty(boolean isEmpty) {
+
+    private void showEmpty(boolean isEmpty, String msg) {
         if (isEmpty) {
             rlShoppingCartEmpty.setVisibility(View.VISIBLE);
             listShoppingCart.setVisibility(View.GONE);
             rlShoppingCartPay.setVisibility(View.GONE);
+            tvShoppingCartInd.setText(msg);
         } else {
             rlShoppingCartEmpty.setVisibility(View.GONE);
             listShoppingCart.setVisibility(View.VISIBLE);
@@ -297,51 +258,59 @@ public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public void showSuccess(Object o) {
-        if (o instanceof AddressUrlBean.AddressBean) {
-            AddressUrlBean.AddressBean addressBean = (AddressUrlBean.AddressBean) o;
-            createOrderAndToPay(addressBean);
-            return;
-        }
+
         if (o instanceof String) {
             if ("error".equals(o)) {
-                ToastHelper.getInstance()._toast(o.toString());
+                ToastHelper.getInstance().displayToastWithQuickClose(o.toString());
                 return;
             }
             if (((String) o).contains("order")) {
                 refresh();
             }
+            return;
         }
-//        ShoppingCartUtil.delAllGoods();
-        /*shoppingCartBeanList.clear();
-        for (OrderUrlBean.OrderBean orderBean : (List<OrderUrlBean.OrderBean>) o) {
-            ShoppingCartBean shoppingCartBean = new ShoppingCartBean();
-            List<ShoppingCartBean.Goods> goodsList = new ArrayList<>();
-            ShoppingCartBean.Goods goods = new ShoppingCartBean.Goods();
-            goods.setGoodsName(orderBean.getRName());
-            goods.setGoodsLogoUrl(orderBean.getPic());
-            goods.setPrice(orderBean.getPrice());
-            goods.setFee(orderBean.getFee());
-            goods.setGoodsID(orderBean.getID());
-            goods.setNumber("1");
-            goodsList.add(goods);
-            shoppingCartBean.setGoods(goodsList);
-            shoppingCartBeanList.add(shoppingCartBean);
-//            ShoppingCartUtil.addGoodToCart(orderBean.getID(), orderBean.getRName());
+
+        if (o instanceof IBaseModel) {
+            if (((IBaseModel) o).getEntity().size() == 0) {
+                Intent intent = new Intent(getContext(), AddressActivity.class);
+                intent.setAction(AppConstants.ADDRESS_DEFAULT);
+                startActivityForResult(intent, 0);
+                return;
+            }
+
+            addressBean = (BaseAddress) ((IBaseModel) o).getEntity().get(0);
+            createOrderAndToPay(addressBean);
         }
-        updateListView();*/
     }
 
-    private void createOrderAndToPay(AddressUrlBean.AddressBean addressBean) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100) {
+            if (data == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单");
+                return;
+            }
+            addressBean = data.getParcelableExtra(AppConstants.ADDRESS_DEFAULT);
+            if (addressBean == null) {
+                ToastHelper.getInstance().displayToastWithQuickClose("未能生成订单，请填写详细地址");
+                return;
+            }
+            createOrderAndToPay(addressBean);
+        }
+    }
+
+    private void createOrderAndToPay(BaseAddress addressBean) {
         Intent intent = new Intent(getActivity(),
                 PayActivity.class);
         PayModel payModel = new PayModel();
-        payModel.setReceiver(addressBean.getName());
+        payModel.setName(addressBean.getName());
         payModel.setPhone(addressBean.getPhone());
-        payModel.setAddress(addressBean.getAddress().concat(addressBean.getDetail()));
+        payModel.setAddress(addressBean.getAddress());
+        payModel.setDetail(addressBean.getDetail());
         ArrayList<PayModel.PayBean> payBeen = ShoppingCartUtil.getSelectGoods(shoppingCartBeanList);
         payModel.setPayBeanList(payBeen);
         intent.putExtra(AppConstants.KEY_PARCELABLE, payModel);
-//        intent.putExtra(AppConstants.ORDER_STYLE, AppConstants.USER_ORDER_UNPAID);
         startActivity(intent);
     }
 
@@ -359,5 +328,54 @@ public class ShoppingCartFragment extends BaseFragment {
                     ToastHelper.getInstance().displayToastWithQuickClose("亲，请选择商品！");
                 break;
         }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        if (which == DialogInterface.BUTTON_NEGATIVE) {
+            return;
+        }
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            delGoods(parentPos, childPos, shoppingCartBeanList.get(parentPos).getMerID(), shoppingCartBeanList.get(parentPos).getGoods().get(childPos).getGoodsID());
+            String[] infos = ShoppingCartUtil.getShoppingCount(shoppingCartBeanList);
+            this.onDataChange(infos[1]);
+            QFoodShoppingCartExplAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 删除商品
+     *
+     * @param groupPosition
+     * @param childPosition
+     */
+    private void delGoods(int groupPosition, int childPosition, String merchantId, String foodId) {
+        this.removeData(merchantId, foodId);
+        shoppingCartBeanList.get(groupPosition).getGoods().remove(childPosition);
+        if (shoppingCartBeanList.get(groupPosition).getGoods().size() == 0) {
+            shoppingCartBeanList.remove(groupPosition);
+        }
+    }
+
+    @Override
+    public void onDataChange(String CountMoney) {
+        if (shoppingCartBeanList.size() == 0) {
+            showEmpty(true, isLogin ? getString(R.string.emptyCart) : getString(R.string.pleaseSignInAsUser));
+        } else
+            showEmpty(false, null);
+        String countMoney = String.format(getResources().getString(R.string.countMoney), CountMoney);
+        tvCountMoney.setText(countMoney);
+    }
+
+    @Override
+    public void removeData(String merchantId, String foodId) {
+
+                /*if (modifyOrderPresenter == null)
+                    modifyOrderPresenter = new ModifyOrderPresenter(ShoppingCartFragment.this);
+                Log.i("RHG", "Id: " + Id);
+                modifyOrderPresenter.modifyUserOrDeliverOrderState(Id*//*订单号*//*,
+                        *//*0:退单，1,：完成*//*AppConstants.ORDER_WITHDRAW);*/
+        ShoppingCartUtil.delGood(merchantId, foodId);
     }
 }

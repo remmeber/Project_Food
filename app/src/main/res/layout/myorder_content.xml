@@ -9,14 +9,14 @@
         android:id="@+id/stl_myorder"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/colorOrderTab"
-        app:tl_divider_color="@color/colorBlueNormal"
-        app:tl_divider_padding="2dp"
+        android:background="@color/colorBlueNormal"
+        app:tl_divider_color="@color/white"
+        app:tl_divider_padding="@dimen/margin_small"
         app:tl_divider_width="1dp"
-        app:tl_indicator_color="@color/colorBlueNormal"
+        app:tl_indicator_color="@color/white"
         app:tl_tab_space_equal="true"
-        app:tl_textSelectColor="@color/colorBlueNormal"
-        app:tl_textUnselectColor="@color/tabUnSelectColor"
+        app:tl_textSelectColor="@color/white"
+        app:tl_textUnselectColor="@color/black"
         app:tl_textsize="@dimen/text_big" />
 
     <android.support.v4.view.ViewPager

@@ -7,5 +7,5 @@ package com.rhg.qf.mvp.api;
  * email：1013773046@qq.com
  */
 public class QFoodApi {
-    public static final String BASE_URL = "http://jiaze917.com/";
+    public static final String BASE_URL = "https://jiaze917.com/";
 }

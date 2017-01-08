@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">家家美食</string>
-    <string name="searchHint">搜索</string>
+    <string name="searchHint">请输入商家或商品名字</string>
     <string name="Home">首页</string>
     <string name="Merchant">商家</string>
     <string name="User">我的</string>
@@ -9,19 +9,25 @@
 
     <!--Home-->
     <string name="footerText">没有啦~~\n每天5家哦~</string>
+    <string name="todayRec">今日推荐</string>
     <!--Home-->
 
     <!-- profile -->
     <string name="myOrder">我的订单</string>
+    <string name="deliverOrder">跑腿员订单</string>
+    <string name="orderDetail">订单详情</string>
     <string name="orderUnPaid">待付款</string>
-    <string name="cancel">取消</string>
+    <string name="orderDelivering">进行中</string>
     <string name="orderComplete">已完成</string>
     <string name="workerInfo">我是跑腿员</string>
     <string name="workerSignIn">登录</string>
-    <string name="wokerSignUp">注册</string>
-    <string name="wokerAndAddrModify">修改</string>
-    <string name="addrInfo">我的地址</string>
-    <string name="custome">常用</string>
+    <string name="pleaseSignInAsUser">请登录</string>
+    <string name="pleaseSignInAsDeliver">"请登录跑腿员"</string>
+    <string name="deliverSignUp">注册</string>
+    <string name="deliverOrderGrab">抢单</string>
+    <string name="deliverAndAddrModify">修改</string>
+    <string name="addressManage">地址管理</string>
+    <string name="custom">常用</string>
     <string name="add">添加</string>
     <string name="modifyHeader">修改头像</string>
     <string name="userSignIn">请点击登录</string>
@@ -29,6 +35,7 @@
     <!--shoppingcart-->
     <string name="needPay">应付金额:</string>
     <string name="countMoney">￥%s</string>
+    <string name="countNumber">× %s</string>
     <string name="countGoods">去结算</string>
     <string name="deliverFee">含跑腿费:￥%.5s</string>
     <string name="delete">删除</string>
@@ -62,16 +69,8 @@
     <string name="tvDeliverFee">配送费%s元</string>
     <string name="tvOrderNumber">订单号: %s</string>
     <string name="goPay">去付款</string>
-    <string name="tvDrawback">申请退款</string>
+    <string name="tvDrawback">申请退单</string>
     <string name="tvSummation">合计</string>
-    <!--
-    /*跑腿员订单配送*/
-    public static final String DELIVER_ORDER_UNPAID = "待付款";
-    public static final String DELIVER_ORDER_UNACCEPT = "待接单";
-    public static final String DELIVER_ORDER_ACCEPT = "已接单";
-    public static final String DELIVER_ORDER_DELIVERING = "配送中";
-    public static final String DELIVER_ORDER_COMPLETE = "已完成";
-    public static final String DELIVER_ORDER_OTHER = "其他";-->
     <string name="deliverOrderUnpaid">等待付款</string>
     <string name="deliverOrderUnAccept">等待接单</string>
     <string name="deliverOrderAccept">已经接单</string>
@@ -85,6 +84,10 @@
     <string name="tvCamera">相机</string>
     <string name="tvGallery">图库</string>
     <!--我的页面-->
+
+    <!--购物车-->
+    <string name="emptyCart">购物车为空</string>
+    <!--购物车-->
 
     <!--收货地址-->
     <string name="address">收货地址</string>
@@ -100,6 +103,7 @@
     <string name="contactAddressDetail">补充详细地址(如门牌号、楼层号)</string>
     <string name="sure2Modify">确定修改选中地址？</string>
     <string name="tvSave">保存</string>
+    <string name="tvExit">退出</string>
     <string name="tvEdit">编辑</string>
     <!--收货地址-->
 
@@ -123,7 +127,7 @@
     <string name="recommendation">推荐理由:\n%s</string>
     <string name="iWantEat">我想吃&#8230;</string>
     <string name="submit">提交</string>
-    <string name="personalOrder">自主点餐</string>
+    <string name="personalOrder">跑腿服务</string>
     <string name="startOrder">开始点餐</string>
     <string name="goOrder">GO!</string>
     <!--自主点餐-->
@@ -137,8 +141,8 @@
     <string name="completeRegister">完成注册</string>
     <string name="agreement">协议</string>
     <!--register-->
+    <string name="sure">确定</string>
+    <string name="cancel">取消</string>
+    <string name="warmInform">温馨提示</string>
 
-    <!--test-->
-
-    <!--test-->
 </resources>

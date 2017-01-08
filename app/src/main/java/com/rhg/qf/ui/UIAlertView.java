@@ -12,7 +12,7 @@ import com.rhg.qf.R;
  *time 2016/10/20 12:57
  *email 1013773046@qq.com
  */
-public class UIAlertView extends BaseDiaglogView {
+public class UIAlertView extends BaseDialogView {
 
     private String title;
     private String message;
@@ -21,7 +21,7 @@ public class UIAlertView extends BaseDiaglogView {
 
     public UIAlertView(Context context, String title, String message,
                        String buttonLeftText, String buttonRightText) {
-        super(context, R.layout.ui_alert_view);
+        super(context);
         this.title = title;
         this.message = message;
         this.buttonLeftText = buttonLeftText;

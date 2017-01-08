@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.rhg.qf.mvp.api.QFoodApi;
 import com.rhg.qf.pay.model.KeyLibs;
 import com.rhg.qf.pay.model.OrderInfo;
 import com.rhg.qf.pay.pays.IPayable;
 import com.rhg.qf.pay.security.wx.MD5;
 import com.rhg.qf.utils.DecimalUtil;
+import com.rhg.qf.utils.ToastHelper;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -20,7 +20,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
@@ -37,6 +40,7 @@ import okhttp3.Response;
  */
 public class WxPay implements IPayable {
     OkHttpClient client = null;
+    String wx_url;
     //微信sdk对象
     private IWXAPI msgApi;
     //生成预付单需要的参数
@@ -55,6 +59,7 @@ public class WxPay implements IPayable {
     public OrderInfo BuildOrderInfo(String body, String invalidTime,
                                     String notifyUrl, String tradeNo,
                                     String subject, String totalFee, String spbillCreateIp) {
+        wx_url= notifyUrl;
         try {
 //            String nonceStr = GetNonceStr();
             /*List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
@@ -104,18 +109,24 @@ public class WxPay implements IPayable {
     }
 
     public void GenParam(final OrderInfo orderInfo) {
-        String url = QFoodApi.BASE_URL + "Table/JsonSQL/weixinpay/prepay.php";
-//        String json = new Gson().toJson(orderInfo);
-//        Log.i("RHG", json);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<String> result = executorService.submit(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                byte[] result = post(wx_url);
+                return result != null ? new String(result) : null;
+            }
+        });
         try {
-            byte[] response = post(url, null);
-            String content = new String(response);
-        /*content = content.replace("<![CDATA[", "");
-        content = content.replace("]]>", "");*/
-//            Log.i("RHG", "response: " + content);
-//        return null;
-//        Map<String, String> map = XmlUtil.DecodeXmlToMap(content);
-            JSONObject jsonObject = new JSONObject(content);
+            JSONObject jsonObject = null;
+            try {
+                result.isDone();
+                jsonObject = new JSONObject(result.get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (jsonObject == null)
+                throw new NullPointerException("Json can not be null");
             if ("SUCCESS".equals(jsonObject.get("return_code"))) {
                 paramsForPrepay.put("appid", (String) jsonObject.get("appid"));
                 paramsForPrepay.put("mch_id", (String) jsonObject.get("mch_id"));
@@ -123,7 +134,8 @@ public class WxPay implements IPayable {
                 paramsForPrepay.put("trade_type", (String) jsonObject.get("trade_type"));
                 paramsForPrepay.put("sign", (String) jsonObject.get("sign"));
                 paramsForPrepay.put("prepay_id", (String) jsonObject.get("prepay_id"));
-            }
+            } else
+                ToastHelper.getInstance()._toast("获取支付信息失败");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,7 +143,6 @@ public class WxPay implements IPayable {
     }
 
     private PayReq BuildCallAppParams() {
-
         PayReq req = new PayReq();
         req.appId = paramsForPrepay.get("appid");
         req.partnerId = paramsForPrepay.get("mch_id");
@@ -151,9 +162,7 @@ public class WxPay implements IPayable {
         return req;
     }
 
-    byte[] post(String url, String json) {
-//        RequestBody formBody = RequestBody.create(MediaType.parse("text/xml;charset=UTF-8"), json);
-//        Map<String,String> parm = XmlUtil.DecodeXmlToMap(json);
+    private byte[] post(String url) {
         RequestBody body = new FormBody.Builder().add("out_trade_no", paramsForPrepay.get("out_trade_no"))
                 .add("spbill_create_ip", paramsForPrepay.get("spbill_create_ip"))
                 .add("total_fee", paramsForPrepay.get("total_fee")).build();
@@ -174,17 +183,6 @@ public class WxPay implements IPayable {
         }
     }
 
-    private String GetNonceStr() {
-        Random random = new Random();
-        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
-    }
-
-    private String genOutTradNo(String orderNos) {
-        // Random random = new Random();
-        return MD5.getMessageDigest(String.valueOf(orderNos).getBytes());
-    }
-
-
     private String Sign(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -195,8 +193,7 @@ public class WxPay implements IPayable {
         }
         sb.append("key=");
         sb.append(KeyLibs.weixin_privateKey);
-        String sign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
-        return sign;
+        return MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
     }
 
     private long GetTimeStamp() {

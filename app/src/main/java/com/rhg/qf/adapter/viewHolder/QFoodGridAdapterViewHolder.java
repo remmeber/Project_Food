@@ -27,7 +27,7 @@ public class QFoodGridAdapterViewHolder {
     public QFoodGridAdapterViewHolder(Context context, ViewGroup parent, int layoutId, int position) {
         mContext = context;
         mPosition = position;
-        mViews = new SparseArray<View>();
+        mViews = new SparseArray<>();
         mConvertView = LayoutInflater.from(context).inflate(layoutId, parent, false);
         mConvertView.setTag(this);
     }

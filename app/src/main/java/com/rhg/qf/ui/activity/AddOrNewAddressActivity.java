@@ -15,11 +15,13 @@ import android.widget.TextView;
 import com.rhg.qf.R;
 import com.rhg.qf.application.InitApplication;
 import com.rhg.qf.bean.AddressUrlBean;
+import com.rhg.qf.bean.BaseAddress;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.locationservice.LocationService;
 import com.rhg.qf.locationservice.MyLocationListener;
 import com.rhg.qf.mvp.presenter.AddOrUpdateAddressPresenter;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
+import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.RegexUtils;
 import com.rhg.qf.utils.ToastHelper;
 
@@ -66,7 +68,6 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
             addNewAddressContactAddressContent.setText(_address.getAddress());
             if (_address.getDetail() != null)
                 addNewAddressContentDetail.setText(_address.getDetail());
-
         }
     }
 
@@ -90,18 +91,18 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     protected void initData() {
         flTab.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlueNormal));
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
-        if (resultCode == AppConstants.BACK_WITH_ADD)
+        if (resultCode == AppConstants.BACK_WITH_ADD) {
             tbCenterTv.setText(getResources().getString(R.string.newAddress));
-        else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE});
+            else
+                startLoc();
+        } else {
             tbCenterTv.setText(getResources().getString(R.string.modifyAddress));
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_PHONE_STATE});
-        else
-            startLoc();
     }
 
     @Override
@@ -121,20 +122,23 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
+    public void showSuccess(Object s) {
 //        setResult(resultCode, new Intent().putExtra(AppConstants.KEY_ADDRESS, addressBean));
+        if (DialogUtil.isShow())
+            DialogUtil.cancelDialog();
         Intent intent = new Intent();
-        intent.putExtra("return", new AddressUrlBean.AddressBean(
-                addNewAddressContactPersonContent.getText().toString(),
-                addNewAddressContactsContent.getText().toString(),
-                addNewAddressContactAddressContent.getText().toString(),
-                addNewAddressContentDetail.getText().toString()));
-        setResult(0, intent);/*不需要做任何事情*/
+        BaseAddress baseAddress = new BaseAddress();
+        baseAddress.setAddress(addNewAddressContactsContent.getText().toString());
+        baseAddress.setDetail(addNewAddressContentDetail.getText().toString());
+        baseAddress.setName(addNewAddressContactPersonContent.getText().toString());
+        baseAddress.setPhone(addNewAddressContactsContent.getText().toString());
+        intent.putExtra("return", baseAddress);
+        setResult(resultCode, intent);/*不需要做任何事情*/
         finish();
     }
 
     @Override
-    protected void showError(Object s) {
+    public void showError(Object s) {
     }
 
     @Override
@@ -154,7 +158,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
         switch (view.getId()) {
             case R.id.tb_left_iv:
                 isBackWithoutOption = true;
-                finish();
+                this.onBackPressed();
                 break;
             case R.id.add_new_address_bt:
                 if (TextUtils.isEmpty(addNewAddressContactPersonContent.getText())) {
@@ -173,7 +177,7 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                     ToastHelper.getInstance().displayToastWithQuickClose(getResources().getString(R.string.contactAddress_Null));
                     break;
                 }
-
+                DialogUtil.showDialog(this, "修改中...");
                 if (addOrUpdateAddress == null)
                     addOrUpdateAddress = new AddOrUpdateAddressPresenter(this);
                 addOrUpdateAddress.addOrUpdateAddress(addressId, addNewAddressContactPersonContent.getText().toString(),
@@ -181,15 +185,19 @@ public class AddOrNewAddressActivity extends BaseAppcompactActivity {
                         addNewAddressContactAddressContent.getText().toString(),
                         addNewAddressContentDetail.getText().toString(),
                         null);
-                /*AddressUtil.insertAddress(addressBean);*/
                 break;
             case R.id.add_new_address_location:
             case R.id.add_new_address_contact_address_content:
-                startLoc();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    checkPermissionAndSetIfNecessary(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_PHONE_STATE});
+                else
+                    startLoc();
                 break;
         }
     }
-
 
     @Override
     public void onBackPressed() {

@@ -24,12 +24,24 @@ public class ModifyOrderModel {
 
     public Observable<String> modifyOrder(String orderId, final String styleOrTable) {
         final QFoodApiService _service = QFoodApiMamager.getInstant().getQFoodApiService();
-        if (AppConstants.ORDER_WITHDRAW.equals(styleOrTable) || AppConstants.ORDER_FINISH.equals(styleOrTable)) {
+        if (AppConstants.ORDER_WITHDRAW.equals(styleOrTable)) {
             return _service.modifyOrderState(orderId, styleOrTable)
                     .flatMap(new Func1<BaseBean, Observable<String>>() {
                         @Override
                         public Observable<String> call(final BaseBean baseBean) {
-                            return Observable.just("order_modify_success");
+                            if (baseBean.getResult() == 0)
+                                return Observable.just("order_modify_success");
+                            return Observable.just("state_error");
+                        }
+                    });
+        } else if (AppConstants.ORDER_FINISH.equals(styleOrTable)) {
+            return _service.modifyOrderState(orderId, styleOrTable)
+                    .flatMap(new Func1<BaseBean, Observable<String>>() {
+                        @Override
+                        public Observable<String> call(final BaseBean baseBean) {
+                            if (baseBean.getResult() == 0)
+                                return Observable.just(AppConstants.DELIVER_ORDER_COMPLETE);
+                            return Observable.just("state_error");
                         }
                     });
         }
@@ -38,7 +50,7 @@ public class ModifyOrderModel {
                 @Override
                 public Observable<String> call(final BaseBean baseBean) {
                     if (baseBean.getResult() == 0)
-                        return Observable.just("state_delivering_success");
+                        return Observable.just(AppConstants.DELIVER_ORDER_DELIVERING);
                     return Observable.just("state_error");
                 }
             });
@@ -58,7 +70,7 @@ public class ModifyOrderModel {
                 @Override
                 public Observable<String> call(final BaseBean baseBean) {
                     if (baseBean.getResult() == 0)
-                        return Observable.just("state_accept_success");
+                        return Observable.just(AppConstants.DELIVER_ORDER_ACCEPT);
                     return Observable.just("state_error");
                 }
             });

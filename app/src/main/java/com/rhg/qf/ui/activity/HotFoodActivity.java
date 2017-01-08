@@ -31,7 +31,7 @@ import butterknife.OnClick;
  * time：2016/6/19 13:08
  * email：1013773046@qq.com
  */
-public class HotFoodActivity extends BaseFragmentActivity {
+public class HotFoodActivity extends BaseAppcompactActivity {
 
     @Bind(R.id.tb_center_tv)
     TextView tbTitle;
@@ -61,17 +61,7 @@ public class HotFoodActivity extends BaseFragmentActivity {
 
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.hot_sell_layout;
-    }
-
-    @Override
-    protected void initView(View view) {
-
-    }
-
-    @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initData() {
         Bundle _bundle = new Bundle();
         _bundle.putString(AppConstants.KEY_PRODUCT_NAME, foodName);
         OverallHotFoodFm overallHotFoodFm = new OverallHotFoodFm();
@@ -99,13 +89,8 @@ public class HotFoodActivity extends BaseFragmentActivity {
     }
 
     @Override
-    protected void showSuccess(Object s) {
-
-    }
-
-    @Override
-    protected void showError(Object s) {
-
+    protected int getLayoutResId() {
+        return R.layout.hot_sell_layout;
     }
 
 

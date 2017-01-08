@@ -107,9 +107,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/margin_small"
-        android:drawableLeft="@drawable/ic_uncheck_green"
+        android:drawableLeft="@drawable/ic_uncheck_blue"
         android:drawablePadding="@dimen/margin_little"
-        android:drawableStart="@drawable/ic_uncheck_green"
+        android:drawableStart="@drawable/ic_uncheck_blue"
         android:gravity="center"
         android:text="@string/haveRead" />
 
