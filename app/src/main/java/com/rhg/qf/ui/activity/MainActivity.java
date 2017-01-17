@@ -16,6 +16,7 @@ import com.rhg.qf.ui.fragment.HomeFragment;
 import com.rhg.qf.ui.fragment.MyFragment;
 import com.rhg.qf.ui.fragment.SellerFragment;
 import com.rhg.qf.ui.fragment.ShoppingCartFragment;
+import com.rhg.qf.update.Updater;
 import com.rhg.qf.utils.ToastHelper;
 
 import java.util.ArrayList;
@@ -113,5 +114,11 @@ public class MainActivity extends BaseAppcompactActivity implements BaseView {
             super.onBackPressed();
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Updater.getInstance().check(this);
     }
 }

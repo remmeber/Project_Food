@@ -39,6 +39,8 @@ public class AppConstants {
     public static final String SP_USER_NAME = "user_name";
     public static final String SP_PASSWORD = "password";
     public static final String SP_NICKNAME = "nickname";
+    public static final String VERSION = "version";
+
     /*SP KEY*/
     /**
      * 页面调起/销毁标志

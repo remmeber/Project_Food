@@ -78,6 +78,14 @@ public class AccountUtil {
         editor.apply();
     }
 
+    public void setIgnoreVersion(int version) {
+        getEditor().putInt(AppConstants.VERSION, version).apply();
+    }
+
+    public int getIgnoreVersion() {
+        return getSP().getInt(AppConstants.VERSION, 0);
+    }
+
     /*退出跑腿员账户*/
     public void deleteDeliverAccount() {
         SharedPreferences.Editor editor = getEditor();

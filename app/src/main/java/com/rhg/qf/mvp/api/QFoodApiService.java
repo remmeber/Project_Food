@@ -18,6 +18,7 @@ import com.rhg.qf.bean.OrderDetailUrlBean;
 import com.rhg.qf.bean.OrderUrlBean;
 import com.rhg.qf.bean.ShopDetailUrlBean;
 import com.rhg.qf.bean.SignInBackBean;
+import com.rhg.qf.update.model.UpdateInfo;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -274,5 +275,10 @@ public interface QFoodApiService {
     @POST("Table/Json.php")
     Observable<DeliverInfoBean> getDeliverInfo(@Field("Table") String deliver,
                                                @Field("Client") String userId);
+
+    @FormUrlEncoded
+    @POST("")
+    Observable<UpdateInfo> getUpdateInfo(@Field("Version") String version);
+
 
 }

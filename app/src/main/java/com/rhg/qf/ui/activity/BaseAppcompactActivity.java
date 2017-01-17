@@ -24,6 +24,7 @@ import com.rhg.qf.mvp.base.RxPresenter;
 import com.rhg.qf.mvp.view.BaseView;
 import com.rhg.qf.runtimepermissions.PermissionsManager;
 import com.rhg.qf.ui.fragment.BaseFragment;
+import com.rhg.qf.update.Updater;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.KeyBoardUtil;
 

@@ -18,10 +18,20 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.rhg.qf.R;
 import com.rhg.qf.locationservice.LocationService;
+import com.rhg.qf.mvp.api.QFoodApiMamager;
+import com.rhg.qf.mvp.api.QFoodApiService;
 import com.rhg.qf.ui.activity.BaseAppcompactActivity;
 import com.rhg.qf.unexpected.UnExpected;
+import com.rhg.qf.update.LibUpgradeInitializer;
+import com.rhg.qf.update.Updater;
+import com.rhg.qf.update.UpdaterConfiguration;
+import com.rhg.qf.update.callback.UpdateCheckCallback;
+import com.rhg.qf.update.interfacedef.UpdateChecker;
+import com.rhg.qf.update.model.UpdateInfo;
+import com.rhg.qf.update.utils.MD5Utils;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.CustomerHelper;
+import com.rhg.qf.utils.DataUtil;
 import com.rhg.qf.utils.ToastHelper;
 import com.umeng.socialize.PlatformConfig;
 
@@ -31,6 +41,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+
+import javax.net.ssl.SSLHandshakeException;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * desc:APP的入口，定义全局变量,继承MultiDexApplication，解决方法数超过65536
@@ -142,6 +160,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
         ImageLoader.getInstance().init(config);
     }
 
+
     @Override
     public void run() {
         initAccountUtil();
@@ -155,7 +174,7 @@ public class InitApplication extends MultiDexApplication implements Runnable {
             try {
                 FileInputStream fileInputStream = new FileInputStream(file);
                 ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                int len ;
+                int len;
                 byte[] b = new byte[1024];
                 while ((len = fileInputStream.read(b)) != -1) {
                     bo.write(b, 0, len);
@@ -171,5 +190,71 @@ public class InitApplication extends MultiDexApplication implements Runnable {
             file.delete();
         }
         new UnExpected(getApplicationContext());
+        initUpdateConfig();
+    }
+
+    private void initUpdateConfig() {
+        LibUpgradeInitializer.init(this);
+        final UpdaterConfiguration updaterConfiguration = new UpdaterConfiguration();
+        updaterConfiguration.updateChecker(new UpdateChecker() {
+            @Override
+            public void check(final UpdateCheckCallback callback) {/*为DefaultUpdateCheckCallback对象*/
+                //TODO 获取服务端的版本号以及更新信息
+                QFoodApiMamager.getInstant().getQFoodApiService().getUpdateInfo("")
+                        .onErrorReturn(new Func1<Throwable, UpdateInfo>() {
+                            @Override
+                            public UpdateInfo call(Throwable throwable) {
+                                if (throwable instanceof RuntimeException) {
+                                    ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
+                                } else if (throwable instanceof SSLHandshakeException) {
+                                    ToastHelper.getInstance().displayToastWithQuickClose("网络认证失败！");
+                                }
+                                return null;
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(new Subscriber<UpdateInfo>() {
+                            @Override
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(UpdateInfo updateInfo) {
+                                if (updateInfo != null) {
+                                    updaterConfiguration.updateInfo(updateInfo);
+                                    callback.onCheckSuccess();
+                                } else {
+                                    callback.onCheckFail("");
+                                }
+                                unsubscribe();
+                            }
+                        });
+                /*UpdateInfo updateInfo = new UpdateInfo();
+                updateInfo.setInstallType(UpdateInfo.InstallType.NOTIFY_INSTALL);
+                updateInfo.setVersionCode(10204);
+                updateInfo.setVersionName("v1.2.3");
+                updateInfo.setUpdateType(UpdateInfo.UpdateType.INCREMENTAL_UPDATE);
+                updateInfo.setUpdateTime(DataUtil.getCurrentTime());
+                updateInfo.setUpdateSize(1024);
+                updateInfo.setUpdateInfo("修复若干bug");
+                updateInfo.setIsForceInstall(false);
+                UpdateInfo.IncrementalUpdateInfo incrementalUpdateInfo = new UpdateInfo.IncrementalUpdateInfo();
+                incrementalUpdateInfo.setFullApkMD5(MD5Utils.get32BitsMD5("e7eec01baac70f8a3688570439b9b467"));
+                updateInfo.setIncrementalUpdateInfo(incrementalUpdateInfo);
+                if (updateInfo != null) {
+                    updaterConfiguration.updateInfo(updateInfo);
+                    callback.onCheckSuccess();
+                } else {
+                    callback.onCheckFail("");
+                }*/
+            }
+        });
+        Updater.getInstance().init(updaterConfiguration);
     }
 }
