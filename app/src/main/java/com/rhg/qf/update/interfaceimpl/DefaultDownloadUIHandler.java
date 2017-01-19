@@ -16,8 +16,9 @@ import com.rhg.qf.update.model.UpdateInfo;
 import com.rhg.qf.update.utils.FileUtils;
 import com.rhg.qf.update.utils.InstallUtils;
 import com.rhg.qf.update.utils.UIHandleUtils;
-import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
+
+import java.io.File;
 
 
 /**

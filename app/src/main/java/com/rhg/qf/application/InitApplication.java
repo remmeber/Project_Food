@@ -200,10 +200,11 @@ public class InitApplication extends MultiDexApplication implements Runnable {
             @Override
             public void check(final UpdateCheckCallback callback) {/*为DefaultUpdateCheckCallback对象*/
                 //TODO 获取服务端的版本号以及更新信息
-                QFoodApiMamager.getInstant().getQFoodApiService().getUpdateInfo("")
+                /*QFoodApiMamager.getInstant().getQFoodApiService().getUpdateInfo("")
                         .onErrorReturn(new Func1<Throwable, UpdateInfo>() {
                             @Override
                             public UpdateInfo call(Throwable throwable) {
+
                                 if (throwable instanceof RuntimeException) {
                                     ToastHelper.getInstance().displayToastWithQuickClose("网络出错啦！请检查网络");
                                 } else if (throwable instanceof SSLHandshakeException) {
@@ -234,8 +235,8 @@ public class InitApplication extends MultiDexApplication implements Runnable {
                                 }
                                 unsubscribe();
                             }
-                        });
-                /*UpdateInfo updateInfo = new UpdateInfo();
+                        });*/
+                UpdateInfo updateInfo = new UpdateInfo();
                 updateInfo.setInstallType(UpdateInfo.InstallType.NOTIFY_INSTALL);
                 updateInfo.setVersionCode(10204);
                 updateInfo.setVersionName("v1.2.3");
@@ -246,13 +247,14 @@ public class InitApplication extends MultiDexApplication implements Runnable {
                 updateInfo.setIsForceInstall(false);
                 UpdateInfo.IncrementalUpdateInfo incrementalUpdateInfo = new UpdateInfo.IncrementalUpdateInfo();
                 incrementalUpdateInfo.setFullApkMD5(MD5Utils.get32BitsMD5("e7eec01baac70f8a3688570439b9b467"));
+                incrementalUpdateInfo.setPatchUrl("http://jiajiafoodtest.oss-cn-hangzhou.aliyuncs.com/App/patch.patch");
                 updateInfo.setIncrementalUpdateInfo(incrementalUpdateInfo);
                 if (updateInfo != null) {
                     updaterConfiguration.updateInfo(updateInfo);
                     callback.onCheckSuccess();
                 } else {
                     callback.onCheckFail("");
-                }*/
+                }
             }
         });
         Updater.getInstance().init(updaterConfiguration);
