@@ -39,7 +39,7 @@ public class ImageUtils {
         if (!file.exists()) {
             file.mkdir();
         }
-        File _file = new File(AppConstants.f_Path, DataUtil.getCurrentTime() + ".png");
+        File _file = new File(AppConstants.f_Path, DateUtil.getCurrentTime() + ".png");
         FileOutputStream out;
         try {
             out = new FileOutputStream(_file);

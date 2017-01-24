@@ -78,12 +78,12 @@ public class AccountUtil {
         editor.apply();
     }
 
-    public void setIgnoreVersion(int version) {
-        getEditor().putInt(AppConstants.VERSION, version).apply();
+    public void setIgnoreVersion(String version) {
+        getEditor().putString(AppConstants.VERSION, version).apply();
     }
 
-    public int getIgnoreVersion() {
-        return getSP().getInt(AppConstants.VERSION, 0);
+    public String getIgnoreVersion() {
+        return getSP().getString(AppConstants.VERSION, "0");
     }
 
     /*退出跑腿员账户*/

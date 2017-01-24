@@ -17,7 +17,7 @@ import com.rhg.qf.update.interfaceimpl.AppSilentInstaller;
 import com.rhg.qf.update.interfaceimpl.DefaultDownloadUIHandler;
 import com.rhg.qf.update.interfaceimpl.DefaultDownloader;
 import com.rhg.qf.update.interfaceimpl.DefaultUpdateCheckUIHandler;
-import com.rhg.qf.update.model.UpdateInfo;
+import com.rhg.qf.bean.UpdateInfo;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

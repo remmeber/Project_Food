@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
-
+import com.rhg.qf.pay.security.wx.MD5;
 import com.rhg.qf.update.BsDiff;
 import com.rhg.qf.update.LibUpgradeInitializer;
+import com.rhg.qf.utils.MD5Util;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -132,14 +134,13 @@ public class InstallUtils {
             if (oldApkFile.exists() && patchFile.exists()) {
                 BsDiff.patch(oldApkPath, newApkPath, patchPath);
                 if (newApkFile.exists()) {
-                    String newApkMd5 = MD5Utils.get32BitsMD5(newApkFile);
+                    String newApkMd5 = MD5Util.getFileMD5(newApkFile);
                     if (newApkMd5.equals(newApkMD5)) {
                         isMergeOk = true;
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             isMergeOk = false;
         }
         return isMergeOk;

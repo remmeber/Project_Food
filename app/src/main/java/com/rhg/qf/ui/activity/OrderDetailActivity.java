@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -68,6 +69,7 @@ public class OrderDetailActivity extends BaseAppcompactActivity {
     @Override
     public void dataReceive(Intent intent) {
         orderId = intent.getStringExtra(AppConstants.KEY_ORDER_ID);
+        Log.i("RHG", "orderId: " + orderId);
         /*merchantName = intent.getStringExtra(AppConstants.KEY_MERCHANT_NAME);
         productName = merchantName;*/
         orderSrc = intent.getStringExtra(AppConstants.KEY_PRODUCT_LOGO);

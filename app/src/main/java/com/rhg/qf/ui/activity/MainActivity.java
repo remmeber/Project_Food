@@ -17,13 +17,13 @@ import com.rhg.qf.ui.fragment.MyFragment;
 import com.rhg.qf.ui.fragment.SellerFragment;
 import com.rhg.qf.ui.fragment.ShoppingCartFragment;
 import com.rhg.qf.update.Updater;
+import com.rhg.qf.update.utils.AppInfoUtils;
 import com.rhg.qf.utils.ToastHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseAppcompactActivity implements BaseView {
     FragmentController fragmentController;
@@ -87,6 +87,8 @@ public class MainActivity extends BaseAppcompactActivity implements BaseView {
         fragments.add(new ShoppingCartFragment());
         fragmentController = new FragmentController(getSupportFragmentManager(),
                 fragments, R.id.content_fragment);
+
+        Updater.getInstance().check(this);
     }
 
     @Override
@@ -119,6 +121,6 @@ public class MainActivity extends BaseAppcompactActivity implements BaseView {
     @Override
     protected void onResume() {
         super.onResume();
-        Updater.getInstance().check(this);
+        ToastHelper.getInstance().displayToastWithQuickClose("current apk version: 10205");
     }
 }

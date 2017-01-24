@@ -3,7 +3,7 @@ package com.rhg.qf.update.interfaceimpl;
 import com.rhg.qf.update.UpdaterConfiguration;
 import com.rhg.qf.update.callback.DownloadCallback;
 import com.rhg.qf.update.interfacedef.Downloader;
-import com.rhg.qf.update.model.UpdateInfo;
+import com.rhg.qf.bean.UpdateInfo;
 import com.rhg.qf.update.utils.FileUtils;
 
 import java.io.File;
@@ -100,19 +100,19 @@ public class DefaultDownloader implements Downloader {
                 inputStream.close();
                 outputStream.close();
             }
-
         }
 
         @Override
         public void run() {
-            boolean isTotalUpdate = mUpdateInfo.getUpdateType() == UpdateInfo.UpdateType.TOTAL_UPDATE;
-            String url = isTotalUpdate ? mUpdateInfo.getTotalUpdateInfo().getApkUrl() : mUpdateInfo.getIncrementalUpdateInfo().getPatchUrl();
+            boolean isTotalUpdate = mUpdateInfo.getUpdateType().equals(UpdateInfo.TOTAL_UPDATE) ;
+            String url = isTotalUpdate ? mUpdateInfo.getApkUrl() : mUpdateInfo.getPatchUrl();
             String fileSuffix = isTotalUpdate ? ".apk" : ".patch";
-            String path = FileUtils.getFileSavePath(url, fileSuffix);
+            String path = FileUtils.getFileSavePath("patch", fileSuffix);
             File file = new File(path);
             if (file.exists()) {
                 file.delete();
             }
+
             String error = "";
             boolean isSuccess = true;
             try {

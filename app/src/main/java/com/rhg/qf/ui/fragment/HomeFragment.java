@@ -11,6 +11,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.rhg.qf.R;
 import com.rhg.qf.adapter.MainAdapter;
@@ -54,10 +57,21 @@ import butterknife.OnClick;
  * email：1013773046@qq.com
  */
 public class HomeFragment extends BaseFragment<HomePresenter> implements OnItemClickListener<IBaseModel>, HomeContact.View<HomeBean> {
+    @Bind(R.id.tb_center_tv)
+    TextView tbCenterTv;
+    @Bind(R.id.tb_right_iv)
+    ImageView tbRightIv;
+    @Bind(R.id.fl_tab)
+    FrameLayout flTab;
     @Bind(R.id.home_recycle)
     RecyclerView home_rcv;
     @Bind(R.id.home_swipe)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.tv_home_search)
+    TextView tvHomeSearch;
+
+    View headView;
+    float total = SizeUtil.dip2px(124);
 
     CommonListModel<BannerTypeUrlBean.BannerEntity> bannerModel;
     CommonListModel<FavorableFoodUrlBean.FavorableFoodEntity> favorableTypeModel;
@@ -169,12 +183,43 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnItemC
 
     @Override
     protected void initData() {
+        tbCenterTv.setText(getResources().getString(R.string.Home));
+        flTab.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorBlueNormal));
+        flTab.setVisibility(View.GONE);
+        tbRightIv.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_search_black));
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         home_rcv.setLayoutManager(linearLayoutManager);
         home_rcv.setHasFixedSize(false);
         home_rcv.addItemDecoration(new RecycleViewDivider(getContext(),
                 LinearLayoutManager.HORIZONTAL, SizeUtil.dip2px(2),
                 ContextCompat.getColor(getContext(), R.color.colorBackground)));
+        home_rcv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (headView == null) {
+                    headView = recyclerView.getChildAt(0);
+                }
+                int scroll = Math.abs(headView.getTop());
+                if (scroll <= total) {
+                    tvHomeSearch.setAlpha(1 - scroll / total);
+                    flTab.setAlpha(scroll / total);
+                    if (!tvHomeSearch.isShown())
+                        tvHomeSearch.setVisibility(View.VISIBLE);
+                    if (!flTab.isShown()) {
+                        flTab.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (tvHomeSearch.isShown()) {
+                        tvHomeSearch.setVisibility(View.GONE);
+                    }
+                    if (!flTab.isShown()) {
+                        flTab.setVisibility(View.VISIBLE);
+                    }
+                }
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
         MainAdapter<IBaseModel> mainAdapter = new MainAdapter<>(
                 new InflateModel(new Class<?>[]{HomeShopViewHolder.class, View.class}, new Object[]{R.layout.item_sell_home}),
@@ -267,7 +312,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements OnItemC
         startActivity(new Intent(getContext(), RecommendActivity.class), ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
-    @OnClick(R.id.tv_home_search)
+    @OnClick({R.id.tv_home_search, R.id.tb_right_iv})
     public void onClick() {
         doSearch();
     }

@@ -2,12 +2,11 @@ package com.rhg.qf.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import com.rhg.qf.ui.activity.OrderListActivity;
 import com.rhg.qf.utils.AccountUtil;
 import com.rhg.qf.utils.DialogUtil;
 import com.rhg.qf.utils.ImageUtils;
-import com.rhg.qf.utils.SizeUtil;
 import com.rhg.qf.utils.ToastHelper;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -144,14 +142,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
         deliverLogIn.setText(R.string.workerSignIn);
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_login);
-        deliverLogIn.setCompoundDrawablesWithIntrinsicBounds(null,drawable , null, null);
+        deliverLogIn.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
         deliverLogIn.setOnClickListener(this);
         deliverLogIn.setTag(LOGIN);
 
         deliverLogOut.setText(R.string.tvExit);
         deliverLogOut.setOnClickListener(this);
         drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_logout);
-        deliverLogOut.setCompoundDrawablesWithIntrinsicBounds(null, drawable , null, null);
+        deliverLogOut.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
         deliverLogOut.setTag(LOG_OUT);
 
         deliverOrderGrab.setText(R.string.deliverOrderGrab);
@@ -190,6 +188,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void checkAccount() {
+        Log.i("RHG", "Check account");
         if (AccountUtil.getInstance().hasUserAccount()) {
             isSignIn = true;
             userName.setText(AccountUtil.getInstance().getNickName());

@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -129,8 +130,8 @@ public abstract class AbstractOrderFragment extends BaseFragment implements OnIt
     }
 
     @Override
-    public void onItemClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> orderBeantModel) {
-        OrderUrlBean.OrderBean item = orderBeantModel.getEntity().get(position);
+    public void onItemClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> orderBeanModel) {
+        OrderUrlBean.OrderBean item = orderBeanModel.getEntity().get(position);
         Intent _intent = new Intent(getContext(), OrderDetailActivity.class);
         _intent.putExtra(AppConstants.KEY_ORDER_ID, item.getID());
         _intent.putExtra(AppConstants.KEY_PRODUCT_LOGO, item.getPic());
@@ -142,7 +143,6 @@ public abstract class AbstractOrderFragment extends BaseFragment implements OnIt
 
     @Override
     public void onItemLongClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> item) {
-
     }
 
     protected abstract int getFmTag();

@@ -128,21 +128,22 @@
         android:paddingBottom="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
         android:text="@string/tvSave"
-        android:textSize="@dimen/text_big" />
+        android:textSize="@dimen/text_big"
+        android:visibility="gone" />
 
-   <!-- <TextView
-        android:id="@+id/bt_exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="@dimen/margin_small"
-        android:background="?android:selectableItemBackground"
-        android:gravity="center"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingTop="@dimen/margin_small"
-        android:text="@string/tvExit"
-        android:textSize="@dimen/text_big" />-->
+    <!-- <TextView
+         android:id="@+id/bt_exit"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginEnd="50dp"
+         android:layout_marginLeft="50dp"
+         android:layout_marginRight="50dp"
+         android:layout_marginStart="50dp"
+         android:layout_marginTop="@dimen/margin_small"
+         android:background="?android:selectableItemBackground"
+         android:gravity="center"
+         android:paddingBottom="@dimen/margin_small"
+         android:paddingTop="@dimen/margin_small"
+         android:text="@string/tvExit"
+         android:textSize="@dimen/text_big" />-->
 </LinearLayout>

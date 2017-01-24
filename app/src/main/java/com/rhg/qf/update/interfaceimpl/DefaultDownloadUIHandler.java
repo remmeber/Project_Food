@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -12,13 +13,11 @@ import android.widget.TextView;
 import com.rhg.qf.R;
 import com.rhg.qf.update.UpdaterConfiguration;
 import com.rhg.qf.update.interfacedef.DownloadUIHandler;
-import com.rhg.qf.update.model.UpdateInfo;
+import com.rhg.qf.bean.UpdateInfo;
 import com.rhg.qf.update.utils.FileUtils;
 import com.rhg.qf.update.utils.InstallUtils;
 import com.rhg.qf.update.utils.UIHandleUtils;
 import com.rhg.qf.utils.ToastHelper;
-
-import java.io.File;
 
 
 /**
@@ -82,19 +81,19 @@ public final class DefaultDownloadUIHandler implements DownloadUIHandler {
     @Override
     public void downloadComplete(final String path) {
         mDialog.dismiss();
-        if (mConfig.getUpdateInfo().getUpdateType() == UpdateInfo.UpdateType.TOTAL_UPDATE) {
+        if (mConfig.getUpdateInfo().getUpdateType() .equals(UpdateInfo.TOTAL_UPDATE)) {
             if (mConfig.getUpdateInfo().getInstallType() == UpdateInfo.InstallType.NOTIFY_INSTALL) {
                 mConfig.getNotifyInstaller().install(path);
             } else if (mConfig.getUpdateInfo().getInstallType() == UpdateInfo.InstallType.SILENT_INSTALL) {
                 mConfig.getSilentInstaller().install(path);
             }
-        } else if (mConfig.getUpdateInfo().getUpdateType() == UpdateInfo.UpdateType.INCREMENTAL_UPDATE) {
+        } else if (mConfig.getUpdateInfo().getUpdateType().equals(UpdateInfo.INCREMENTAL_UPDATE)) {
             mConfig.getExecutorService().execute(new Runnable() {
                 @Override
                 public void run() {
                     String newApkPath = FileUtils.getFileSavePath("new", ".apk");
                     String oldApkPath = FileUtils.getFileSavePath("old", ".apk");
-                    String newApkMD5 = mConfig.getUpdateInfo().getIncrementalUpdateInfo().getFullApkMD5();
+                    String newApkMD5 = mConfig.getUpdateInfo().getFullApkMD5();
                     boolean isPatchOk = InstallUtils.mergePatch(oldApkPath, newApkPath, path, newApkMD5);
                     if (isPatchOk) {
                         if (mConfig.getUpdateInfo().getInstallType() == UpdateInfo.InstallType.NOTIFY_INSTALL) {

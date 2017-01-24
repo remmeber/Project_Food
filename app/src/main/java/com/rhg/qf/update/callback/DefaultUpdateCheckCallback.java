@@ -23,12 +23,8 @@ public final class DefaultUpdateCheckCallback implements UpdateCheckCallback {
         UIHandleUtils.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                boolean hasUpdate;
-                hasUpdate = mConfig.getUpdateInfo().isForceInstall();
-                if (!hasUpdate) {
-                    int curVersionCode = AppInfoUtils.getApkVersionCode(LibUpgradeInitializer.getContext());
-                    hasUpdate = curVersionCode < mConfig.getUpdateInfo().getVersionCode();
-                }
+                int curVersionCode = AppInfoUtils.getApkVersionCode(LibUpgradeInitializer.getContext());
+                boolean hasUpdate = curVersionCode <Integer.valueOf( mConfig.getUpdateInfo().getUpdateVersionCode());
                 if (mConfig.getUpdateUIHandler() != null) {
                     if (hasUpdate) {
                         mConfig.getUpdateUIHandler().hasUpdate();

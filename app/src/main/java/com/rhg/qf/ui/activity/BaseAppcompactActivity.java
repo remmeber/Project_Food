@@ -265,6 +265,7 @@ public abstract class BaseAppcompactActivity<T extends RxPresenter<? extends IVi
 
     protected void DialogShow(String title, String content, String positive, String negative) {
         if (finalAd != null) {
+            finalAd.setMessage(content);
             finalAd.show();
             return;
         }

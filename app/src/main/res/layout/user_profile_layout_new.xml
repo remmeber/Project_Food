@@ -49,7 +49,7 @@
                 layout="@layout/item_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               android:layout_marginTop="@dimen/margin_small" />
+               android:layout_marginTop="16dp" />
 
 
             <include
@@ -57,14 +57,14 @@
                 layout="@layout/item_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small" />
+                android:layout_marginTop="16dp" />
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@color/white"
-                android:layout_marginTop="@dimen/margin_small">
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/my_address"

@@ -1,16 +1,5 @@
 #include "jni_bsdiff.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-//定义方法宏，用于拼接方法名
-#define JNI_METHOD(METHOD_NAME) \
-  Java_com_rhg_qf_update_BsDiff_##METHOD_NAME
-
-extern int diff(int argc, char *argv[]);
-extern int patch(int argc, char *argv[]);
-
 JNIEXPORT jint JNICALL JNI_METHOD(diff)(JNIEnv *env, jobject object,
                                         jstring old_path, jstring new_path, jstring patch_path) {
     int argc = 4;
@@ -64,8 +53,3 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     // Register methods with env->RegisterNatives.
     return JNI_VERSION_1_6;
 }
-
-
-#ifdef __cplusplus
-}
-#endif

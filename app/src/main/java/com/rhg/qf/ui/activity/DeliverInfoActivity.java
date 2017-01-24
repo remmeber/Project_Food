@@ -3,6 +3,7 @@ package com.rhg.qf.ui.activity;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,7 +31,7 @@ import com.rhg.qf.mvp.presenter.GetDeliverInfoPresenter;
 import com.rhg.qf.mvp.presenter.PerfectDeliverInfoPresenter;
 import com.rhg.qf.mvp.presenter.UploadAndSaveImagePresenter;
 import com.rhg.qf.utils.AccountUtil;
-import com.rhg.qf.utils.DataUtil;
+import com.rhg.qf.utils.DateUtil;
 import com.rhg.qf.utils.ImageUtils;
 import com.rhg.qf.utils.ToastHelper;
 import com.rhg.qf.widget.CircleImageView;
@@ -78,6 +80,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
     GetDeliverInfoPresenter getDeliverInfoPresenter;
     String imageStr = "";
     Uri fileUri = null;
+    AlertDialog dialog;
 
     @Override
     protected int getLayoutResId() {
@@ -90,12 +93,16 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
         tbCenterTv.setText("跑腿员信息");
         tbLeftIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_chevron_left_black));
         etNameWrap.setHint("姓名");
+        etNameWrap.getEditText().setFocusable(false);
         /*if (etNameWrap.getEditText() != null)
             etNameWrap.getEditText().setText(AccountUtil.getInstance().getNickName());*/
         etNameWrap.setError("");
         etIdWrap.setHint("身份证号");
+        etIdWrap.getEditText().setFocusable(false);
         etPhoneWrap.setHint("手机号");
+        etPhoneWrap.getEditText().setFocusable(false);
         etPlaceWrap.setHint("配送范围");
+        etPlaceWrap.getEditText().setFocusable(false);
         imageStr = AccountUtil.getInstance().getHeadImageUrl();
         /*从本地获取头像URI*/
 //        if (AccountUtil.getInstance().hasUserAccount()) {
@@ -165,7 +172,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
     @Override
     final public void chooseFromCamera() {
         Intent intentFromCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        fileUri = Uri.fromFile(new File(AppConstants.f_Path, DataUtil.getCurrentTime())); // create a file to save the image
+        fileUri = Uri.fromFile(new File(AppConstants.f_Path, DateUtil.getCurrentTime())); // create a file to save the image
         intentFromCamera.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
         startActivityForResult(intentFromCamera, AppConstants.CODE_CAMERA_REQUEST);
     }
@@ -314,7 +321,7 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
                 finish();
                 break;
             case R.id.bt_save:
-                if ("".equals(etNameWrap.getEditText().getText().toString())) {
+                /*if ("".equals(etNameWrap.getEditText().getText().toString())) {
                     ToastHelper.getInstance().displayToastWithQuickClose("真实姓名为空");
                     break;
                 }
@@ -336,18 +343,37 @@ public class DeliverInfoActivity extends BaseAppcompactActivity implements Modif
                         etIdWrap.getEditText().getText().toString(),
                         etPhoneWrap.getEditText().getText().toString(),
                         etPlaceWrap.getEditText().getText().toString());
-                break;
+                break;*/
             /*case R.id.bt_exit:
                 AccountUtil.getInstance().deleteDeliverAccount();
                 finish();
                 break;*/
-            case R.id.ci_head:
-                if (modifyHeadImageDialog == null) {
-                    modifyHeadImageDialog = new ModifyHeadImageDialog(this);
-                    modifyHeadImageDialog.setChoosePicListener(this);
-                }
-                modifyHeadImageDialog.show();
                 break;
+            case R.id.ci_head:
+                if (dialog != null) {
+                    dialog.show();
+                    return;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setItems(new String[]{"相机", "图库"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            ToastHelper.getInstance().displayToastWithQuickClose("相机");
+
+                        } else ToastHelper.getInstance().displayToastWithQuickClose("图库");
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.setCancelable(true);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
+                /*if (modifyHeadImageDialog == null) {
+                modifyHeadImageDialog = new ModifyHeadImageDialog(this);
+                modifyHeadImageDialog.setChoosePicListener(this);
+            }
+            modifyHeadImageDialog.show();*/
+            break;
             case R.id.tb_right_tv:
                 break;
         }

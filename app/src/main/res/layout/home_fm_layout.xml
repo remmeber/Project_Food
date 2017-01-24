@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar_common_layout"/>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/home_swipe"

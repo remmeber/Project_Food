@@ -7,7 +7,6 @@ import com.rhg.qf.bean.CommonListModel;
 import com.rhg.qf.bean.OrderUrlBean;
 import com.rhg.qf.constants.AppConstants;
 import com.rhg.qf.mvp.presenter.ModifyOrderPresenter;
-import com.rhg.qf.ui.UIAlertView;
 import com.rhg.qf.utils.ToastHelper;
 
 /*
@@ -27,8 +26,9 @@ public class OrderUnPaidFM extends AbstractOrderFragment {
 
     @Override
     public void onItemLongClick(View view, int position, CommonListModel<OrderUrlBean.OrderBean> item) {
+        super.onItemLongClick(view, position, item);
         orderId = item.getEntity().get(position).getID();
-        mActivity.DialogShow(String.format("订单 %s 将被删除!", item.getEntity().get(position).getID()));
+        mActivity.DialogShow(String.format("订单 %s 将被删除!", orderId));
     }
 
     private void drawBack(String orderId) {
